@@ -174,9 +174,7 @@ function fence(text: string): string {
 function fields(signature: Reflection, indent: string): string[] {
   const lines: string[] = [];
   for (const parameter of signature.parameters ?? []) {
-    const description = inline(parameter.comment?.summary)
-      .trim()
-      .replaceAll("\n", " ");
+    const description = inline(parameter.comment?.summary).trim().replaceAll("\n", " ");
     lines.push(`${indent}:param ${parameter.name}: ${description}`.trimEnd());
     lines.push(
       `${indent}:type ${parameter.name}: ${typeText(parameter.type)}${
