@@ -4,6 +4,10 @@
 // The release writes its version into package.json and src/version.ts, and @semantic-release/git
 // commits them, so that the tagged commit carries it. Publishing to npm is done by hand, with
 // `make release` (ADR-010).
+//
+// conventional-changelog-conventionalcommits is pinned to 9.x, as in smarter-chat: 10.x needs
+// conventional-changelog-writer 9, and @semantic-release/release-notes-generator 14 still loads
+// writer 8, so a 10.x preset fails the generateNotes step. Keep it on 9.x until the plugin moves.
 export default {
   branches: ["main", { name: "beta", prerelease: true }, { name: "alpha", prerelease: true }],
   plugins: [
