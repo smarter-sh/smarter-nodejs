@@ -1,11 +1,11 @@
 ---
 name: smarter-nodejs-development
-description: Start here for any change to the smarter-nodejs repository, the Smarter platform's Node.js SDK (the smarter-api npm package, written in TypeScript). Gives the non-negotiable rules, the SDK's architecture (client, transport, resources, Zod models, the generated SAM types and the mirrored api contracts), its relationship to the Python SDK (the reference implementation), how to cover a new platform endpoint, and an index of the narrower skills to load for each kind of work.
+description: Start here for any change to the smarter-nodejs repository, the Smarter platform's Node.js SDK (the @smarter.sh/api npm package, written in TypeScript). Gives the non-negotiable rules, the SDK's architecture (client, transport, resources, Zod models, the generated SAM types and the mirrored api contracts), its relationship to the Python SDK (the reference implementation), how to cover a new platform endpoint, and an index of the narrower skills to load for each kind of work.
 ---
 
 # Smarter Node.js SDK Development
 
-`smarter-api` on npm is to the Smarter platform what the `openai` package is
+`@smarter.sh/api` on npm is to the Smarter platform what the `openai` package is
 to the OpenAI api: the library that JavaScript and TypeScript programmers
 import to build custom software on their own Smarter installation, running
 locally or on Kubernetes. The platform itself is

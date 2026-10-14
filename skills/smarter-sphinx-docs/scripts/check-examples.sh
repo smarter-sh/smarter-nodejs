@@ -26,7 +26,7 @@ for path in files:
             continue
         for line in code.split("\n"):
             if line.startswith("import "):
-                if '"smarter-api"' in line:
+                if '"@smarter.sh/api"' in line:
                     type_only = line.startswith("import type ")
                     for name in re.search(r"\{(.*)\}", line).group(1).split(","):
                         name = name.strip()

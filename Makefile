@@ -2,7 +2,7 @@ SHELL := /bin/bash
 # The developer's shell may export NODE_ENV=production, which makes npm skip devDependencies.
 NPM_INSTALL := npm install --include=dev
 
-.PHONY: all init clean build test coverage test-live lint typecheck pre-commit-init pre-commit-run contracts sam-models reference publish help
+.PHONY: all init clean build test coverage test-live lint typecheck pre-commit-init pre-commit-run contracts sam-models reference release help
 
 all: help
 
@@ -57,10 +57,12 @@ sam-models: contracts
 reference:
 	npm run reference
 
-# Publish to npm: https://www.npmjs.com/package/smarter-api
-publish:
+# Publish the npm package, @smarter.sh/api (https://www.npmjs.com/package/@smarter.sh/api), once the
+# tests pass, as smarter-chat publishes @smarter.sh/ui-chat. Run it on main, after semantic-release has
+# versioned the release and you have pulled its commit. prepublishOnly builds dist/ first. npm reads
+# the token of an account that may publish to the @smarter.sh scope from .npmrc (gitignored) or ~/.npmrc.
+release: test build
 	git rev-parse --abbrev-ref HEAD | grep '^main$$' || (echo 'Not on main branch, aborting' && exit 1)
-	$(MAKE) test build
 	npm publish --access public
 
 help:
@@ -76,5 +78,5 @@ help:
 	@echo 'contracts     - copy the api contracts, SAM schemas and OpenAPI document from ../smarter'
 	@echo 'sam-models    - copy the contracts, and regenerate the SAM types from their schemas'
 	@echo 'reference     - generate the api reference into ../smarter/docs'
-	@echo 'publish       - publish the package to npm'
+	@echo 'release       - run the tests, then publish the package to npm'
 	@echo '===================================================================='

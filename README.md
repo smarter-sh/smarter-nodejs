@@ -4,12 +4,12 @@
 ![Build Status](https://github.com/smarter-sh/smarter-nodejs/actions/workflows/build.yml/badge.svg?branch=main)
 [![Node.js coverage](https://img.shields.io/codecov/c/github/smarter-sh/smarter-nodejs/main?flag=nodejs&label=coverage&logo=codecov)](https://codecov.io/gh/smarter-sh/smarter-nodejs)
 [![Latest Release](https://img.shields.io/github/v/release/smarter-sh/smarter-nodejs?label=release)](https://github.com/smarter-sh/smarter-nodejs/releases)
-[![npm](https://img.shields.io/npm/v/smarter-api?logo=npm&label=npm)](https://www.npmjs.com/package/smarter-api)
+[![npm](https://img.shields.io/npm/v/@smarter.sh/api?logo=npm&label=npm)](https://www.npmjs.com/package/@smarter.sh/api)
 [![Docs](https://img.shields.io/badge/Read%20the%20Docs-smarter.sh-blue?logo=readthedocs)](https://docs.smarter.sh/en/latest/smarter-framework/smarter-nodejs.html)
 [![Website](https://img.shields.io/badge/official%20web%20site-smarter.sh-blue?logo=google-chrome)](https://smarter.sh)
 [![License: GNU AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)<br>
 
-`smarter-api` is the official Node.js SDK of the
+`@smarter.sh/api` is the official Node.js SDK of the
 [Smarter platform](https://github.com/smarter-sh/smarter), written in
 TypeScript. It is to Smarter what the `openai` package is to the OpenAI api:
 one `npm install` gives your JavaScript or TypeScript software typed, complete
@@ -23,7 +23,7 @@ your manifests, a serverless function that loads documents into a vectorstore,
 or a service that calls your MCP servers' tools.
 
 ```ts
-import { Smarter } from "smarter-api";
+import { Smarter } from "@smarter.sh/api";
 
 const client = new Smarter(); // SMARTER_API_KEY, or the smarter cli's ~/.smarter/config.yaml
 
@@ -76,7 +76,7 @@ The SDK reads the cli's configuration file, so if you have run
 ## Quickstart
 
 ```console
-npm install smarter-api
+npm install @smarter.sh/api
 ```
 
 Point the SDK at your platform with environment variables, or pass them as
@@ -90,7 +90,7 @@ export SMARTER_BASE_URL="https://platform.example.com"   # or http://localhost:9
 ### Manifests
 
 ```ts
-import { Smarter } from "smarter-api";
+import { Smarter } from "@smarter.sh/api";
 
 const client = new Smarter();
 
@@ -118,7 +118,7 @@ console.log(stream.response.text);
 ### Errors
 
 ```ts
-import { NotFoundError, SmarterError } from "smarter-api";
+import { NotFoundError, SmarterError } from "@smarter.sh/api";
 
 try {
   await client.manifests.describe("LLMClient", "no_such_client");
@@ -152,6 +152,22 @@ SMARTER_BASE_URL=http://localhost:9357 SMARTER_API_KEY=... make test-live
 
 If your shell sets `NODE_ENV=production`, npm skips the development
 dependencies: `make init` installs them anyway.
+
+### Versions and releases
+
+Commit messages are [conventional commits](https://www.conventionalcommits.org/), and
+[semantic-release](https://semantic-release.gitbook.io/) versions the package from them, as it does
+[Smarter Chat](https://github.com/smarter-sh/smarter-chat). On each push to `main`, and to `alpha` and
+`beta` (prereleases, e.g. `1.0.0-alpha.1`), `.github/workflows/pushMain.yml` determines the next
+version, writes it to `package.json` and `src/version.ts`, adds the release notes to `CHANGELOG.md`,
+tags the commit and creates a GitHub release. A release on `main` is then merged back into `alpha`.
+`feat` commits are minor releases, `fix` and `perf` commits are patches, and a `BREAKING CHANGE:`
+footer is a major release. See `release.config.js`.
+
+semantic-release does not publish to npm. After a release on `main`, pull it and publish it with
+`make release`, which runs the tests, builds `dist/` and publishes
+[@smarter.sh/api](https://www.npmjs.com/package/@smarter.sh/api) with an npm token that may publish to
+the `@smarter.sh` scope (in `.npmrc`, which is gitignored, or `~/.npmrc`).
 
 The agent skills in [skills/](./skills/) describe how this repository is
 developed, tested and documented, for people and for AI coding agents.

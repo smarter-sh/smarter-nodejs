@@ -3,7 +3,7 @@
  *
  * @example
  * ```ts
- * import { Smarter } from "smarter-api";
+ * import { Smarter } from "@smarter.sh/api";
  *
  * const client = new Smarter();
  * const llmclient = await client.llmClients.find("calculator");

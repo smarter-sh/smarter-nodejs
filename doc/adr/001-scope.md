@@ -12,7 +12,7 @@ The Smarter platform is managed through its REST api. The smarter cli (Go) serve
 
 ## Decision
 
-smarter-nodejs is the platform's official, complete Node.js SDK, written in TypeScript and published to npm as `smarter-api`, the same name as the Python SDK's PyPI package. It is to Smarter what the `openai` package is to the OpenAI api:
+smarter-nodejs is the platform's official, complete Node.js SDK, written in TypeScript and published to npm as `@smarter.sh/api`, in the `@smarter.sh` scope that also holds `@smarter.sh/ui-chat`. Its name is the Python SDK's PyPI package, `smarter-api`, with the scope in place of the `smarter-` prefix. It is to Smarter what the `openai` package is to the OpenAI api:
 
 - it covers **all** of the platform's public api: every resource kind through the manifest api, the chat and prompt apis, and every resource's REST reads and actions,
 - it exposes the platform's own models: a TypeScript type of every SAM kind, and the api contracts (ADR-005),

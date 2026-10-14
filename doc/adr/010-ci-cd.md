@@ -12,7 +12,7 @@ Every change should be tested, and every release built the same way.
 
 ## Decision
 
-GitHub Actions only, as on the platform and in the other SDKs. `test.yml` type-checks, lints and runs the unit tests on every supported Node.js version (ADR-019) for every push and pull request, enforces 90% coverage, and uploads coverage to Codecov. `build.yml` builds the package and checks it with `npm pack --dry-run` and `publint`. Releases are versioned by semantic-release (ADR-015). Publishing to npm is done by hand (`make publish`), as publishing to PyPI is for the Python SDK.
+GitHub Actions only, as on the platform and in the other SDKs. `test.yml` type-checks, lints and runs the unit tests on every supported Node.js version (ADR-019) for every push and pull request, enforces 90% coverage, and uploads coverage to Codecov. `build.yml` builds the package and checks it with `npm pack --dry-run` and `publint`. Releases are versioned by semantic-release (ADR-015) on each push to `main`, and as prereleases on each push to `alpha` and `beta`, as they are for smarter-chat. Publishing to npm is done by hand (`make release`, on `main`), as it is for smarter-chat's `@smarter.sh/ui-chat` and as publishing to PyPI is for the Python SDK. The package is published to the public npm registry in the `@smarter.sh` scope, with `--access public`.
 
 ## Alternatives Considered
 

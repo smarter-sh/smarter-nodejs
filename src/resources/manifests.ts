@@ -8,7 +8,7 @@
  *
  * @example
  * ```ts
- * import { Smarter } from "smarter-api";
+ * import { Smarter } from "@smarter.sh/api";
  *
  * const client = new Smarter();
  * await client.manifests.apply("guardrail.yaml");

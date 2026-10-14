@@ -10,7 +10,7 @@ A JavaScript package can ship ES modules, CommonJS, or both. Shipping both doubl
 
 ## Decision
 
-The package is ES modules only (`"type": "module"`), with one entry point in `exports` and its declaration files. The source has no top-level `await`, so CommonJS callers can `require("smarter-api")` on every supported Node.js version.
+The package is ES modules only (`"type": "module"`), with one entry point in `exports` and its declaration files. The source has no top-level `await`, so CommonJS callers can `require("@smarter.sh/api")` on every supported Node.js version.
 
 ## Alternatives Considered
 

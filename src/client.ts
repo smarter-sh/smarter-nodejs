@@ -3,7 +3,7 @@
  *
  * @example
  * ```ts
- * import { Smarter } from "smarter-api";
+ * import { Smarter } from "@smarter.sh/api";
  *
  * const client = new Smarter(); // SMARTER_API_KEY, or ~/.smarter/config.yaml
  * console.log((await client.whoami()).user.username);

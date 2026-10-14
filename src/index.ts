@@ -3,7 +3,7 @@
  *
  * @example
  * ```ts
- * import { Smarter } from "smarter-api";
+ * import { Smarter } from "@smarter.sh/api";
  *
  * const client = new Smarter();
  * console.log((await client.llmClients.prompt(5, "Hello")).text);
