@@ -63,7 +63,7 @@ make contracts                              # copy the platform's contracts, SAM
 make sam-models                             # make contracts, then regenerate src/models/sam
 npm run reference                           # api reference into ../smarter
 npm run build                               # dist/
-git diff --name-only | xargs pre-commit run --files
+source venv/bin/activate && git diff --name-only | xargs pre-commit run --files
 ```
 
 Monthly, sync the SDK with the platform and the Python SDK, and update its

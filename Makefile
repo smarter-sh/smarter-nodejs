@@ -1,17 +1,27 @@
 SHELL := /bin/bash
 # The developer's shell may export NODE_ENV=production, which makes npm skip devDependencies.
 NPM_INSTALL := npm install --include=dev
+# pre-commit runs from a Python virtual environment in venv/, made by make python-init.
+PYTHON := python3.13
+PRE_COMMIT := venv/bin/pre-commit
 
-.PHONY: all init clean build test coverage test-live lint typecheck pre-commit-init pre-commit-run contracts sam-models reference release help
+.PHONY: all init clean build test coverage test-live lint typecheck pre-commit-init pre-commit-run python-init contracts sam-models reference release help
 
 all: help
 
 init:
 	$(NPM_INSTALL)
-	pre-commit install
+	$(MAKE) python-init
+
+# Creates venv/ with pre-commit, and installs the pre-commit and commit-msg hooks. See .pre-commit-config.yaml.
+python-init:
+	$(PYTHON) -m venv venv
+	venv/bin/pip install --upgrade pip
+	venv/bin/pip install -r requirements/local.txt
+	$(PRE_COMMIT) install
 
 clean:
-	rm -rf node_modules dist build coverage
+	rm -rf node_modules dist build coverage venv
 
 build:
 	npm run build
@@ -34,14 +44,14 @@ typecheck:
 	npx tsc --noEmit
 
 lint:
-	pre-commit run --all-files
+	$(PRE_COMMIT) run --all-files
 
 pre-commit-init:
-	pre-commit install
-	pre-commit autoupdate
+	$(PRE_COMMIT) install
+	$(PRE_COMMIT) autoupdate
 
 pre-commit-run:
-	pre-commit run --all-files
+	$(PRE_COMMIT) run --all-files
 
 # Copy the platform's api contracts from ../smarter: the chat and journal contracts, the SAM schemas
 # and examples, and the api's OpenAPI document. A ref reads them at a commit or tag, e.g.
@@ -68,7 +78,8 @@ release: test build
 help:
 	@echo '===================================================================='
 	@echo 'init          - install the dependencies and the pre-commit hooks'
-	@echo 'clean         - delete node_modules and the build output'
+	@echo 'python-init   - create venv/ with pre-commit, and install the pre-commit and commit-msg hooks'
+	@echo 'clean         - delete node_modules, venv/ and the build output'
 	@echo 'build         - build dist/, and check the package'
 	@echo 'test          - run the unit tests'
 	@echo 'coverage      - run the unit tests with coverage'

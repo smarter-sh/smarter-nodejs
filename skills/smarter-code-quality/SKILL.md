@@ -27,11 +27,16 @@ messages.
 
 ## How to run
 
-From the repository root:
+pre-commit lives in a Python virtual environment, `venv/`, which `make init`
+(or `make python-init`) creates from `requirements/local.txt`, and which also
+installs the pre-commit and commit-msg hooks. If `venv/` is missing, or
+`.git/hooks/pre-commit` points at a Python that no longer exists, run
+`make python-init`. From the repository root:
 
 ```console
 npm run typecheck
 npm run lint
+source venv/bin/activate
 git diff --name-only | xargs pre-commit run --files
 git ls-files --others --exclude-standard | xargs pre-commit run --files   # new files
 ```

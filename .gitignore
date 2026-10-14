@@ -26,3 +26,6 @@ npm-debug.log*
 
 # npm credentials, for make release
 .npmrc
+
+# Python virtual environment, for pre-commit (make python-init)
+venv/
