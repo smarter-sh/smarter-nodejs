@@ -1,0 +1,56 @@
+---
+#------------------------------------------------------------------------------
+# Type-check, lint and run the unit tests on every supported Node.js version.
+#
+# The unit tests never reach a Smarter platform: a fetch double answers every
+# request. The live tests (test/live/) are skipped, because SMARTER_TEST_LIVE
+# is not set.
+#------------------------------------------------------------------------------
+name: Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, alpha, beta]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["22", "24", "26"]
+    env:
+      NODE_ENV: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --include=dev
+
+      - name: Type-check
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npx eslint --max-warnings=0 . && npx prettier --check .
+
+      - name: Run the unit tests, with coverage
+        run: npx vitest run --coverage
+
+      # one upload is enough: the coverage is the same on every Node.js version.
+      - name: Upload coverage to Codecov
+        if: matrix.node-version == '24'
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage/lcov.info
+          flags: nodejs
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
