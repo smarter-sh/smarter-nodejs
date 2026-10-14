@@ -102,6 +102,7 @@ with `npm install --include=dev`, as `make init` does.
    saying what the Python SDK's docstring says. See `smarter-tsdoc`.
 10. **No top-level `await`, and ES modules only** (ADR-020): CommonJS callers
     `require()` the package.
+11. **smarter Sphinx docs** should build the SDK's pages in the smarter/docs/source/smarter-framework/. See `smarter-sphinx-docs`.
 
 ## Architecture, and why
 
