@@ -1,0 +1,81 @@
+{
+  "name": "smarter-api",
+  "version": "0.0.0",
+  "description": "The official Node.js SDK of the Smarter platform's api.",
+  "keywords": [
+    "smarter",
+    "sdk",
+    "api",
+    "llm",
+    "ai",
+    "agents",
+    "typescript"
+  ],
+  "homepage": "https://docs.smarter.sh/en/latest/smarter-framework/smarter-nodejs.html",
+  "bugs": "https://github.com/smarter-sh/smarter-nodejs/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smarter-sh/smarter-nodejs.git"
+  },
+  "license": "AGPL-3.0-or-later",
+  "author": "Lawrence McDaniel <lpm0073@gmail.com>",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.txt"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "coverage": "vitest run --coverage",
+    "test:live": "SMARTER_TEST_LIVE=true vitest run test/live",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "reference": "typedoc --json build/typedoc.json && node scripts/generate-reference.ts",
+    "sam-models": "node scripts/generate-sam-models.ts && prettier --write src/models/sam"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "yaml": "^2.8.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "21.2.3",
+    "@commitlint/config-angular": "21.2.3",
+    "@commitlint/config-conventional": "21.2.3",
+    "@eslint/js": "10.0.1",
+    "@semantic-release/changelog": "7.0.0",
+    "@semantic-release/commit-analyzer": "13.0.1",
+    "@semantic-release/exec": "7.1.0",
+    "@semantic-release/git": "11.0.1",
+    "@semantic-release/github": "12.0.10",
+    "@semantic-release/release-notes-generator": "14.1.1",
+    "@types/node": "22.20.5",
+    "@vitest/coverage-v8": "5.0.4",
+    "eslint": "10.12.0",
+    "eslint-plugin-tsdoc": "0.5.4",
+    "json-schema-to-typescript": "16.0.0",
+    "prettier": "3.9.10",
+    "publint": "0.3.25",
+    "semantic-release": "25.0.9",
+    "typedoc": "0.28.20",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.71.2",
+    "vitest": "5.0.4"
+  }
+}

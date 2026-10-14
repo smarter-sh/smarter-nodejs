@@ -1,0 +1,25 @@
+# dependencies and build output
+node_modules/
+dist/
+build/
+coverage/
+*.tgz
+
+# os files
+.DS_Store
+Thumbs.db
+
+# editors
+.idea/
+*.swp
+
+# logs
+*.log
+npm-debug.log*
+
+# typical secrets files
+.env
+.env.*
+
+# doc example checks (skills/smarter-sphinx-docs/scripts/check-examples.sh)
+.doccheck-*/

@@ -1,0 +1,40 @@
+---
+#------------------------------------------------------------------------------
+# Build the package, and check what npm would publish.
+#------------------------------------------------------------------------------
+name: Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --include=dev
+
+      - name: Build
+        run: npm run build
+
+      - name: Check the package
+        run: npm pack --dry-run && npx publint
+
+      - name: Import the built package, as ESM and as CommonJS
+        run: |
+          node --input-type=module -e 'import { Smarter, VERSION } from "./dist/index.js"; console.log(typeof Smarter, VERSION)'
+          node -e 'const { Smarter } = require("./dist/index.js"); console.log(typeof Smarter)'
