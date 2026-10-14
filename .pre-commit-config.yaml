@@ -9,14 +9,16 @@ repos:
       - id: codespell
         args: ["--ignore-words=codespell.txt"]
         exclude: '\.svg$|^test/data/|^src/models/sam/|package-lock\.json$'
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v4.0.0-alpha.8
-    hooks:
-      - id: prettier
-        args: [--no-error-on-unmatched-pattern]
-        exclude: "^test/data/"
   - repo: local
     hooks:
+      # The prettier of package.json, which CI's prettier --check runs too. The
+      # mirrors-prettier hook ran 4.0.0-alpha.8, which formats differently.
+      - id: prettier
+        name: prettier
+        entry: npx prettier --write --ignore-unknown --no-error-on-unmatched-pattern
+        language: system
+        types: [text]
+        exclude: "^test/data/"
       - id: eslint
         name: eslint
         entry: npx eslint --max-warnings=0 --no-warn-ignored

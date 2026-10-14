@@ -5,7 +5,7 @@ import tsdoc from "eslint-plugin-tsdoc";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist/", "build/", "coverage/", "node_modules/", "src/models/sam/"] },
+  { ignores: ["dist/", "build/", "coverage/", "node_modules/", "venv/", "src/models/sam/"] },
   js.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
