@@ -1,4 +1,4 @@
 // DO NOT EDIT.
-// Managed via automated CI/CD in release.config.js and .github/workflows/semanticVersionBump.yml.
+// Managed via automated CI/CD in release.config.js.
 /** The SDK's version. */
-export const VERSION = "0.0.0";
+export const VERSION = "0.1.0-alpha.1";
