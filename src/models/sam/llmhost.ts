@@ -91,7 +91,7 @@ export interface SAMLLMHostEngineConfig {
   /**
    * LLMHost.spec.engine.apiFormat[str]: the wire protocol. One of: ['openai_compatible', 'huggingface', 'ollama_native', 'custom'].
    */
-  apiFormat?: string;
+  apiFormat?: "openai_compatible" | "huggingface" | "ollama_native" | "custom";
   /**
    * LLMHost.spec.engine.args[list]: additional arguments, passed to the engine as they are.
    */
@@ -129,7 +129,7 @@ export interface SAMLLMHostEngineConfig {
   /**
    * LLMHost.spec.engine.name[str]: the inference server. One of: ['vllm', 'tgi', 'sglang', 'llama_cpp', 'ollama', 'tei', 'custom'].
    */
-  name: string;
+  name: "vllm" | "tgi" | "sglang" | "llama_cpp" | "ollama" | "tei" | "custom";
   /**
    * LLMHost.spec.engine.port[int]: the container port. Defaults to the engine's port. Required for custom.
    */
@@ -194,7 +194,7 @@ export interface SAMLLMHostModel {
   /**
    * LLMHost.spec.model.quantization[str]: the weights' precision. One of: ['none', 'fp32', 'fp16', 'bf16', 'fp8', 'mxfp4', 'int8', 'int4', 'gguf', 'awq', 'gptq'].
    */
-  quantization?: string;
+  quantization?: "none" | "fp32" | "fp16" | "bf16" | "fp8" | "mxfp4" | "int8" | "int4" | "gguf" | "awq" | "gptq";
   /**
    * LLMHost.spec.model.repository[str]: the model, in the source's terms: a Hugging Face repository id, e.g. Qwen/Qwen3-8B; an Ollama tag, e.g. llama3.1:8b; an S3 prefix, e.g. s3://bucket/models/qwen3; a URL; or, for pvc, a path within the volume.
    */
@@ -210,11 +210,11 @@ export interface SAMLLMHostModel {
   /**
    * LLMHost.spec.model.source[str]: where the weights come from. One of: ['huggingface', 'ollama', 's3', 'url', 'pvc'].
    */
-  source?: string;
+  source?: "huggingface" | "ollama" | "s3" | "url" | "pvc";
   /**
    * LLMHost.spec.model.task[str]: what the model does. One of: ['text-generation', 'embedding'].
    */
-  task?: string;
+  task?: "text-generation" | "embedding";
   /**
    * LLMHost.spec.model.tokenSecret[str]: the name of a Smarter Secret with a Hugging Face access token, for gated models, e.g. Llama and Gemma. You must also accept the model's license on huggingface.co.
    */
@@ -328,7 +328,7 @@ export interface SAMLLMHostStorage {
   /**
    * LLMHost.spec.storage.accessMode[str]: One of: ['ReadWriteOnce', 'ReadWriteMany', 'ReadOnlyMany'].
    */
-  accessMode?: string;
+  accessMode?: "ReadWriteOnce" | "ReadWriteMany" | "ReadOnlyMany";
   /**
    * LLMHost.spec.storage.existingClaim[str]: an existing PersistentVolumeClaim to mount, instead of creating one. Required when model.source is pvc.
    */

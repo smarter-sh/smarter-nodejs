@@ -726,7 +726,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
     },
-    description: "Smarter API Manifest - ApiPlugin Model",
+    description: "Smarter API Manifest - ApiPlugin Model.",
     properties: {
       apiVersion: {
         description: "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
@@ -1343,6 +1343,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
           action: {
             description:
               "Guardrail.spec.config.action[str]: what the guardrail does when it triggers. One of: ['log', 'flag', 'redact', 'transform', 'block', 'escalate'].",
+            enum: ["log", "flag", "redact", "transform", "block", "escalate"],
             type: "string",
           },
           caseSensitive: {
@@ -1359,6 +1360,19 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             default: "custom",
             description:
               "Guardrail.spec.config.category[str]: the risk the guardrail addresses. One of: ['pii', 'secrets', 'prompt_injection', 'jailbreak', 'toxicity', 'self_harm', 'hallucination', 'off_topic', 'compliance', 'formatting', 'custom'].",
+            enum: [
+              "pii",
+              "secrets",
+              "prompt_injection",
+              "jailbreak",
+              "toxicity",
+              "self_harm",
+              "hallucination",
+              "off_topic",
+              "compliance",
+              "formatting",
+              "custom",
+            ],
             type: "string",
           },
           detectors: {
@@ -1402,6 +1416,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             default: "enforce",
             description:
               "Guardrail.spec.config.mode[str]: enforce, to take the action, or monitor, to only record what the action would have been.",
+            enum: ["enforce", "monitor"],
             type: "string",
           },
           model: {
@@ -1448,11 +1463,13 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
           stage: {
             description:
               "Guardrail.spec.config.stage[str]: when the guardrail runs. One of: ['input', 'output', 'both'].",
+            enum: ["input", "output", "both"],
             type: "string",
           },
           strategy: {
             description:
               "Guardrail.spec.config.strategy[str]: how the guardrail detects. One of: ['regex', 'keyword', 'detector', 'semantic', 'moderation', 'llm_judge'].",
+            enum: ["regex", "keyword", "detector", "semantic", "moderation", "llm_judge"],
             type: "string",
           },
           threshold: {
@@ -1674,6 +1691,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             default: "strict",
             description:
               "ImageSearchPlugin.spec.searchParams.safesearch[str]: adult content filtering. One of: ['off', 'strict']",
+            enum: ["off", "strict"],
             type: "string",
           },
           searchLang: {
@@ -2594,6 +2612,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             default: "openai_compatible",
             description:
               "LLMHost.spec.engine.apiFormat[str]: the wire protocol. One of: ['openai_compatible', 'huggingface', 'ollama_native', 'custom'].",
+            enum: ["openai_compatible", "huggingface", "ollama_native", "custom"],
             type: "string",
           },
           args: {
@@ -2642,6 +2661,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
           name: {
             description:
               "LLMHost.spec.engine.name[str]: the inference server. One of: ['vllm', 'tgi', 'sglang', 'llama_cpp', 'ollama', 'tei', 'custom'].",
+            enum: ["vllm", "tgi", "sglang", "llama_cpp", "ollama", "tei", "custom"],
             type: "string",
           },
           port: {
@@ -2787,6 +2807,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             default: "none",
             description:
               "LLMHost.spec.model.quantization[str]: the weights' precision. One of: ['none', 'fp32', 'fp16', 'bf16', 'fp8', 'mxfp4', 'int8', 'int4', 'gguf', 'awq', 'gptq'].",
+            enum: ["none", "fp32", "fp16", "bf16", "fp8", "mxfp4", "int8", "int4", "gguf", "awq", "gptq"],
             type: "string",
           },
           repository: {
@@ -2810,11 +2831,13 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             default: "huggingface",
             description:
               "LLMHost.spec.model.source[str]: where the weights come from. One of: ['huggingface', 'ollama', 's3', 'url', 'pvc'].",
+            enum: ["huggingface", "ollama", "s3", "url", "pvc"],
             type: "string",
           },
           task: {
             default: "text-generation",
             description: "LLMHost.spec.model.task[str]: what the model does. One of: ['text-generation', 'embedding'].",
+            enum: ["text-generation", "embedding"],
             type: "string",
           },
           tokenSecret: {
@@ -3101,6 +3124,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             default: "ReadWriteOnce",
             description:
               "LLMHost.spec.storage.accessMode[str]: One of: ['ReadWriteOnce', 'ReadWriteMany', 'ReadOnlyMany'].",
+            enum: ["ReadWriteOnce", "ReadWriteMany", "ReadOnlyMany"],
             type: "string",
           },
           existingClaim: {
@@ -3551,6 +3575,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             default: "none",
             description:
               "MCPClient.spec.config.authType[str]: how to authenticate with the MCP server. One of: ['none', 'api_key', 'bearer_token', 'oauth2']. oauth2 sends an OAuth access token, obtained elsewhere, as a bearer token.",
+            enum: ["none", "api_key", "bearer_token", "oauth2"],
             type: "string",
           },
           cacheTtl: {
@@ -3606,6 +3631,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             default: "http",
             description:
               "MCPClient.spec.config.transport[str]: the MCP transport. One of: ['http', 'sse']. http is Streamable HTTP, and sse is the legacy HTTP+SSE transport.",
+            enum: ["http", "sse"],
             type: "string",
           },
         },
@@ -4091,7 +4117,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
       SAMPluginStaticSpec: {
-        description: "Smarter API Plugin Manifest Plugin.spec",
+        description: "Smarter API Plugin Manifest Plugin.spec.",
         properties: {
           data: {
             $ref: "#/$defs/SAMPluginStaticSpecData",
@@ -4112,7 +4138,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
       SAMPluginStaticSpecData: {
-        description: "Smarter API Plugin Manifest Plugin.spec.data",
+        description: "Smarter API Plugin Manifest Plugin.spec.data.",
         properties: {
           staticData: {
             anyOf: [{ additionalProperties: true, type: "object" }, { type: "null" }],
@@ -4125,7 +4151,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
     },
-    description: "Smarter API Manifest - Plugin",
+    description: "Smarter API Manifest - Plugin.",
     properties: {
       apiVersion: {
         description: "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
@@ -5826,7 +5852,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
       SAMSqlPluginSpec: {
-        description: "Smarter API SqlData Connection Manifest SqlConnection.spec",
+        description: "Smarter API SqlData Connection Manifest SqlConnection.spec.",
         properties: {
           connection: {
             description: "SqlPlugin.spec.selector[obj]: the name of an existing SqlConnector to use for the SqlPlugin",
@@ -5888,7 +5914,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
     },
-    description: "Smarter API Manifest - Sql Connection Model",
+    description: "Smarter API Manifest - Sql Connection Model.",
     properties: {
       apiVersion: {
         description: "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
@@ -6935,7 +6961,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
               "WebsearchPlugin.spec.search.country[str]: an ISO 3166-1 alpha-2 country code, e.g. us, to localize results.",
           },
           freshness: {
-            anyOf: [{ type: "string" }, { type: "null" }],
+            anyOf: [{ enum: ["day", "week", "month", "year"], type: "string" }, { type: "null" }],
             default: null,
             description:
               "WebsearchPlugin.spec.search.freshness[str]: by default, restrict results to those published within the last ['day', 'week', 'month', 'year']. The LLM can override this per search.",
@@ -6956,12 +6982,14 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
           },
           provider: {
             description: "WebsearchPlugin.spec.search.provider[str]: the web search API. One of: ['brave', 'tavily']",
+            enum: ["brave", "tavily"],
             type: "string",
           },
           safeSearch: {
             default: "moderate",
             description:
               "WebsearchPlugin.spec.search.safeSearch[str]: adult content filtering. One of: ['off', 'moderate', 'strict']",
+            enum: ["off", "moderate", "strict"],
             type: "string",
           },
         },

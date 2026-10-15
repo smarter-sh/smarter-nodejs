@@ -187,16 +187,17 @@ user.
 
 ## Which skill to load
 
-| Task                                                       | Skill                       |
-| ---------------------------------------------------------- | --------------------------- |
-| Unit tests, live tests, fixtures, coverage                 | `smarter-nodejs-testing`    |
-| Probing the platform's api by hand                         | `smarter-api-testing`       |
-| TSDoc comments                                             | `smarter-tsdoc`             |
-| Types, `any`, `unknown`, Zod, the `core/typing.ts` aliases | `smarter-typescript-typing` |
-| The SDK's pages in the platform's Sphinx docs              | `smarter-sphinx-docs`       |
-| Lint, format, type-check, pre-commit                       | `smarter-code-quality`      |
-| Writing a commit message                                   | `smarter-git-commits`       |
-| Monthly sync with the platform, and dependency updates     | `monthly-maintenance`       |
+| Task                                                           | Skill                       |
+| -------------------------------------------------------------- | --------------------------- |
+| Unit tests, live tests, fixtures, coverage                     | `smarter-nodejs-testing`    |
+| Probing the platform's api by hand                             | `smarter-api-testing`       |
+| TSDoc comments                                                 | `smarter-tsdoc`             |
+| Types, `any`, `unknown`, Zod, the `core/typing.ts` aliases     | `smarter-typescript-typing` |
+| The SDK's pages in the platform's Sphinx docs                  | `smarter-sphinx-docs`       |
+| Lint, format, type-check, pre-commit                           | `smarter-code-quality`      |
+| Writing a commit message                                       | `smarter-git-commits`       |
+| Monthly sync with the platform, and dependency updates         | `monthly-maintenance`       |
+| A platform contract change to follow now, between maintenances | `smarter-contract-sync`     |
 
 The platform's own skills (`../smarter/skills/`) apply whenever you change the
 platform itself, and the Python SDK's (`../smarter-python/skills/`) when you
