@@ -48,6 +48,25 @@ describe("LLMClients", () => {
     await expect(platform.client.llmClients.find("nope")).rejects.toBeInstanceOf(ResourceNotFoundError);
   });
 
+  it("reads an LLMClient's MCPClients, guardrails, and tools", async () => {
+    platform.route("GET", "llm-clients/", { fixture: "llmclients" });
+    platform.route("GET", "llm-clients/5/", { fixture: "llmclient" });
+    const llmclient = await platform.client.llmClients.retrieve(5);
+    expect(llmclient.mcpclients).toEqual([]);
+    expect(llmclient.guardrails).toEqual([]);
+    expect(llmclient.tools.map((tool) => [tool.id, tool.name, tool.kind])).toEqual([[1, "calculator", "Function"]]);
+    const llmclients = await platform.client.llmClients.list();
+    expect(llmclients.map((item) => item.tools.map((tool) => tool.kind))).toEqual([["Plugin"], ["Plugin"]]);
+  });
+
+  it("defaults an LLMClient's tools to none, for a platform that predates them", async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { mcpclients, guardrails, tools, ...data } = loadJson("llmclient") as Record<string, unknown>;
+    platform.route("GET", "llm-clients/5/", { json: data });
+    const llmclient = await platform.client.llmClients.retrieve(5);
+    expect([llmclient.mcpclients, llmclient.guardrails, llmclient.tools]).toEqual([[], [], []]);
+  });
+
   it("reads an LLMClient's plugins, functions, api keys and custom domains", async () => {
     platform.route("GET", "llm-clients/1/plugins/", { fixture: "llmclient_plugins" });
     platform.route("GET", "llm-clients/5/functions", { fixture: "llmclient_functions" });
