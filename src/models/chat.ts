@@ -264,13 +264,19 @@ export const PromptChatApiLLMClientPlugin = PromptChatApiOrmModel.extend({
 });
 export type PromptChatApiLLMClientPlugin = z.infer<typeof PromptChatApiLLMClientPlugin>;
 
-/** A built-in function of the LLMClient. */
-export const PromptChatApiLLMClientFunction = PromptChatApiOrmModel.extend({
+/** An extension of the LLMClient, whose tools it offers the LLM. */
+export const PromptChatApiLLMClientExtension = PromptChatApiOrmModel.extend({
   llmclient: z.number().int(),
-  /** get_current_weather, date_calculator or calculator. */
-  name: z.string().nullish(),
+  /** The Extension's id. */
+  extension: z.number().int(),
+  /** The Extension's slug, e.g. `weather`. */
+  name: z.string(),
+  /** The Extension's installed version, e.g. `1.0.0`. */
+  version: z.string().nullish(),
+  /** Whether the Extension is enabled, so that its tools are offered. */
+  enabled: z.boolean(),
 });
-export type PromptChatApiLLMClientFunction = z.infer<typeof PromptChatApiLLMClientFunction>;
+export type PromptChatApiLLMClientExtension = z.infer<typeof PromptChatApiLLMClientExtension>;
 
 /** The prompt api's request body. */
 export const PromptChatApiPromptRequest = z.looseObject({
@@ -335,12 +341,12 @@ export const PromptChatApiMetaData = z.looseObject({
 });
 export type PromptChatApiMetaData = z.infer<typeof PromptChatApiMetaData>;
 
-/** The counts of a list of the LLMClient's plugins or functions. */
+/** The counts of a list of the LLMClient's plugins or extensions. */
 export const PromptChatApiListMetaData = z.looseObject({
   total_plugins: z.number().int().nullish(),
   plugins_returned: z.number().int().nullish(),
-  total_functions: z.number().int().nullish(),
-  functions_returned: z.number().int().nullish(),
+  total_extensions: z.number().int().nullish(),
+  extensions_returned: z.number().int().nullish(),
 });
 export type PromptChatApiListMetaData = z.infer<typeof PromptChatApiListMetaData>;
 
@@ -351,15 +357,15 @@ export const PromptChatApiPluginList = z.looseObject({
 });
 export type PromptChatApiPluginList = z.infer<typeof PromptChatApiPluginList>;
 
-/** The LLMClient's built-in functions. */
-export const PromptChatApiFunctionList = z.looseObject({
+/** The LLMClient's extensions. */
+export const PromptChatApiExtensionList = z.looseObject({
   meta_data: PromptChatApiListMetaData,
-  functions: z.array(PromptChatApiLLMClientFunction).default([]),
+  extensions: z.array(PromptChatApiLLMClientExtension).default([]),
 });
-export type PromptChatApiFunctionList = z.infer<typeof PromptChatApiFunctionList>;
+export type PromptChatApiExtensionList = z.infer<typeof PromptChatApiExtensionList>;
 
 /**
- * An LLMClient's chat configuration: the LLMClient, the chat session's key and history, and its plugins and functions.
+ * An LLMClient's chat configuration: the LLMClient, the chat session's key and history, and its plugins and extensions.
  *
  * A new session's configuration has an empty history. Pass its `session_key` to the prompt api to
  * continue the session.
@@ -376,7 +382,7 @@ export const PromptChatApiConfig = z.looseObject({
   llmclient: PromptChatApiLLMClient,
   history: PromptChatApiHistory,
   plugins: PromptChatApiPluginList,
-  functions: PromptChatApiFunctionList.nullish(),
+  extensions: PromptChatApiExtensionList.nullish(),
 });
 export type PromptChatApiConfig = z.infer<typeof PromptChatApiConfig>;
 

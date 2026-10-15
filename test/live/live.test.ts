@@ -208,7 +208,7 @@ describe.skipIf(!LIVE)("live", { timeout: 180_000 }, () => {
     const response = await client.llmClients.prompt(llmclient.id, "What is 17 times 23? Use the calculator.");
     expect(response.text.replaceAll(",", "")).toContain("391");
     expect(llmclient.tools.map((tool) => [tool.name, tool.kind])).toContainEqual(["calculator", "Function"]);
-    await client.llmClients.functions(llmclient.id);
+    await client.llmClients.extensions(llmclient.id);
     await client.llmClients.plugins(llmclient.id);
     await client.llmClients.apiKeys(llmclient.id);
     await client.llmClients.customDomains(llmclient.id);

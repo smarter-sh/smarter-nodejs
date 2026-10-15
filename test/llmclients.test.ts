@@ -54,7 +54,7 @@ describe("LLMClients", () => {
     const llmclient = await platform.client.llmClients.retrieve(5);
     expect(llmclient.mcpclients).toEqual([]);
     expect(llmclient.guardrails).toEqual([]);
-    expect(llmclient.tools.map((tool) => [tool.id, tool.name, tool.kind])).toEqual([[1, "calculator", "Function"]]);
+    expect(llmclient.tools.map((tool) => [tool.id, tool.name, tool.kind])).toEqual([[1, "calculator", "Extension"]]);
     const llmclients = await platform.client.llmClients.list();
     expect(llmclients.map((item) => item.tools.map((tool) => tool.kind))).toEqual([["Plugin"], ["Plugin"]]);
   });
@@ -67,16 +67,17 @@ describe("LLMClients", () => {
     expect([llmclient.mcpclients, llmclient.guardrails, llmclient.tools]).toEqual([[], [], []]);
   });
 
-  it("reads an LLMClient's plugins, functions, api keys and custom domains", async () => {
+  it("reads an LLMClient's plugins, extensions, api keys and custom domains", async () => {
     platform.route("GET", "llm-clients/1/plugins/", { fixture: "llmclient_plugins" });
-    platform.route("GET", "llm-clients/5/functions", { fixture: "llmclient_functions" });
+    platform.route("GET", "llm-clients/5/extensions", { fixture: "llmclient_extensions" });
     const apiKeyId = "0b8e1c55-2f3a-4c1d-9a51-7d2f4e6b8a90";
     platform.route("GET", "llm-clients/5/apikeys/", { json: [{ id: 1, llmclient: 5, apiKey: apiKeyId }] });
     platform.route("GET", "llm-clients/5/customdomains", {
       json: [{ id: 3, name: "example_com", domainName: "example.com", verificationStatus: "Failed" }],
     });
     expect((await platform.client.llmClients.plugins(1))[0]?.pluginMeta.pluginClass).toBe("sql");
-    expect((await platform.client.llmClients.functions(5))[0]?.name).toBe("calculator");
+    const [extension] = await platform.client.llmClients.extensions(5);
+    expect([extension?.name, extension?.extension]).toEqual(["calculator", 1]);
     expect((await platform.client.llmClients.apiKeys(5))[0]?.apiKey).toBe(apiKeyId);
     const domain = (await platform.client.llmClients.customDomains(5))[0];
     expect([domain?.domainName, domain?.verificationStatus]).toEqual(["example.com", "Failed"]);
@@ -86,6 +87,8 @@ describe("LLMClients", () => {
     platform.route("POST", "llm-clients/5/config/", { fixture: "config" });
     const config = await platform.client.llmClients.config(5, { sessionKey: "abc" });
     expect(config.llmclient.name).toBe("calculator");
+    expect(config.extensions?.meta_data.total_extensions).toBe(1);
+    expect(config.extensions?.extensions.map((e) => [e.name, e.enabled])).toEqual([["calculator", true]]);
     expect(await platform.requestJson()).toEqual({ session_key: "abc" });
     await platform.client.llmClients.config(5);
     expect(await platform.requestJson()).toEqual({ session_key: null });

@@ -1,4 +1,4 @@
-/** Models of LLMClients and their plugins, MCPClients, guardrails, built-in functions, api keys and custom domains. */
+/** Models of LLMClients and their plugins, MCPClients, guardrails, extensions, api keys and custom domains. */
 
 import { z } from "zod";
 
@@ -26,26 +26,29 @@ export const LLMClientGuardrailRef = z.looseObject({
 });
 export type LLMClientGuardrailRef = z.infer<typeof LLMClientGuardrailRef>;
 
-/** Something that an LLMClient adds to a prompt: a built-in function, plugin, MCPClient or guardrail. */
+/** Something that an LLMClient adds to a prompt: an extension, plugin, MCPClient or guardrail. */
 export const LLMClientTool = z.looseObject({
-  /** The id of the link row: the LLMClient's function, plugin, MCPClient or guardrail. */
+  /** The id of the link row: the LLMClient's extension, plugin, MCPClient or guardrail. */
   id: z.number().int(),
-  /** The function's name, or the linked resource's. */
+  /** The extension's slug, or the linked resource's name. */
   name: z.string(),
-  /** `Function`, or the linked resource's manifest kind: `Plugin`, `MCPClient` or `Guardrail`. */
+  /** `Extension`, or the linked resource's manifest kind: `Plugin`, `MCPClient` or `Guardrail`. */
   kind: z.string(),
 });
 export type LLMClientTool = z.infer<typeof LLMClientTool>;
 
-/** A built-in function of an LLMClient, e.g. `calculator`. */
-export const LLMClientFunction = z.looseObject({
+/** An extension of an LLMClient, whose tools the LLMClient offers the LLM, e.g. `calculator`. */
+export const LLMClientExtension = z.looseObject({
   id: z.number().int(),
+  /** The extension's slug, e.g. `weather`. */
   name: z.string().nullish(),
+  /** The Extension's id. */
+  extension: z.number().int().nullish(),
   llmclient: z.number().int().nullish(),
   createdAt: z.string().nullish(),
   updatedAt: z.string().nullish(),
 });
-export type LLMClientFunction = z.infer<typeof LLMClientFunction>;
+export type LLMClientExtension = z.infer<typeof LLMClientExtension>;
 
 /** The association of a plugin with an LLMClient. */
 export const LLMClientPlugin = z.looseObject({
@@ -86,7 +89,7 @@ export const LLMClientCustomDomain = z.looseObject({
 export type LLMClientCustomDomain = z.infer<typeof LLMClientCustomDomain>;
 
 /**
- * An LLMClient: a deployable AI agent, built from an LLM provider and model, a system prompt, plugins and functions.
+ * An LLMClient: a deployable AI agent, built from an LLM provider and model, a system prompt, plugins and extensions.
  *
  * Prompt it with `client.llmClients.prompt()`, or start a chat with `client.llmClients.chat()`.
  */
@@ -109,11 +112,11 @@ export const LLMClient = SmarterResource.extend({
   urlChatConfig: z.string().nullish(),
   /** Whether prompting the LLMClient requires an api key. */
   isAuthenticationRequired: z.boolean().nullish(),
-  functions: z.array(LLMClientFunction).default([]),
+  extensions: z.array(LLMClientExtension).default([]),
   plugins: z.array(LLMClientPluginRef).default([]),
   mcpclients: z.array(LLMClientMCPClientRef).default([]),
   guardrails: z.array(LLMClientGuardrailRef).default([]),
-  /** Everything that the LLMClient adds to a prompt: its functions, plugins, MCPClients and guardrails, in that order. */
+  /** Everything that the LLMClient adds to a prompt: its extensions, plugins, MCPClients and guardrails, in that order. */
   tools: z.array(LLMClientTool).default([]),
   apiKeys: z.array(LLMClientApiKey).default([]),
   customDomains: z.array(LLMClientCustomDomain).default([]),

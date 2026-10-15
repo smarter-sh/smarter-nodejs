@@ -95,7 +95,7 @@ describe("OpenAPI contract", () => {
     "llmclient_plugin_retrieve",
     "llmclient_apikey_retrieve",
     "llmclient_customdomain_retrieve",
-    "llmclient_function_retrieve",
+    "llmclient_extension_retrieve",
     "provider_model",
   ]);
 
@@ -136,7 +136,7 @@ describe("OpenAPI contract", () => {
       () => client.llmClients.list(),
       () => client.llmClients.retrieve("rMTAwMDAxMgx"),
       () => client.llmClients.plugins(12),
-      () => client.llmClients.functions(12),
+      () => client.llmClients.extensions(12),
       () => client.llmClients.apiKeys(12),
       () => client.llmClients.customDomains(12),
       () => client.guardrails.list(),
@@ -230,7 +230,7 @@ describe("OpenAPI contract", () => {
     llmclients: ["/llm-clients/", "get"],
     llmclient: ["/llm-clients/{id}/", "get"],
     llmclient_plugins: ["/llm-clients/{id}/plugins/", "get"],
-    llmclient_functions: ["/llm-clients/{id}/functions", "get"],
+    llmclient_extensions: ["/llm-clients/{id}/extensions", "get"],
     config: ["/llm-clients/{id}/config/", "post"],
     prompt: ["/llm-clients/{id}/prompt/", "post"],
     guardrails: ["/guardrails/", "get"],
