@@ -1,6 +1,6 @@
 {
   "name": "@smarter.sh/api",
-  "version": "0.2.0-alpha.2",
+  "version": "0.2.0",
   "description": "The official Node.js SDK of the Smarter platform's api.",
   "keywords": [
     "smarter",
