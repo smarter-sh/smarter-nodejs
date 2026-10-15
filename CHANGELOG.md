@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
+## [0.2.1](https://github.com/smarter-sh/smarter-nodejs/compare/v0.2.0...v0.2.1) (2026-10-15)
+
+### Bug Fixes
+
+* **contracts:** sync with smarter v0.27.1, functions become extensions ([df65270](https://github.com/smarter-sh/smarter-nodejs/commit/df6527007a0ca6c5ead449f4440650748280e69b))
+
 ## [0.2.1-alpha.1](https://github.com/smarter-sh/smarter-nodejs/compare/v0.2.0...v0.2.1-alpha.1) (2026-10-15)
 
 ### Bug Fixes
