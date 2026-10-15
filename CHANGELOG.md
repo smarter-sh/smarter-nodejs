@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
+## [0.2.0-alpha.1](https://github.com/smarter-sh/smarter-nodejs/compare/v0.1.0...v0.2.0-alpha.1) (2026-10-15)
+
+### Features
+
+* **llmclients:** add mcpclients, guardrails and tools to llmclient ([33a4214](https://github.com/smarter-sh/smarter-nodejs/commit/33a4214e2335a4fb8689d3662d208f088f579a02))
+
+### Bug Fixes
+
+* **contracts:** sync with smarter v0.25.1 and regenerate sam models ([d70c181](https://github.com/smarter-sh/smarter-nodejs/commit/d70c181a8d4d1c514d1f5dcbed705bd61c2d6710))
+* **deps:** pin conventional-changelog-conventionalcommits to 9.3.1 ([41ad8a1](https://github.com/smarter-sh/smarter-nodejs/commit/41ad8a1e7e4d7386e89564cb7d7999ad6dc26f5f))
+
 ## [0.1.0](https://github.com/smarter-sh/smarter-nodejs/compare/v0.0.0...v0.1.0) (2026-10-14)
 
 ### Features
