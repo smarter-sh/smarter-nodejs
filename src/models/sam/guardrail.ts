@@ -81,7 +81,7 @@ export interface SAMGuardrailSpecConfig {
   /**
    * Guardrail.spec.config.action[str]: what the guardrail does when it triggers. One of: ['log', 'flag', 'redact', 'transform', 'block', 'escalate'].
    */
-  action: string;
+  action: "log" | "flag" | "redact" | "transform" | "block" | "escalate";
   /**
    * Guardrail.spec.config.caseSensitive[bool]: whether the keyword strategy is case sensitive.
    */
@@ -93,7 +93,18 @@ export interface SAMGuardrailSpecConfig {
   /**
    * Guardrail.spec.config.category[str]: the risk the guardrail addresses. One of: ['pii', 'secrets', 'prompt_injection', 'jailbreak', 'toxicity', 'self_harm', 'hallucination', 'off_topic', 'compliance', 'formatting', 'custom'].
    */
-  category?: string;
+  category?:
+    | "pii"
+    | "secrets"
+    | "prompt_injection"
+    | "jailbreak"
+    | "toxicity"
+    | "self_harm"
+    | "hallucination"
+    | "off_topic"
+    | "compliance"
+    | "formatting"
+    | "custom";
   /**
    * Guardrail.spec.config.detectors[list]: the detector strategy's detectors. Any of: ['credit_card', 'us_ssn', 'email', 'phone_number', 'ip_address', 'iban', 'aws_access_key', 'private_key', 'api_key', 'jwt', 'password_assignment'].
    */
@@ -125,7 +136,7 @@ export interface SAMGuardrailSpecConfig {
   /**
    * Guardrail.spec.config.mode[str]: enforce, to take the action, or monitor, to only record what the action would have been.
    */
-  mode?: string;
+  mode?: "enforce" | "monitor";
   /**
    * Guardrail.spec.config.model[str]: the model of the semantic, moderation and llm_judge strategies.
    */
@@ -157,11 +168,11 @@ export interface SAMGuardrailSpecConfig {
   /**
    * Guardrail.spec.config.stage[str]: when the guardrail runs. One of: ['input', 'output', 'both'].
    */
-  stage: string;
+  stage: "input" | "output" | "both";
   /**
    * Guardrail.spec.config.strategy[str]: how the guardrail detects. One of: ['regex', 'keyword', 'detector', 'semantic', 'moderation', 'llm_judge'].
    */
-  strategy: string;
+  strategy: "regex" | "keyword" | "detector" | "semantic" | "moderation" | "llm_judge";
   /**
    * Guardrail.spec.config.threshold[float]: the minimum confidence, from 0 to 1, at which the semantic, moderation and llm_judge strategies trigger. Defaults to 0.8.
    */

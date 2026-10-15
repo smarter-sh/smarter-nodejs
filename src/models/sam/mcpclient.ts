@@ -93,7 +93,7 @@ export interface SAMMCPClientSpecConfig {
   /**
    * MCPClient.spec.config.authType[str]: how to authenticate with the MCP server. One of: ['none', 'api_key', 'bearer_token', 'oauth2']. oauth2 sends an OAuth access token, obtained elsewhere, as a bearer token.
    */
-  authType?: string;
+  authType?: "none" | "api_key" | "bearer_token" | "oauth2";
   /**
    * MCPClient.spec.config.cacheTtl[int]: seconds to cache the MCP server's tools, instructions and capabilities. 0 disables caching.
    */
@@ -131,7 +131,7 @@ export interface SAMMCPClientSpecConfig {
   /**
    * MCPClient.spec.config.transport[str]: the MCP transport. One of: ['http', 'sse']. http is Streamable HTTP, and sse is the legacy HTTP+SSE transport.
    */
-  transport?: string;
+  transport?: "http" | "sse";
   [k: string]: unknown | undefined;
 }
 /**

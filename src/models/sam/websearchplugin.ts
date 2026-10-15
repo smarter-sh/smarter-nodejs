@@ -179,7 +179,7 @@ export interface WebsearchSearch {
   /**
    * WebsearchPlugin.spec.search.freshness[str]: by default, restrict results to those published within the last ['day', 'week', 'month', 'year']. The LLM can override this per search.
    */
-  freshness?: string | null;
+  freshness?: ("day" | "week" | "month" | "year") | null;
   /**
    * WebsearchPlugin.spec.search.language[str]: an ISO 639-1 language code, e.g. en, to localize results.
    */
@@ -191,11 +191,11 @@ export interface WebsearchSearch {
   /**
    * WebsearchPlugin.spec.search.provider[str]: the web search API. One of: ['brave', 'tavily']
    */
-  provider: string;
+  provider: "brave" | "tavily";
   /**
    * WebsearchPlugin.spec.search.safeSearch[str]: adult content filtering. One of: ['off', 'moderate', 'strict']
    */
-  safeSearch?: string;
+  safeSearch?: "off" | "moderate" | "strict";
   [k: string]: unknown | undefined;
 }
 /**

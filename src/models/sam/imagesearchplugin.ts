@@ -153,7 +153,7 @@ export interface ImageSearchParams {
   /**
    * ImageSearchPlugin.spec.searchParams.safesearch[str]: adult content filtering. One of: ['off', 'strict']
    */
-  safesearch?: string;
+  safesearch?: "off" | "strict";
   /**
    * ImageSearchPlugin.spec.searchParams.searchLang[str]: prefer images from content in this language, e.g. en or pt-br.
    */

@@ -5,7 +5,7 @@
  */
 
 /**
- * Smarter API Manifest - Plugin
+ * Smarter API Manifest - Plugin.
  */
 export interface SAMPlugin {
   /**

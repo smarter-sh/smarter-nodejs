@@ -10,7 +10,7 @@
 export type ParameterType = "string" | "number" | "integer" | "boolean" | "object" | "array" | "null";
 
 /**
- * Smarter API Manifest - ApiPlugin Model
+ * Smarter API Manifest - ApiPlugin Model.
  */
 export interface SAMApiPlugin {
   /**

@@ -10,7 +10,7 @@
 export type ParameterType = "string" | "number" | "integer" | "boolean" | "object" | "array" | "null";
 
 /**
- * Smarter API Manifest - Sql Connection Model
+ * Smarter API Manifest - Sql Connection Model.
  */
 export interface SAMSqlPlugin {
   /**
