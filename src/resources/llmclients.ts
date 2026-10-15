@@ -46,7 +46,7 @@ import {
   LLMClient,
   LLMClientApiKey,
   LLMClientCustomDomain,
-  LLMClientFunction,
+  LLMClientExtension,
   LLMClientPlugin,
 } from "../models/llmclient.ts";
 import { resourceId, SmarterKindResource } from "./base.ts";
@@ -360,14 +360,14 @@ export class LLMClients extends SmarterKindResource<typeof LLMClient> {
   }
 
   /**
-   * An LLMClient's built-in functions, e.g. `calculator`.
+   * The extensions whose tools an LLMClient offers the LLM, e.g. `calculator`.
    *
    * @param id - The LLMClient's integer id.
    * @param options - Per-request options.
-   * @returns The functions.
+   * @returns The extensions.
    */
-  async functions(id: SmarterId, options?: RequestOptions): Promise<LLMClientFunction[]> {
-    return this.http.request("GET", `${this.path}${resourceId(id)}/functions`, z.array(LLMClientFunction), options);
+  async extensions(id: SmarterId, options?: RequestOptions): Promise<LLMClientExtension[]> {
+    return this.http.request("GET", `${this.path}${resourceId(id)}/extensions`, z.array(LLMClientExtension), options);
   }
 
   /**

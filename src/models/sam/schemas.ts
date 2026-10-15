@@ -630,7 +630,8 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
           },
           systemRole: {
             description:
-              "Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned.",
+              "Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned. The maximum length is 32768 characters.",
+            maxLength: 32768,
             type: "string",
           },
           temperature: {
@@ -1827,7 +1828,8 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
           },
           systemRole: {
             description:
-              "Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned.",
+              "Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned. The maximum length is 32768 characters.",
+            maxLength: 32768,
             type: "string",
           },
           temperature: {
@@ -2025,11 +2027,11 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             $ref: "#/$defs/SAMLLMClientSpecConfig",
             description: "LLMClient.spec.config[object]. The configuration for the LLMClient.",
           },
-          functions: {
+          extensions: {
             anyOf: [{ items: { type: "string" }, type: "array" }, { type: "null" }],
             default: null,
             description:
-              "LLMClient.spec.functions[list]. Optional. The built-in Smarter Functions to add to the LLMClient. Example: ['get_current_weather']. These are built-in backing functions written in Python that are fully compatible with OpenAI API-compatible function calling. These are not the same as OpenAI functions. See https://docs.smarter.sh/ for more information.",
+              "LLMClient.spec.extensions[list]. Optional. The slugs of the Extensions whose tools the LLMClient offers the LLM. Example: ['weather', 'calculator']. Extensions are Python packages that a platform administrator installs; each must be installed, enabled and available to your account. See https://docs.smarter.sh/ for more information.",
           },
           guardrails: {
             anyOf: [{ items: { type: "string" }, type: "array" }, { type: "null" }],
@@ -2144,10 +2146,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
               "LLMClient.spec.configuration.prompt.default_model[str]. Optional. The default model to use for the llmclient. This changes routinely and is currently defaults to gpt-6-luna",
           },
           defaultSystemRole: {
-            anyOf: [{ maxLength: 2048, type: "string" }, { type: "null" }],
+            anyOf: [{ maxLength: 32768, type: "string" }, { type: "null" }],
             default: null,
             description:
-              "LLMClient.spec.configuration.prompt.default_system_role[str]. Optional. The default system prompt to use for the llmclient. This defaults to the following value:\nYou are a helpful llmclient. When given the opportunity to utilize function calling, you should always do so. This will allow you to provide the best possible responses to the user. If you are unable to provide a response, you should prompt the user for more information. If you are still unable to provide a response, you should inform the user that you are unable to help them at this time..\nThe system prompt is the first message in the conversation and is used to set the context for the llmclient. It is important to keep this prompt short, as it is included in the token count for each message. The maximum length of the system prompt is 2048 characters.",
+              "LLMClient.spec.configuration.prompt.default_system_role[str]. Optional. The default system prompt to use for the llmclient. This defaults to the following value:\nYou are a helpful llmclient. When given the opportunity to utilize function calling, you should always do so. This will allow you to provide the best possible responses to the user. If you are unable to provide a response, you should prompt the user for more information. If you are still unable to provide a response, you should inform the user that you are unable to help them at this time..\nThe system prompt is the first message in the conversation and is used to set the context for the llmclient. It is sent with every prompt, so its tokens count towards every turn's cost. The maximum length of the system prompt is 32768 characters.",
           },
           defaultTemperature: {
             anyOf: [{ maximum: 1, minimum: 0, type: "number" }, { type: "null" }],
@@ -2385,13 +2387,13 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
       },
       SAMLLMClientStylesButtons: {
         description:
-          "``spec.config.styles.buttons``: the send and attach buttons, and the header's buttons.\n\nchatscope's ``Button``, class ``.cs-button``.",
+          "``spec.config.styles.buttons``: the send and attach buttons, on the message input.\n\nThe header's buttons take the header's text color, ``conversationHeader.color``, so that\nthey contrast with the header, whose background is usually the opposite of the input's.\n\nchatscope's ``Button``, class ``.cs-button``.",
         properties: {
           color: {
             anyOf: [{ type: "string" }, { type: "null" }],
             default: null,
             description:
-              "LLMClient.styles.buttons.color[str]. Optional. The color of the buttons' icons. chatscope's $button-color. Example: '#6ea9d7'.",
+              "LLMClient.styles.buttons.color[str]. Optional. The color of the send and attach buttons' icons, on the message input. The header's buttons use conversationHeader.color, or this color if it is not set. chatscope's $button-color. Example: '#6ea9d7'.",
           },
         },
         title: "SAMLLMClientStylesButtons",
@@ -2417,7 +2419,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             anyOf: [{ type: "string" }, { type: "null" }],
             default: null,
             description:
-              "LLMClient.styles.conversationHeader.color[str]. Optional. The color of the LLMClient's name. chatscope's $conversation-header-user-name-color. Example: '#ffffff'.",
+              "LLMClient.styles.conversationHeader.color[str]. Optional. The color of the LLMClient's name, and of the header's buttons: new chat, show or hide the Console, sandbox or production, and Docs. Choose a color that contrasts with backgroundColor. chatscope's $conversation-header-user-name-color. Example: '#ffffff'.",
           },
           infoColor: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -4044,7 +4046,8 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
           },
           systemRole: {
             description:
-              "Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned.",
+              "Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned. The maximum length is 32768 characters.",
+            maxLength: 32768,
             type: "string",
           },
           temperature: {
@@ -5091,7 +5094,8 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
           },
           systemRole: {
             description:
-              "Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned.",
+              "Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned. The maximum length is 32768 characters.",
+            maxLength: 32768,
             type: "string",
           },
           temperature: {
@@ -5779,7 +5783,8 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
           },
           systemRole: {
             description:
-              "Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned.",
+              "Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned. The maximum length is 32768 characters.",
+            maxLength: 32768,
             type: "string",
           },
           temperature: {
@@ -6013,7 +6018,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
       SAMUserSpec: {
-        description: "Smarter API User Manifest User.spec",
+        description: "Smarter API User Manifest User.spec.",
         properties: {
           config: {
             $ref: "#/$defs/SAMUserSpecConfig",
@@ -6025,7 +6030,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
       SAMUserSpecConfig: {
-        description: "Smarter API User Manifest User.spec.config",
+        description: "Smarter API User Manifest User.spec.config.",
         properties: {
           email: { description: "User.spec.configuration.email[str]. The email address of the User.", type: "string" },
           firstName: {
@@ -6788,7 +6793,8 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
           },
           systemRole: {
             description:
-              "Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned.",
+              "Plugin.spec.prompt.systemRole[str]. Required. The system role that the Plugin will use for the LLM text completion prompt. Be verbose and specific. Ensure that systemRole accurately conveys to the LLM how you want it to use the Plugin data that is returned. The maximum length is 32768 characters.",
+            maxLength: 32768,
             type: "string",
           },
           temperature: {
