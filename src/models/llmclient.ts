@@ -1,4 +1,4 @@
-/** Models of LLMClients and their plugins, built-in functions, api keys and custom domains. */
+/** Models of LLMClients and their plugins, MCPClients, guardrails, built-in functions, api keys and custom domains. */
 
 import { z } from "zod";
 
@@ -11,6 +11,31 @@ export const LLMClientPluginRef = z.looseObject({
   name: z.string().nullish(),
 });
 export type LLMClientPluginRef = z.infer<typeof LLMClientPluginRef>;
+
+/** An MCPClient of an LLMClient, by the link's id and the MCPClient's name. */
+export const LLMClientMCPClientRef = z.looseObject({
+  id: z.number().int(),
+  name: z.string().nullish(),
+});
+export type LLMClientMCPClientRef = z.infer<typeof LLMClientMCPClientRef>;
+
+/** A guardrail of an LLMClient, by the link's id and the guardrail's name. */
+export const LLMClientGuardrailRef = z.looseObject({
+  id: z.number().int(),
+  name: z.string().nullish(),
+});
+export type LLMClientGuardrailRef = z.infer<typeof LLMClientGuardrailRef>;
+
+/** Something that an LLMClient adds to a prompt: a built-in function, plugin, MCPClient or guardrail. */
+export const LLMClientTool = z.looseObject({
+  /** The id of the link row: the LLMClient's function, plugin, MCPClient or guardrail. */
+  id: z.number().int(),
+  /** The function's name, or the linked resource's. */
+  name: z.string(),
+  /** `Function`, or the linked resource's manifest kind: `Plugin`, `MCPClient` or `Guardrail`. */
+  kind: z.string(),
+});
+export type LLMClientTool = z.infer<typeof LLMClientTool>;
 
 /** A built-in function of an LLMClient, e.g. `calculator`. */
 export const LLMClientFunction = z.looseObject({
@@ -86,6 +111,10 @@ export const LLMClient = SmarterResource.extend({
   isAuthenticationRequired: z.boolean().nullish(),
   functions: z.array(LLMClientFunction).default([]),
   plugins: z.array(LLMClientPluginRef).default([]),
+  mcpclients: z.array(LLMClientMCPClientRef).default([]),
+  guardrails: z.array(LLMClientGuardrailRef).default([]),
+  /** Everything that the LLMClient adds to a prompt: its functions, plugins, MCPClients and guardrails, in that order. */
+  tools: z.array(LLMClientTool).default([]),
   apiKeys: z.array(LLMClientApiKey).default([]),
   customDomains: z.array(LLMClientCustomDomain).default([]),
 });
