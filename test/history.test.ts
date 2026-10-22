@@ -36,6 +36,7 @@ describe("history", () => {
     platform.route("GET", "journal/", { fixture: "journal" });
     const page = await platform.client.journal.list({ page: 2, pageSize: 10, search: "apply", ordering: "-createdAt" });
     expect(page.pagination.pageSize).toBe(25);
+    expect([page.pagination.filter, page.pagination.filters]).toEqual(["", []]);
     expect(Object.fromEntries(new URL(platform.lastRequest.url).searchParams)).toEqual({
       page: "2",
       page_size: "10",
