@@ -6,12 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
-## [0.2.1-alpha.2](https://github.com/smarter-sh/smarter-nodejs/compare/v0.2.1-alpha.1...v0.2.1-alpha.2) (2026-10-22)
+## [0.2.1](https://github.com/smarter-sh/smarter-nodejs/compare/v0.2.0...v0.2.1) (2026-10-15)
 
 ### Bug Fixes
 
-* **contracts:** sync with smarter v0.36.6 ([bd04971](https://github.com/smarter-sh/smarter-nodejs/commit/bd0497164d70ce2b9964846e8019823c8cfe76df))
-* **llmclients:** add verbose option to config() ([4bb054f](https://github.com/smarter-sh/smarter-nodejs/commit/4bb054f0190b7c98e35ba6dc5b6d6578a1701bb0))
+* **contracts:** sync with smarter v0.27.1, functions become extensions ([df65270](https://github.com/smarter-sh/smarter-nodejs/commit/df6527007a0ca6c5ead449f4440650748280e69b))
 
 ## [0.2.1-alpha.1](https://github.com/smarter-sh/smarter-nodejs/compare/v0.2.0...v0.2.1-alpha.1) (2026-10-15)
 
