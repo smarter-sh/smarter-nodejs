@@ -113,6 +113,11 @@ for await (const event of stream) {
   console.log("...", event.message); // e.g. "Calling tool calculator"
 }
 console.log(stream.response.text);
+
+// The chat configuration has what a chat needs. verbose adds the LLMClient's plugins and
+// extensions, the session's tool calls and the complete meta_data.
+const config = await client.llmClients.config(llmclient.id, { verbose: true });
+console.log(config.plugins.plugins.map((plugin) => plugin.plugin_meta.name));
 ```
 
 ### Errors

@@ -39,6 +39,9 @@ export type User = z.infer<typeof User>;
 export const UserProfile = SmarterResource.extend({
   user: User,
   account: SmarterAccountRef,
+  /** The url of the image that the user uploaded, which takes precedence over `profileImageUrl`. */
+  profileImage: z.string().nullish(),
+  /** The url of the image that the oauth provider supplied. */
   profileImageUrl: z.string().nullish(),
   isTest: z.boolean().nullish(),
 });

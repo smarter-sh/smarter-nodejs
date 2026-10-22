@@ -234,6 +234,8 @@ export const PromptChatApiLLMClient = z.looseObject({
   app_info_url: z.string().nullish(),
   app_file_attachment: z.boolean().nullish(),
   styles: PromptChatApiStyles.nullish(),
+  /** The number of the LLMClient's extensions, plugins and MCPClients. */
+  total_tools: z.number().int().nullish(),
 });
 export type PromptChatApiLLMClient = z.infer<typeof PromptChatApiLLMClient>;
 
@@ -322,10 +324,16 @@ export const PromptChatApiPluginSelection = PromptChatApiOrmModel.extend({
 });
 export type PromptChatApiPluginSelection = z.infer<typeof PromptChatApiPluginSelection>;
 
-/** The chat session's history. */
+/**
+ * The chat session's history.
+ *
+ * `prompt_tool_call_history` is in the complete configuration, with `verbose`. The other histories
+ * are returned only to the cli.
+ */
 export const PromptChatApiHistory = z.looseObject({
   /** The session's messages, which restore the chat thread. */
   chat_history: z.array(PromptChatApiMessage).default([]),
+  /** The session's tool calls, with `verbose`. */
   prompt_tool_call_history: z.array(PromptChatApiPromptToolCall).nullish(),
   prompt_plugin_usage_history: z.array(PromptChatApiPromptPluginUsage).nullish(),
   plugin_selector_history: z.array(PromptChatApiPluginSelection).nullish(),
@@ -333,11 +341,19 @@ export const PromptChatApiHistory = z.looseObject({
 });
 export type PromptChatApiHistory = z.infer<typeof PromptChatApiHistory>;
 
-/** The LLMClient's state. */
+/**
+ * The LLMClient's state.
+ *
+ * The complete configuration, with `verbose`, adds the rest of the platform's description of the LLMClient.
+ */
 export const PromptChatApiMetaData = z.looseObject({
   ready: z.boolean().nullish(),
   is_valid: z.boolean().nullish(),
   is_deployed: z.boolean().nullish(),
+  /** True if the request's host is a custom domain. */
+  is_custom_domain: z.boolean().nullish(),
+  /** True if the LLMClient requires a Smarter api key, or a logged-in user. */
+  is_authentication_required: z.boolean().nullish(),
 });
 export type PromptChatApiMetaData = z.infer<typeof PromptChatApiMetaData>;
 
@@ -350,14 +366,14 @@ export const PromptChatApiListMetaData = z.looseObject({
 });
 export type PromptChatApiListMetaData = z.infer<typeof PromptChatApiListMetaData>;
 
-/** The LLMClient's plugins. */
+/** The LLMClient's plugins. The list itself is returned only in the complete configuration, with `verbose`. */
 export const PromptChatApiPluginList = z.looseObject({
   meta_data: PromptChatApiListMetaData,
   plugins: z.array(PromptChatApiLLMClientPlugin).default([]),
 });
 export type PromptChatApiPluginList = z.infer<typeof PromptChatApiPluginList>;
 
-/** The LLMClient's extensions. */
+/** The LLMClient's extensions. The list itself is returned only in the complete configuration, with `verbose`. */
 export const PromptChatApiExtensionList = z.looseObject({
   meta_data: PromptChatApiListMetaData,
   extensions: z.array(PromptChatApiLLMClientExtension).default([]),

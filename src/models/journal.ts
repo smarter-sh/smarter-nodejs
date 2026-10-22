@@ -117,6 +117,10 @@ export const JournalPagination = z.looseObject({
   search: z.string().default(""),
   ordering: z.string().default(""),
   sortFields: z.array(z.string()).default([]),
+  /** The named filter that narrows the list, e.g. `pending`, or an empty string for none. */
+  filter: z.string().default(""),
+  /** The named filters that the list offers. */
+  filters: z.array(z.string()).default([]),
 });
 export type JournalPagination = z.infer<typeof JournalPagination>;
 
