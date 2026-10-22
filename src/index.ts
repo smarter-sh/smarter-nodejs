@@ -82,6 +82,7 @@ export {
   ChatSession,
   ChatStream,
   LLMClients,
+  type ConfigOptions,
   PromptStream,
   requestMessages,
   toMessages,

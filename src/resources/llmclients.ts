@@ -63,6 +63,17 @@ export interface PromptOptions extends RequestOptions {
   sessionKey?: string | null | undefined;
 }
 
+/** The options of an LLMClient's chat configuration, beside the session's key and the per-request options. */
+export interface ConfigOptions extends PromptOptions {
+  /**
+   * True to add the configuration's diagnostic parts: the session's tool calls
+   * (`history.prompt_tool_call_history`), the complete `meta_data`, and the lists of the LLMClient's
+   * plugins and extensions. Without it, the configuration has what a chat needs, and the counts of the
+   * plugins and extensions. A deployed LLMClient's own host ignores it. Default false.
+   */
+  verbose?: boolean | undefined;
+}
+
 /**
  * A prompt as a list of messages.
  *
@@ -267,17 +278,28 @@ export class LLMClients extends SmarterKindResource<typeof LLMClient> {
   /**
    * An LLMClient's chat configuration, and a chat session.
    *
+   * By default, the configuration has what a chat needs: the LLMClient, the session's key and chat
+   * history, a short `meta_data`, and the counts of the LLMClient's plugins and extensions. `verbose`
+   * adds the diagnostic parts: the lists of plugins and extensions, the session's tool calls and the
+   * complete `meta_data`.
+   *
    * @param id - The LLMClient's id or hashed id.
-   * @param options - `sessionKey`: an existing session's key, to resume it with its history, or none for a new session.
+   * @param options - `sessionKey`: an existing session's key, to resume it with its history, or none for a new session. `verbose`: true to add the diagnostic parts (`?verbose=true`).
    * @returns The configuration, whose `session_key` identifies the session.
+   * @example
+   * ```ts
+   * const config = await client.llmClients.config("calculator", { verbose: true });
+   * console.log(config.plugins.plugins.map((plugin) => plugin.plugin_meta.name));
+   * ```
    */
-  async config(id: SmarterId, options?: PromptOptions): Promise<PromptChatApiConfig> {
+  async config(id: SmarterId, options?: ConfigOptions): Promise<PromptChatApiConfig> {
     const response = await this.http.request(
       "POST",
       `${this.path}${resourceId(id)}/config/`,
       PromptChatApiConfigResponse,
       {
         ...options,
+        params: { verbose: options?.verbose ? true : undefined },
         json: { session_key: options?.sessionKey ?? null },
       },
     );

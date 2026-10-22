@@ -85,13 +85,24 @@ describe("LLMClients", () => {
 
   it("config() starts or resumes a chat session", async () => {
     platform.route("POST", "llm-clients/5/config/", { fixture: "config" });
-    const config = await platform.client.llmClients.config(5, { sessionKey: "abc" });
+    const config = await platform.client.llmClients.config(5, { sessionKey: "abc", verbose: true });
     expect(config.llmclient.name).toBe("calculator");
     expect(config.extensions?.meta_data.total_extensions).toBe(1);
     expect(config.extensions?.extensions.map((e) => [e.name, e.enabled])).toEqual([["calculator", true]]);
     expect(await platform.requestJson()).toEqual({ session_key: "abc" });
+    expect(new URL(platform.lastRequest.url).searchParams.get("verbose")).toBe("true");
     await platform.client.llmClients.config(5);
     expect(await platform.requestJson()).toEqual({ session_key: null });
+    expect(new URL(platform.lastRequest.url).searchParams.has("verbose")).toBe(false);
+    await platform.client.llmClients.config(5, { verbose: false });
+    expect(new URL(platform.lastRequest.url).searchParams.has("verbose")).toBe(false);
+  });
+
+  it("chat() asks for the short configuration, which has what a chat needs", async () => {
+    platform.route("POST", "llm-clients/5/config/", { fixture: "config" });
+    const session = await platform.client.llmClients.chat(5);
+    expect(session.config.llmclient.name).toBe("calculator");
+    expect(new URL(platform.lastRequest.url).searchParams.has("verbose")).toBe(false);
   });
 
   it("prompt() sends the user's message, and returns the LLM's reply", async () => {
