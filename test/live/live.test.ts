@@ -185,14 +185,21 @@ describe.skipIf(!LIVE)("live", { timeout: 180_000 }, () => {
     const manifest = await client.guardrails.exampleManifest();
     const name = `sdk_live_test_${randomUUID().replaceAll("-", "").slice(0, 8)}`;
     manifest.metadata.name = name;
+    manifest.metadata.annotations = { ...manifest.metadata.annotations, "example.com/sdk-live-test": name };
     expect((await client.manifests.validate(manifest)).valid).toBe(true);
     await client.guardrails.apply(manifest);
     try {
       const described = await client.guardrails.describe(name);
       expect(described).toBeInstanceOf(Manifest);
       expect(described.metadata.name).toBe(name);
+      expect(described.metadata.annotations?.["example.com/sdk-live-test"]).toBe(name);
       expect((await client.manifests.get("Guardrail", name)).names).toEqual([name]);
+      const selected = await client.manifests.get("Guardrail", null, {
+        annotation: `example.com/sdk-live-test=${name}`,
+      });
+      expect(selected.names).toEqual([name]);
       const guardrail = await client.guardrails.find(name);
+      expect(guardrail.annotations?.["example.com/sdk-live-test"]).toBe(name);
       expect((await client.guardrails.retrieve(guardrail.id)).name).toBe(name);
       const stage = guardrail.stage === "output" ? "output" : "input";
       const evaluation = await client.guardrails.evaluate(guardrail.id, "My SSN is 078-05-1120.", { stage });

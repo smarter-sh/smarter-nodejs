@@ -15,6 +15,7 @@ import { z } from "zod";
 
 import { SmarterValueError } from "../core/errors.ts";
 import { JsonObject } from "../core/typing.ts";
+import { Annotations } from "./base.ts";
 import { SAM_SCHEMAS, type SAMKind, type SAMKinds } from "./sam/index.ts";
 
 /** The `apiVersion` of every Smarter manifest. */
@@ -28,8 +29,12 @@ export const ManifestMetadata = z.looseObject({
   /** The resource's semantic version, e.g. `1.0.0`. */
   version: z.string().nullish(),
   tags: z.array(z.string()).nullish(),
-  /** Key-value pairs, as a list of single-key objects. */
-  annotations: z.array(JsonObject).nullish(),
+  /**
+   * Annotations, as in Kubernetes: a map of keys to string values, e.g.
+   * `{"acme.com/crm-account-id": "A-10042"}`. The list of one-key maps of older manifests is
+   * converted to the map. See {@link Annotations}.
+   */
+  annotations: Annotations.nullish(),
 });
 export type ManifestMetadata = z.infer<typeof ManifestMetadata>;
 

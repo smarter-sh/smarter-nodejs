@@ -66,6 +66,43 @@ describe("Manifests", () => {
     expect((await platform.client.manifests.get("LLMClient")).data.items).toEqual([]);
   });
 
+  it("get() sends an annotation selector, each requirement as a repeated annotation parameter", async () => {
+    platform.route("POST", "cli/get/LLMClient/", { fixture: "get_llmclient" });
+    await platform.client.manifests.get("LLMClient", null, { annotation: "acme.com/crm-account-id=A-10042" });
+    let params = new URL(platform.lastRequest.url).searchParams;
+    expect(params.getAll("annotation")).toEqual(["acme.com/crm-account-id=A-10042"]);
+    expect(params.has("name")).toBe(false);
+    await platform.client.manifests.get("LLMClient", null, {
+      annotation: ["acme.com/crm-account-id", "!acme.com/archived"],
+      headers: { "X-Test": "1" },
+    });
+    params = new URL(platform.lastRequest.url).searchParams;
+    expect(params.getAll("annotation")).toEqual(["acme.com/crm-account-id", "!acme.com/archived"]);
+    expect(platform.lastRequest.headers.get("X-Test")).toBe("1");
+    await platform.client.manifests.get("LLMClient", null, { annotation: null });
+    expect(new URL(platform.lastRequest.url).searchParams.has("annotation")).toBe(false);
+  });
+
+  it("get() throws a BadRequestError for an invalid annotation selector", async () => {
+    platform.route("POST", "cli/get/Guardrail/", {
+      status: 400,
+      json: {
+        error: {
+          errorClass: "SmarterAnnotationError",
+          description: "Smarter Annotation Error: Annotation key 'Bad Key' has an invalid name segment 'Bad Key'.",
+          status: 400,
+        },
+        api: "smarter.sh/v1",
+        metadata: { command: "get", thing: "Guardrail" },
+      },
+    });
+    const error = await platform.client.manifests
+      .get("Guardrail", null, { annotation: "Bad Key==" })
+      .catch((err: unknown) => err);
+    expect(error).toBeInstanceOf(BadRequestError);
+    expect((error as BadRequestError).errorClass).toBe("SmarterAnnotationError");
+  });
+
   it("describe() returns the manifest, with its status", async () => {
     platform.route("POST", "cli/describe/LLMClient/", { fixture: "describe_llmclient" });
     const manifest = await platform.client.manifests.describe("LLMClient", "calculator");

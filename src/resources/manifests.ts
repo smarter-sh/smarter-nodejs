@@ -50,6 +50,18 @@ export function kindSegment(kind: string): string {
   return text;
 }
 
+/** The options of {@link Manifests.get}, beside the per-request options. */
+export interface ManifestGetOptions extends RequestOptions {
+  /**
+   * An annotation selector: only the resources whose annotations match every requirement. A
+   * requirement has the syntax of a Kubernetes label selector: `key` (has the annotation), `!key`
+   * (doesn't have it), `key=value` or `key!=value` (which also matches resources without the key),
+   * e.g. `acme.com/crm-account-id=A-10042`. Pass an array for several requirements. An invalid
+   * requirement is a {@link BadRequestError}.
+   */
+  annotation?: string | readonly string[] | null;
+}
+
 /** The manifest api: apply, validate, get, describe, delete, deploy, undeploy and logs, for any kind. */
 export class Manifests extends SmarterAPIResource {
   /**
@@ -95,17 +107,27 @@ export class Manifests extends SmarterAPIResource {
    *
    * @param kind - The manifest kind, e.g. `LLMClient`.
    * @param name - Only the resource of this name.
-   * @param options - Per-request options.
+   * @param options - `annotation`: an annotation selector, e.g. `acme.com/crm-account-id=A-10042`, or an array of its requirements. And the per-request options.
    * @returns The table: `data.items` are its rows, and `names` the resources' names.
+   * @throws {@link BadRequestError} If the annotation selector is invalid.
+   *
+   * @example
+   * ```ts
+   * const table = await client.manifests.get("LLMClient", null, {
+   *   annotation: ["acme.com/crm-account-id=A-10042", "!acme.com/archived"],
+   * });
+   * console.log(table.names);
+   * ```
    */
-  async get(kind: string, name?: string | null, options?: RequestOptions): Promise<ManifestTable> {
+  async get(kind: string, name?: string | null, options?: ManifestGetOptions): Promise<ManifestTable> {
+    const { annotation, ...requestOptions } = options ?? {};
     const response = await this.http.request(
       "POST",
       `${CLI_PATH}get/${kindSegment(kind)}/`,
       SmarterJournaledResponse(ManifestList),
       {
-        ...options,
-        params: { name },
+        ...requestOptions,
+        params: { name, annotation },
       },
     );
     const result = response.data ?? ManifestList.parse({ kind });

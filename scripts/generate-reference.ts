@@ -51,6 +51,7 @@ interface TypeNode {
   typeArguments?: TypeNode[];
   declaration?: Reflection;
   target?: unknown;
+  operator?: string;
   queryType?: TypeNode;
   elements?: TypeNode[];
 }
@@ -102,20 +103,25 @@ function typeText(node: TypeNode | undefined): string {
       return "object";
     case "query":
       return `typeof ${typeText(node.queryType)}`;
+    case "typeOperator":
+      // a type operator's target is a type node, e.g. the array of `readonly string[]`.
+      return `${node.operator ?? ""} ${typeText(node.target as TypeNode | undefined)}`.trim();
     case "reference": {
       const name = node.name ?? "unknown";
       const args = node.typeArguments ?? [];
       if (ZOD_NAMES[name]) return ZOD_NAMES[name];
       if (name === "ZodOptional") return `${typeText(args[0])} | undefined`;
-      if (name === "ZodNullable") return `${typeText(args[0])} | null`;
+      if (name === "ZodNullable") return nullable(typeText(args[0]));
       if (name === "ZodDefault") return typeText(args[0]);
       if (name === "ZodArray") return `${wrap(typeText(args[0]))}[]`;
       if (name === "ZodRecord") return `Record<string, ${typeText(args[1])}>`;
       if (name === "ZodType") return typeText(args[0]);
+      if (name === "ZodPreprocess") return typeText(args[0]);
       if (name === "ZodLiteral") return typeText(args[0]);
       if (name === "ZodObject") return "object";
       if (name === "ZodUnion" || name === "ZodDiscriminatedUnion")
         return typeText(args[0])
+          .replace(/^readonly /, "")
           .replace(/^\[|\]$/g, "")
           .replaceAll(", ", " | ");
       if (name === "ZodEnum") return "string";
@@ -125,6 +131,10 @@ function typeText(node: TypeNode | undefined): string {
     default:
       return node.name ?? "unknown";
   }
+}
+
+function nullable(text: string): string {
+  return text.split(" | ").includes("null") ? text : `${text} | null`;
 }
 
 function wrap(text: string): string {

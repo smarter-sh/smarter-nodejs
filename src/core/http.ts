@@ -32,8 +32,8 @@ import {
 import { maskSecret, type Logger } from "./log.ts";
 import { EVENT_STREAM_CONTENT_TYPE, iterLines, iterSse, type ServerSentEvent } from "./sse.ts";
 
-/** A query parameter's value. `null` and `undefined` leave the parameter out. */
-export type QueryParamValue = string | number | boolean | null | undefined;
+/** A query parameter's value. An array repeats the parameter once per item; `null` and `undefined` leave it out. */
+export type QueryParamValue = string | number | boolean | readonly (string | number | boolean)[] | null | undefined;
 
 /** The SDK's `User-Agent`. */
 export const USER_AGENT = `smarter-nodejs/${VERSION}`;
@@ -201,7 +201,8 @@ export function retryDelay(attempt: number, headers?: Headers): number {
 }
 
 /**
- * Query parameters as strings: booleans as `true` or `false`, and null values left out.
+ * Query parameters as strings: booleans as `true` or `false`, an array as the parameter repeated once
+ * per item, and null values left out.
  *
  * @param params - The parameters.
  * @returns The parameters' query string, without its `?`, or an empty string.
@@ -210,7 +211,9 @@ export function queryString(params: Record<string, QueryParamValue> | undefined)
   const search = new URLSearchParams();
   for (const [key, value] of Object.entries(params ?? {})) {
     if (value === null || value === undefined) continue;
-    search.append(key, typeof value === "boolean" ? (value ? "true" : "false") : String(value));
+    for (const item of Array.isArray(value) ? value : [value]) {
+      search.append(key, typeof item === "boolean" ? (item ? "true" : "false") : String(item));
+    }
   }
   return search.toString();
 }
