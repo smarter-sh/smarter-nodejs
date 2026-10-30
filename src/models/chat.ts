@@ -20,7 +20,8 @@
 
 import { z } from "zod";
 
-import { JsonObject, JsonValue } from "../core/typing.ts";
+import { JsonValue } from "../core/typing.ts";
+import { Annotations } from "./base.ts";
 
 /** The version of the Smarter Chat api contract that the SDK reads. */
 export const CHAT_CONTRACT_V2 = 2;
@@ -253,7 +254,8 @@ export const PromptChatApiPluginMeta = PromptChatApiOrmModel.extend({
   description: z.string().nullish(),
   version: z.string().nullish(),
   tags: z.array(z.string()).default([]),
-  annotations: z.union([z.array(JsonObject), JsonObject]).nullish(),
+  /** The plugin's annotations: a map of keys to string values. See {@link Annotations}. */
+  annotations: Annotations.nullish(),
   /** api, skill, sql, static, websearch or imagesearch. */
   plugin_class: z.string(),
 });

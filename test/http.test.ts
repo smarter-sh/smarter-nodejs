@@ -37,6 +37,10 @@ describe("http helpers", () => {
     expect(queryString(undefined)).toBe("");
   });
 
+  it("repeats a parameter once per item of an array", () => {
+    expect(queryString({ tag: ["a", "b"], n: [1, true], empty: [] })).toBe("tag=a&tag=b&n=1&n=true");
+  });
+
   it("parses a body as JSON, as text, or as nothing", () => {
     expect(parseBody('{"a": 1}')).toEqual({ a: 1 });
     expect(parseBody("plain")).toBe("plain");

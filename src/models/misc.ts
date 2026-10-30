@@ -114,6 +114,8 @@ export const Provider = z.looseObject({
   description: z.string().nullish(),
   baseUrl: z.string().nullish(),
   isActive: z.boolean().nullish(),
+  /** The url of the provider's detail in the web console: its manifest, the resources that it uses, and those that use it. */
+  detailUrl: z.string().nullish(),
 });
 export type Provider = z.infer<typeof Provider>;
 

@@ -121,6 +121,12 @@ export const JournalPagination = z.looseObject({
   filter: z.string().default(""),
   /** The named filters that the list offers. */
   filters: z.array(z.string()).default([]),
+  /** The tags that every resource of the list has, e.g. `production`. */
+  tags: z.array(z.string()).default([]),
+  /** The annotation selector's requirements that every resource matches, e.g. `acme.com/crm-id=A-1`. */
+  annotations: z.array(z.string()).default([]),
+  /** Why the annotation selector is invalid, in which case it is not applied, or an empty string. */
+  annotationError: z.string().default(""),
 });
 export type JournalPagination = z.infer<typeof JournalPagination>;
 

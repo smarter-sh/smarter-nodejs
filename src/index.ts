@@ -91,7 +91,7 @@ export {
   type PromptOptions,
 } from "./resources/llmclients.ts";
 export { LLMHosts } from "./resources/llmhosts.ts";
-export { CLI_PATH, Manifests, kindSegment } from "./resources/manifests.ts";
+export { CLI_PATH, Manifests, kindSegment, type ManifestGetOptions } from "./resources/manifests.ts";
 export { MCPClients } from "./resources/mcpclients.ts";
 export { Providers } from "./resources/providers.ts";
 export { Proxies, type ProxyRequestOptions } from "./resources/proxies.ts";

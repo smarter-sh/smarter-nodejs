@@ -18,31 +18,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
               "Account.metadata.accountNumber[str]. Your preassigned 12-digit account number for your Smarter Account in the format '####-####-####'. Read only.",
           },
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -283,31 +262,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Connection Manifest - common Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -553,31 +511,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Plugin Manifest - common Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -755,31 +692,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Budget Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -1066,31 +982,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API CustomDomain Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -1269,31 +1164,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Guardrail Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -1741,31 +1615,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Plugin Manifest - common Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -1955,31 +1808,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API LLMClient Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -2707,31 +2539,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API LLMHost Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -3225,31 +3036,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API LLMHostCompute Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -3473,31 +3263,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API MCPClient Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -3558,7 +3327,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
           cacheTtl: {
             default: 3600,
             description:
-              "MCPClient.spec.config.cacheTtl[int]: seconds to cache the MCP server's tools, instructions and capabilities. 0 disables caching.",
+              "MCPClient.spec.config.cacheTtl[int]: seconds to cache the MCP server's tools, instructions and capabilities, and the results of its read-only tools and resource reads. 0 disables caching.",
             maximum: 86400,
             minimum: 0,
             type: "integer",
@@ -3766,9 +3535,18 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             minimum: 0,
             type: "integer",
           },
-          isActive: { default: true, type: "boolean" },
+          isActive: {
+            default: true,
+            description: "Whether this LLMClient's membership in the Orchestrator is active.",
+            type: "boolean",
+          },
           llmClientName: { description: "Name of an existing LLMClient to attach as a Harness.", type: "string" },
-          role: { $ref: "#/$defs/HarnessRole", default: "executor" },
+          role: {
+            $ref: "#/$defs/HarnessRole",
+            default: "executor",
+            description:
+              "The part this LLMClient plays in the Orchestrator: planner, executor, critic, router, summarizer or tool_caller. The supervisor strategy needs a planner, and the router strategy a router.",
+          },
         },
         required: ["llmClientName"],
         title: "SAMOrchestratorHarnessConfig",
@@ -3778,31 +3556,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Orchestrator Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -3845,14 +3602,19 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             minItems: 1,
             type: "array",
           },
-          isActive: { default: true, type: "boolean" },
+          isActive: { default: true, description: "Whether the Orchestrator is active.", type: "boolean" },
           maxIterations: {
             default: 10,
             description: "Upper bound on orchestration loop iterations.",
             minimum: 1,
             type: "integer",
           },
-          strategy: { $ref: "#/$defs/OrchestrationStrategy", default: "sequential" },
+          strategy: {
+            $ref: "#/$defs/OrchestrationStrategy",
+            default: "sequential",
+            description:
+              "How the Orchestrator coordinates its LLMClients: sequential, parallel, supervisor, router, voting or debate. Supervisor needs a harness with role planner, router one with role router, and voting and debate at least two harnesses.",
+          },
         },
         required: ["harnesses"],
         title: "SAMOrchestratorSpecConfig",
@@ -3945,31 +3707,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Plugin Manifest - common Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -4175,31 +3916,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Prompt Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -4335,31 +4055,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Provider Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -4604,31 +4303,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Proxy Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -4821,31 +4499,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Secret Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -4988,31 +4645,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Plugin Manifest - common Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -5245,31 +4881,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API SmarterAuthToken Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -5480,31 +5095,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Connection Manifest - common Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -5674,31 +5268,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Plugin Manifest - common Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -5932,31 +5505,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API User Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -6103,31 +5655,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Vectorsearch Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -6413,31 +5944,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Vectorstore Manifest - Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -6576,7 +6086,11 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             description:
               "dependencies[List]: The resources that depend on this resource, and that must be deleted, or stop referring to it, before it can be deleted. Lists only the resources that you can read. Read only.",
           },
-          deployedAt: { anyOf: [{ format: "date-time", type: "string" }, { type: "null" }], default: null },
+          deployedAt: {
+            anyOf: [{ format: "date-time", type: "string" }, { type: "null" }],
+            default: null,
+            description: "Vectorstore.status.deployedAt: when it was deployed. Read only.",
+          },
           documentCount: {
             default: 0,
             description: "Vectorstore.status.documentCount: its documents.",
@@ -6592,9 +6106,21 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             default: null,
             description: "Vectorstore.status.indexName: the Pinecone index, or Qdrant collection.",
           },
-          lastCheckedAt: { anyOf: [{ format: "date-time", type: "string" }, { type: "null" }], default: null },
-          lastMaintenanceAt: { anyOf: [{ format: "date-time", type: "string" }, { type: "null" }], default: null },
-          lastSnapshotAt: { anyOf: [{ format: "date-time", type: "string" }, { type: "null" }], default: null },
+          lastCheckedAt: {
+            anyOf: [{ format: "date-time", type: "string" }, { type: "null" }],
+            default: null,
+            description: "Vectorstore.status.lastCheckedAt: when its status was last checked. Read only.",
+          },
+          lastMaintenanceAt: {
+            anyOf: [{ format: "date-time", type: "string" }, { type: "null" }],
+            default: null,
+            description: "Vectorstore.status.lastMaintenanceAt: when its maintenance last ran. Read only.",
+          },
+          lastSnapshotAt: {
+            anyOf: [{ format: "date-time", type: "string" }, { type: "null" }],
+            default: null,
+            description: "Vectorstore.status.lastSnapshotAt: when its last snapshot was taken. Read only.",
+          },
           message: {
             anyOf: [{ type: "string" }, { type: "null" }],
             default: null,
@@ -6680,31 +6206,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Plugin Manifest - common Metadata class.",
         properties: {
           annotations: {
-            anyOf: [
-              {
-                items: {
-                  additionalProperties: {
-                    anyOf: [
-                      { type: "string" },
-                      { type: "integer" },
-                      { type: "number" },
-                      { type: "boolean" },
-                      { format: "date", type: "string" },
-                      { format: "date-time", type: "string" },
-                      { format: "uuid", type: "string" },
-                      { format: "binary", type: "string" },
-                      { items: {}, type: "array" },
-                      { additionalProperties: true, type: "object" },
-                    ],
-                  },
-                  type: "object",
-                },
-                type: "array",
-              },
-              { type: "null" },
-            ],
+            anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
             description:
-              "The manifest annotations. Used for storing arbitrary metadata as\n            key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The\n            key should be a valid url-friendly string. The value accepts\n            multi-line string values (YAML block scalars) and various scalar types including\n            str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.\n            ",
+              "Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.",
+            examples: [{ "acme.com/crm-account-id": "A-10042", "smarter.sh/llmclient/use-case": "customer support" }],
           },
           description: {
             anyOf: [{ type: "string" }, { type: "null" }],

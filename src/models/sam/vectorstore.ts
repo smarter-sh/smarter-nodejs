@@ -29,26 +29,11 @@ export interface SAMVectorstore {
  */
 export interface SAMVectorstoreMetadata {
   /**
-   * The manifest annotations. Used for storing arbitrary metadata as
-   *             key-value pairs. Example: [{'smarter.sh/test-manifest/project-name': 'Scooby dooby do'}]. The
-   *             key should be a valid url-friendly string. The value accepts
-   *             multi-line string values (YAML block scalars) and various scalar types including
-   *             str, int, float, bool, datetime.date, datetime.datetime, decimal.Decimal, uuid.UUID, bytes, list, dict.
-   *
+   * Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
    */
-  annotations?:
-    | {
-        [k: string]:
-          | string
-          | number
-          | boolean
-          | unknown[]
-          | {
-              [k: string]: unknown | undefined;
-            }
-          | undefined;
-      }[]
-    | null;
+  annotations?: {
+    [k: string]: string | undefined;
+  } | null;
   /**
    * The description for this resource. Be brief. Keep it under 255 characters.
    */
@@ -232,6 +217,9 @@ export interface SAMVectorstoreStatus {
    * dependencies[List]: The resources that depend on this resource, and that must be deleted, or stop referring to it, before it can be deleted. Lists only the resources that you can read. Read only.
    */
   dependencies?: SAMDependency[] | null;
+  /**
+   * Vectorstore.status.deployedAt: when it was deployed. Read only.
+   */
   deployedAt?: string | null;
   /**
    * Vectorstore.status.documentCount: its documents.
@@ -245,8 +233,17 @@ export interface SAMVectorstoreStatus {
    * Vectorstore.status.indexName: the Pinecone index, or Qdrant collection.
    */
   indexName?: string | null;
+  /**
+   * Vectorstore.status.lastCheckedAt: when its status was last checked. Read only.
+   */
   lastCheckedAt?: string | null;
+  /**
+   * Vectorstore.status.lastMaintenanceAt: when its maintenance last ran. Read only.
+   */
   lastMaintenanceAt?: string | null;
+  /**
+   * Vectorstore.status.lastSnapshotAt: when its last snapshot was taken. Read only.
+   */
   lastSnapshotAt?: string | null;
   /**
    * Vectorstore.status.message: why, if it failed.
