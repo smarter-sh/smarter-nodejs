@@ -67,10 +67,12 @@ sam-models: contracts
 reference:
 	npm run reference
 
-# Publish the npm package, @smarter.sh/api (https://www.npmjs.com/package/@smarter.sh/api), once the
-# tests pass, as smarter-chat publishes @smarter.sh/ui-chat. Run it on main, after semantic-release has
-# versioned the release and you have pulled its commit. prepublishOnly builds dist/ first. npm reads
-# the token of an account that may publish to the @smarter.sh scope from .npmrc (gitignored) or ~/.npmrc.
+# Publish the npm package, @smarter.sh/api (https://www.npmjs.com/package/@smarter.sh/api), by hand,
+# once the tests pass. pushMain.yml publishes every release on its own: this is only for when it
+# can't, e.g. the package's very first version, before its trusted publisher can be configured on
+# npmjs.com. Run it on main, after semantic-release has versioned the release and you have pulled its
+# commit. prepublishOnly builds dist/ first. npm reads the token of an account that may publish to
+# the @smarter.sh scope from .npmrc (gitignored) or ~/.npmrc.
 release: test build
 	git rev-parse --abbrev-ref HEAD | grep '^main$$' || (echo 'Not on main branch, aborting' && exit 1)
 	npm publish --access public

@@ -5,14 +5,22 @@
 # The unit tests never reach a Smarter platform: a fetch double answers every
 # request. The live tests (test/live/) are skipped, because SMARTER_TEST_LIVE
 # is not set.
+#
+# Runs on every pull request, and as the first job of pushMain.yml, which runs
+# on every push to main, alpha and beta, and releases only if this passes.
 #------------------------------------------------------------------------------
 name: Test
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main, alpha, beta]
   pull_request:
+  workflow_call:
+    secrets:
+      CODECOV_TOKEN:
+        required: false
+
+permissions:
+  contents: read
 
 jobs:
   test:

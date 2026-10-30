@@ -1,14 +1,19 @@
 ---
 #------------------------------------------------------------------------------
 # Build the package, and check what npm would publish.
+#
+# Runs on every pull request, and as a job of pushMain.yml, which releases and
+# publishes only if this passes.
 #------------------------------------------------------------------------------
 name: Build
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
   pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
 
 jobs:
   build:

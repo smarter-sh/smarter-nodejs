@@ -2,8 +2,9 @@
 // same rules and release notes as https://github.com/smarter-sh/smarter-chat's. It runs on each push
 // to main, and to alpha and beta, whose releases are prereleases (.github/workflows/pushMain.yml).
 // The release writes its version into package.json and src/version.ts, and @semantic-release/git
-// commits them, so that the tagged commit carries it. Publishing to npm is done by hand, with
-// `make release` (ADR-010).
+// commits them, so that the tagged commit carries it. pushMain.yml's publish job then publishes that
+// tag to npm (ADR-010). @semantic-release/npm is not used: the publish job builds and checks the
+// tag first, and publishes with trusted publishing and provenance.
 //
 // conventional-changelog-conventionalcommits is pinned to 9.x, as in smarter-chat: 10.x needs
 // conventional-changelog-writer 9, and @semantic-release/release-notes-generator 14 still loads
