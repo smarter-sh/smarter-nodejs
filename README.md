@@ -158,7 +158,7 @@ If your shell sets `NODE_ENV=production`, npm skips the development
 dependencies: `make init` installs them anyway.
 
 `make init` also creates a Python virtual environment in `venv/` with
-[pre-commit](https://pre-commit.com/) (Python 3.13), and installs the
+[pre-commit](https://pre-commit.com/) (Python 3.14), and installs the
 pre-commit and commit-msg hooks, which lint each commit and check its message.
 `make python-init` does only that part.
 

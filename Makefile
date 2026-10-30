@@ -2,7 +2,7 @@ SHELL := /bin/bash
 # The developer's shell may export NODE_ENV=production, which makes npm skip devDependencies.
 NPM_INSTALL := npm install --include=dev
 # pre-commit runs from a Python virtual environment in venv/, made by make python-init.
-PYTHON := python3.13
+PYTHON := python3.14
 PRE_COMMIT := venv/bin/pre-commit
 
 .PHONY: all init clean build test coverage test-live lint typecheck pre-commit-init pre-commit-run python-init contracts sam-models reference release help
