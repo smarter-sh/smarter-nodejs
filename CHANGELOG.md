@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
-## [1.0.0-alpha.1](https://github.com/smarter-sh/smarter-nodejs/compare/v0.2.2...v1.0.0-alpha.1) (2026-10-30)
+## [1.0.0](https://github.com/smarter-sh/smarter-nodejs/compare/v0.2.2...v1.0.0) (2026-10-30)
 
 ### ⚠ BREAKING CHANGES
 
