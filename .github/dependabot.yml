@@ -9,10 +9,6 @@ updates:
     schedule:
       interval: "monthly"
     target-branch: "alpha"
-    assignees:
-      - "lpm0073"
-    reviewers:
-      - "lpm0073"
     ignore:
       # 10.x needs conventional-changelog-writer 9, and @semantic-release/release-notes-generator
       # 14 still loads writer 8. See release.config.js.
@@ -26,7 +22,3 @@ updates:
     schedule:
       interval: "monthly"
     target-branch: "alpha"
-    assignees:
-      - "lpm0073"
-    reviewers:
-      - "lpm0073"
