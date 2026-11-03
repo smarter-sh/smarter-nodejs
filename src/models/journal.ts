@@ -1,11 +1,11 @@
 /**
  * Models of the Smarter Journal api contract: the envelope of every journaled response, its error body, and a journal entry.
  *
- * The Smarter platform journals its api responses. Each one carries `api` (the api version, e.g.
+ * The Smarter Project journals its api responses. Each one carries `api` (the api version, e.g.
  * `smarter.sh/v1`) and `metadata` (the command and the resource kind, which the platform calls its
  * "thing") beside its own `data`, `message` or `error`.
  *
- * These mirror `smarter.lib.journal.contract.models` in the Smarter platform, whose JSON Schema is
+ * These mirror `smarter.lib.journal.contract.models` in the Smarter Project, whose JSON Schema is
  * `journal-contract.schema.json`, as the Python SDK's `smarter.models.journal` does. The SDK's tests
  * check the platform's schema against them. See `scripts/sync-contracts.sh`.
  */

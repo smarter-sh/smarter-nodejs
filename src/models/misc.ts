@@ -96,7 +96,7 @@ export const Proxy = z.looseObject({
   name: z.string(),
   description: z.string().nullish(),
   provider: z.string().nullish(),
-  /** The proxy's base url on the Smarter platform. */
+  /** The proxy's base url on the Smarter installation. */
   url: z.string().nullish(),
   upstreamUrl: z.string().nullish(),
   allowedPaths: z.array(z.string()).default([]),

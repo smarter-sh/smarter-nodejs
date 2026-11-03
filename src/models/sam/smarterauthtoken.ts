@@ -1,5 +1,5 @@
 /**
- * The SAM type of the `SmarterAuthToken` kind, generated from the Smarter platform's JSON Schema.
+ * The SAM type of the `SmarterAuthToken` kind, generated from the Smarter Project's JSON Schema.
  *
  * Do not edit: run `make sam-models`. See `src/models/sam/index.ts`.
  */
@@ -29,7 +29,7 @@ export interface SAMSmarterAuthToken {
  */
 export interface SAMSmarterAuthTokenMetadata {
   /**
-   * Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter platform. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
+   * Annotations, as in Kubernetes: a map of keys to string values that clients and integrations attach to a resource for their own purposes, e.g. to associate it with a resource in another system. A key is an optional DNS-subdomain prefix that names its owner, then a slash and a name of one or more slash-separated segments, e.g. 'acme.com/crm-account-id'. The prefix 'smarter.sh' and its subdomains are reserved for the Smarter Project. Values are strings: unquoted YAML scalars such as true, 42 or dates are converted to strings, and structured data belongs in a JSON string. All annotations together are limited to 256 KiB. The list of one-key maps of older manifests, e.g. [{'acme.com/crm-account-id': 'A-10042'}], is also accepted.
    */
   annotations?: {
     [k: string]: string | undefined;

@@ -1,5 +1,5 @@
 /**
- * Generate the SDK's SAM types from the Smarter platform's committed JSON Schemas.
+ * Generate the SDK's SAM types from the Smarter Project's committed JSON Schemas.
  *
  * The platform's SAM (Smarter Application Manifest) models are Pydantic models that depend on
  * Django, so the SDK cannot import them. The platform commits each kind's JSON Schema, generated from
@@ -31,7 +31,7 @@ const DATA = join(ROOT, "test", "data", "sam");
 const PACKAGE = join(ROOT, "src", "models", "sam");
 
 const HEADER = (kind: string): string => `/**
- * The SAM type of the \`${kind}\` kind, generated from the Smarter platform's JSON Schema.
+ * The SAM type of the \`${kind}\` kind, generated from the Smarter Project's JSON Schema.
  *
  * Do not edit: run \`make sam-models\`. See \`src/models/sam/index.ts\`.
  */
@@ -134,7 +134,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = ${JSON.stringify(sc
   writeFileSync(
     join(PACKAGE, "index.ts"),
     `/**
- * Typed models of every SAM (Smarter Application Manifest) kind, generated from the Smarter platform's JSON Schemas.
+ * Typed models of every SAM (Smarter Application Manifest) kind, generated from the Smarter Project's JSON Schemas.
  *
  * Each type describes a complete manifest of its kind: \`apiVersion\`, \`kind\`, \`metadata\`, \`spec\`
  * and the read-only \`status\`. Use them to build manifests in code, with your editor's completion, or

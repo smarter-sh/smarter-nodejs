@@ -10,7 +10,7 @@
 [![Slack](https://img.shields.io/badge/Slack-The%20Smarter%20Project-4A154B?logo=slack&logoColor=white)](https://join.slack.com/t/thesmarterproject/shared_invite/zt-4f0t6v46q-e2c5Of4hS4fBr_XwfQARCw)<br>
 
 `@smarter.sh/api` is the official Node.js SDK of the
-[Smarter platform](https://github.com/smarter-sh/smarter), written in
+[Smarter Project](https://github.com/smarter-sh/smarter), written in
 TypeScript. It is to Smarter what the `openai` package is to the OpenAI api:
 one `npm install` gives your JavaScript or TypeScript software typed, complete
 access to your own Smarter installation, whether it runs on your laptop or on
@@ -142,7 +142,7 @@ recorded in [doc/adr/](./doc/adr/).
 
 ## Requirements
 
-Node.js 22 or later, and a Smarter platform to connect to. See the
+Node.js 22 or later, and a Smarter installation to connect to. See the
 [Quick Start Guide](https://docs.smarter.sh/en/latest/smarter-platform/installation/quick-start.html)
 to run one on your laptop.
 

@@ -125,7 +125,7 @@ export class APITimeoutError extends APIConnectionError {
 /**
  * The api's response does not match the SDK's schema of it.
  *
- * This usually means that the SDK and the Smarter platform are of incompatible versions.
+ * This usually means that the SDK and the Smarter installation are of incompatible versions.
  */
 export class APIResponseValidationError extends APIError {
   override readonly name: string = "APIResponseValidationError";

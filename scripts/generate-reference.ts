@@ -1,5 +1,5 @@
 /**
- * Generate the SDK's api reference pages for the Smarter platform's Sphinx documentation.
+ * Generate the SDK's api reference pages for the Smarter Project's Sphinx documentation.
  *
  * Sphinx can't read TypeScript, so `npm run reference` runs TypeDoc, which writes the SDK's exported
  * api and doc comments to `build/typedoc.json`, then this script writes them as Sphinx's built-in

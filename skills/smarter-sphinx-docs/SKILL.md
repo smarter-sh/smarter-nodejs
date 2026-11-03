@@ -1,6 +1,6 @@
 ---
 name: smarter-sphinx-docs
-description: Use when adding or editing the smarter-nodejs SDK's documentation, which lives in the Smarter platform's Sphinx docs (../smarter/docs/source/smarter-framework/smarter-nodejs*, published to docs.smarter.sh), or when regenerating the SDK's api reference pages from its TSDoc comments. Covers where each page goes, the generated reference and why it is generated, the evergreen-prose rule, and how to verify without the platform's 20-minute build.
+description: Use when adding or editing the smarter-nodejs SDK's documentation, which lives in the Smarter Project's Sphinx docs (../smarter/docs/source/smarter-framework/smarter-nodejs*, published to docs.smarter.sh), or when regenerating the SDK's api reference pages from its TSDoc comments. Covers where each page goes, the generated reference and why it is generated, the evergreen-prose rule, and how to verify without the platform's 20-minute build.
 ---
 
 # The SDK's Sphinx Documentation

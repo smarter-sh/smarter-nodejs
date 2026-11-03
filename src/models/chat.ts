@@ -1,7 +1,7 @@
 /**
  * Models of the Smarter Chat api contract, version 2: an LLMClient's configuration, its prompt api's request and response, and the prompt's progress events.
  *
- * These mirror `smarter.apps.prompt.contract.models` in the Smarter platform, whose JSON Schema is
+ * These mirror `smarter.apps.prompt.contract.models` in the Smarter Project, whose JSON Schema is
  * `chat-contract.schema.json`, as the Python SDK's `smarter.models.chat` does. The SDK always asks for
  * version 2 of the contract (with the `X-Smarter-Capabilities: chat-contract-v2` request header), so
  * the deprecated version 1 models are not mirrored.

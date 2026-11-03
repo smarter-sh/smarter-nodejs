@@ -16,7 +16,7 @@ export type WhoAmI = z.infer<typeof WhoAmI>;
 
 /** The platform's version, and the versions of its main Python packages. */
 export const ApiVersion = z.looseObject({
-  /** The Smarter platform's semantic version. */
+  /** The Smarter installation's semantic version. */
   version: z.string(),
   /** Python package versions, by package. */
   python: z.record(z.string(), z.string().nullable()).default({}),
