@@ -1,9 +1,9 @@
 /**
- * Models of the Smarter platform's Django-React integration: a React app's Vite manifest, and the assets that a template includes.
+ * Models of the Smarter Project's Django-React integration: a React app's Vite manifest, and the assets that a template includes.
  *
  * The platform's web console pages are React apps that Django hosts. These schemas are a copy of the
  * platform's `smarter.lib.django.templatetags.smarter_react_contract`, as the Python SDK's
- * `smarter.models.react` is, so that tools that build or check React apps for a Smarter platform can
+ * `smarter.models.react` is, so that tools that build or check React apps for a Smarter installation can
  * use them without the platform.
  *
  * - {@link ViteManifest} reads a Vite-generated React `manifest.json`: its chunks keyed by source

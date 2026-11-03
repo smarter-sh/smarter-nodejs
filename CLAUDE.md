@@ -2,8 +2,8 @@
 
 Guidance for Claude Code (and other coding agents) working in this repository.
 
-smarter-nodejs is the Smarter platform's official Node.js SDK, written in
-TypeScript and published to npm as `@smarter.sh/api`. It is to the Smarter platform
+smarter-nodejs is the Smarter Project's official Node.js SDK, written in
+TypeScript and published to npm as `@smarter.sh/api`. It is to the Smarter Project
 ([smarter-sh/smarter](https://github.com/smarter-sh/smarter), usually checked
 out beside this repository as `../smarter`) what the `openai` package is to the
 OpenAI api: the library that JavaScript and TypeScript programmers import to

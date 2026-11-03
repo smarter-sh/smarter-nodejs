@@ -1,5 +1,5 @@
 /**
- * The Smarter Node.js SDK: the official Node.js client of the Smarter platform's api.
+ * The Smarter Node.js SDK: the official Node.js client of the Smarter Project's api.
  *
  * @example
  * ```ts

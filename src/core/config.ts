@@ -1,7 +1,7 @@
 /**
  * The configuration of the Smarter SDK.
  *
- * A client needs an api key and the base url of a Smarter platform. Each is taken from the first of
+ * A client needs an api key and the base url of a Smarter installation. Each is taken from the first of
  * these that sets it:
  *
  * 1. the options of `new Smarter({...})`,
@@ -15,7 +15,7 @@
  * `local` is `http://localhost:9357`, `alpha`, `beta` and `next` are
  * `https://<environment>.<root domain>`, and `prod` is `https://<root domain>`.
  *
- * This is the Python SDK's lookup, which follows the Smarter platform's settings design (ADR-007):
+ * This is the Python SDK's lookup, which follows the Smarter Project's settings design (ADR-007):
  * this module is the only one that reads the environment.
  */
 
@@ -40,7 +40,7 @@ export const DEFAULT_ENVIRONMENT: SmarterEnvironment = "prod";
 /** The platform's root domain when none is configured. */
 export const DEFAULT_ROOT_DOMAIN = "platform.smarter.sh";
 
-/** The url of the Smarter platform's local development server. */
+/** The url of the Smarter Project's local development server. */
 export const LOCAL_URL = "http://localhost:9357";
 
 /** The path of the Smarter api, which every request url is relative to. */

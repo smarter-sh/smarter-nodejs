@@ -34,7 +34,7 @@ test:
 coverage:
 	npx vitest run --coverage
 
-# Test the SDK against a running Smarter platform, e.g. the local one:
+# Test the SDK against a running Smarter installation, e.g. the local one:
 # SMARTER_BASE_URL=http://localhost:9357 SMARTER_API_KEY=... make test-live
 # These prompt an LLMClient, which makes billable LLM requests.
 test-live:
@@ -85,7 +85,7 @@ help:
 	@echo 'build         - build dist/, and check the package'
 	@echo 'test          - run the unit tests'
 	@echo 'coverage      - run the unit tests with coverage'
-	@echo 'test-live     - test against a running Smarter platform (SMARTER_BASE_URL, SMARTER_API_KEY)'
+	@echo 'test-live     - test against a running Smarter installation (SMARTER_BASE_URL, SMARTER_API_KEY)'
 	@echo 'typecheck     - type-check the source and the tests'
 	@echo 'lint          - run every pre-commit hook on every file'
 	@echo 'contracts     - copy the api contracts, SAM schemas and OpenAPI document from ../smarter'

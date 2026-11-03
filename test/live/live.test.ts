@@ -1,5 +1,5 @@
 /**
- * Test the SDK against a running Smarter platform.
+ * Test the SDK against a running Smarter installation.
  *
  * These tests are skipped unless `SMARTER_TEST_LIVE=true`. They read the client's configuration as
  * the SDK always does (`SMARTER_API_KEY`, `SMARTER_BASE_URL`, ...), e.g.:
@@ -214,7 +214,7 @@ describe.skipIf(!LIVE)("live", { timeout: 180_000 }, () => {
     const llmclient = await client.llmClients.find(LLMCLIENT);
     const response = await client.llmClients.prompt(llmclient.id, "What is 17 times 23? Use the calculator.");
     expect(response.text.replaceAll(",", "")).toContain("391");
-    expect(llmclient.tools.map((tool) => [tool.name, tool.kind])).toContainEqual(["calculator", "Function"]);
+    expect(llmclient.tools.map((tool) => [tool.name, tool.kind])).toContainEqual(["calculator", "Extension"]);
     await client.llmClients.extensions(llmclient.id);
     await client.llmClients.plugins(llmclient.id);
     await client.llmClients.apiKeys(llmclient.id);
@@ -227,7 +227,7 @@ describe.skipIf(!LIVE)("live", { timeout: 180_000 }, () => {
     expect((await chat.send("What is 2 to the 10th power? Use the calculator.")).text.replaceAll(",", "")).toContain(
       "1024",
     );
-    const stream = chat.stream("Divide that by 4, with the calculator.");
+    const stream = chat.stream("Divide your last answer by 4, with the calculator.");
     const events = [];
     for await (const event of stream) events.push(event);
     expect(events.some((event) => event.type === "llm_request")).toBe(true);

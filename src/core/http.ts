@@ -170,7 +170,7 @@ export function makeStatusError(request: FailedRequest, response: Response, text
 /**
  * True if a failed response may succeed when the request is sent again.
  *
- * A 503 is retried only when it is not a journaled response. The Smarter platform itself answers
+ * A 503 is retried only when it is not a journaled response. The Smarter Project itself answers
  * 503 for a resource that is not ready (e.g. `SAMBrokerErrorNotReady`), which a retry won't change,
  * whereas a 503 from a load balancer or proxy means the platform is briefly unavailable.
  *

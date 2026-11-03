@@ -8,7 +8,7 @@ Follows the Python SDK's [ADR-001](https://github.com/smarter-sh/smarter-python/
 
 ## Context
 
-The Smarter platform is managed through its REST api. The smarter cli (Go) serves people at a terminal, Smarter Chat (React) serves web pages, and the Python SDK serves Python programmers. JavaScript and TypeScript programmers, who build most web back ends, serverless functions and chat front ends, had no client: they had to hand-write HTTP calls, or customize the platform. The platform's [APIs and SDKs](https://docs.smarter.sh/en/latest/smarter-framework/apis-and-sdks.html) page lists a Node.js SDK as planned, and sets the requirements that every SDK meets.
+The Smarter Project is managed through its REST api. The smarter cli (Go) serves people at a terminal, Smarter Chat (React) serves web pages, and the Python SDK serves Python programmers. JavaScript and TypeScript programmers, who build most web back ends, serverless functions and chat front ends, had no client: they had to hand-write HTTP calls, or customize the platform. The platform's [APIs and SDKs](https://docs.smarter.sh/en/latest/smarter-framework/apis-and-sdks.html) page lists a Node.js SDK as planned, and sets the requirements that every SDK meets.
 
 ## Decision
 

@@ -1,6 +1,6 @@
 ---
 name: smarter-nodejs-testing
-description: Use when writing, fixing or running the smarter-nodejs SDK's tests, or raising its coverage. Covers the Vitest unit tests (mockPlatform, routes answered by a fetch double, sanitized fixtures in test/data shared with the Python SDK), the opt-in live tests against a running Smarter platform, the contract and SAM tests, coverage, and what never to do in a test.
+description: Use when writing, fixing or running the smarter-nodejs SDK's tests, or raising its coverage. Covers the Vitest unit tests (mockPlatform, routes answered by a fetch double, sanitized fixtures in test/data shared with the Python SDK), the opt-in live tests against a running Smarter installation, the contract and SAM tests, coverage, and what never to do in a test.
 ---
 
 # Smarter Node.js SDK Testing
