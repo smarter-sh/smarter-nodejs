@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
+## [1.0.1](https://github.com/smarter-sh/smarter-nodejs/compare/v1.0.0...v1.0.1) (2026-11-03)
+
+### Bug Fixes
+
+* **deps:** regenerate package-lock.json for typescript 5.9.3 ([dc4b040](https://github.com/smarter-sh/smarter-nodejs/commit/dc4b040451bc3eec08968a698b486c356e0cf632))
+
 ## [1.0.1-alpha.1](https://github.com/smarter-sh/smarter-nodejs/compare/v1.0.0...v1.0.1-alpha.1) (2026-11-03)
 
 ### Bug Fixes
