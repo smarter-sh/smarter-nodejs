@@ -23,7 +23,15 @@
 # @smarter.sh/api → Settings → Trusted publisher → GitHub Actions, repository
 # smarter-sh/smarter-nodejs, workflow pushMain.yml, environment npm. If the
 # publish job fails after a release, fix the cause and use "Re-run failed
-# jobs": it publishes the same tag again.
+# jobs": it publishes the same tag again, unless that version is already on
+# npm, which never accepts the same version twice.
+#
+# A package's first version can't be published this way: npm configures a
+# trusted publisher only on a package that already exists. For a new package,
+# publish its first version by hand (npm login, npm publish --access public),
+# add the trusted publisher, and let the next release publish from here. npm
+# keeps a new trusted publisher "pending validation" until it publishes once,
+# and drops it if that hasn't happened within about 48 hours.
 #
 # Requires a PAT secret: a GitHub personal access token that
 # may push to this repository's protected branches.
