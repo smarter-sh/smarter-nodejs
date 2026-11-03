@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
+## [1.0.2](https://github.com/smarter-sh/smarter-nodejs/compare/v1.0.1...v1.0.2) (2026-11-03)
+
+### Bug Fixes
+
+* **ci:** document the first npm publish before trusted publishing ([c5ae61a](https://github.com/smarter-sh/smarter-nodejs/commit/c5ae61a3efcbcff3cc0bf06d9b8c4c5ddd927b2c))
+
 ## [1.0.2-alpha.1](https://github.com/smarter-sh/smarter-nodejs/compare/v1.0.1...v1.0.2-alpha.1) (2026-11-03)
 
 ### Bug Fixes
