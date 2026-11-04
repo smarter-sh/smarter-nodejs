@@ -67,6 +67,7 @@ jobs:
   semantic-release:
     needs: [test, build]
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     env:
       GITHUB_TOKEN: ${{ secrets.PAT }}
       NODE_ENV: test
@@ -74,12 +75,12 @@ jobs:
       new_release_published: ${{ steps.semantic.outputs.new_release_published }}
       version: ${{ steps.semantic.outputs.version }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "24"
           cache: "npm"
@@ -123,13 +124,13 @@ jobs:
     steps:
       # the release's tag, which carries the version in package.json and src/version.ts.
       - name: Checkout the release's tag
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: v${{ env.VERSION }}
           persist-credentials: false
 
       - name: Set up Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: "24"
           cache: "npm"
@@ -185,9 +186,10 @@ jobs:
     needs: semantic-release
     if: needs.semantic-release.outputs.new_release_published == 'true' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Checkout code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           token: ${{ secrets.PAT }}
