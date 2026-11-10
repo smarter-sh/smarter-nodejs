@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
+## [1.0.3-alpha.1](https://github.com/smarter-sh/smarter-nodejs/compare/v1.0.2...v1.0.3-alpha.1) (2026-11-10)
+
+### Bug Fixes
+
+* **contracts:** sync with smarter v0.44.6 ([844d815](https://github.com/smarter-sh/smarter-nodejs/commit/844d815754dcc7b6eb7d18cb767ae9495bb12257))
+* **llmclients:** add providerRequest for the provider request api ([9441aee](https://github.com/smarter-sh/smarter-nodejs/commit/9441aee00b82ece3fffe4cd58197c1086b06d259))
+
 ## [1.0.2](https://github.com/smarter-sh/smarter-nodejs/compare/v1.0.1...v1.0.2) (2026-11-03)
 
 ### Bug Fixes
