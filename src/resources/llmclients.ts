@@ -37,8 +37,10 @@ import {
   PromptChatApiProgressEvent,
   PromptChatApiProgressResult,
   PromptChatApiPromptResponse,
+  PromptChatApiProviderRequestResponse,
   withPromptText,
   type PromptChatApiConfig,
+  type PromptChatApiProviderRequest,
   type PromptResponse,
 } from "../models/chat.ts";
 import type { SmarterJournalMessage } from "../models/journal.ts";
@@ -302,6 +304,37 @@ export class LLMClients extends SmarterKindResource<typeof LLMClient> {
         params: { verbose: options?.verbose ? true : undefined },
         json: { session_key: options?.sessionKey ?? null },
       },
+    );
+    return response.data;
+  }
+
+  /**
+   * A chat session's request to the LLM provider: the body that Smarter sends to the provider's
+   * OpenAI-compatible `v1/chat/completions` api.
+   *
+   * The body has the model, temperature, token limit and tools of the session's latest prompt (or
+   * the LLMClient's, before its first prompt), and the whole conversation, including the latest
+   * answer, without Smarter's own messages, fields, api url or key. It can be sent with curl, or to
+   * the Prompt Passthrough api. Only a user who may read the LLMClient receives it.
+   *
+   * @param id - The LLMClient's id or hashed id.
+   * @param options - `sessionKey`: the chat session's key, or none for a new session, whose body is the LLMClient's introduction.
+   * @returns The request body.
+   * @throws {@link NotFoundError} If the LLMClient does not exist, or the user may not read it.
+   * @example
+   * ```ts
+   * const chat = await client.llmClients.chat("calculator");
+   * await chat.send("What is 17 times 23?");
+   * const body = await client.llmClients.providerRequest("calculator", { sessionKey: chat.sessionKey });
+   * console.log(body.model, body.messages.length);
+   * ```
+   */
+  async providerRequest(id: SmarterId, options?: PromptOptions): Promise<PromptChatApiProviderRequest> {
+    const response = await this.http.request(
+      "POST",
+      `${this.path}${resourceId(id)}/provider-request/`,
+      PromptChatApiProviderRequestResponse,
+      { ...options, json: { session_key: options?.sessionKey ?? null } },
     );
     return response.data;
   }

@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import {
   BadRequestError,
+  NotFoundError,
   ResourceNotFoundError,
   SmarterError,
   SmarterPromptError,
@@ -96,6 +97,39 @@ describe("LLMClients", () => {
     expect(new URL(platform.lastRequest.url).searchParams.has("verbose")).toBe(false);
     await platform.client.llmClients.config(5, { verbose: false });
     expect(new URL(platform.lastRequest.url).searchParams.has("verbose")).toBe(false);
+  });
+
+  it("providerRequest() returns the body that Smarter sends to the LLM provider", async () => {
+    platform.route("POST", "llm-clients/5/provider-request/", { fixture: "provider_request" });
+    const body = await platform.client.llmClients.providerRequest(5, { sessionKey: "abc" });
+    expect([body.model, body.temperature, body.max_completion_tokens, body.tool_choice]).toEqual([
+      "gpt-4o-mini",
+      1,
+      4096,
+      "auto",
+    ]);
+    expect(body.messages.map((message) => message.role)).toEqual([
+      "system",
+      "assistant",
+      "user",
+      "assistant",
+      "tool",
+      "assistant",
+    ]);
+    expect(body.messages.some((message) => message.role.startsWith("smarter"))).toBe(false);
+    expect(body.tools?.[0]?.["type"]).toBe("function");
+    expect(body.reasoning_effort).toBeUndefined();
+    expect(await platform.requestJson()).toEqual({ session_key: "abc" });
+    await platform.client.llmClients.providerRequest(5);
+    expect(await platform.requestJson()).toEqual({ session_key: null });
+  });
+
+  it("providerRequest() of an LLMClient that the user may not read is a NotFoundError", async () => {
+    platform.route("POST", "llm-clients/5/provider-request/", {
+      status: 404,
+      json: { error: { errorClass: "NotFound", description: "Not found." } },
+    });
+    await expect(platform.client.llmClients.providerRequest(5)).rejects.toBeInstanceOf(NotFoundError);
   });
 
   it("chat() asks for the short configuration, which has what a chat needs", async () => {
