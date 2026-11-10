@@ -20,7 +20,7 @@
 
 import { z } from "zod";
 
-import { JsonValue } from "../core/typing.ts";
+import { JsonObject, JsonValue } from "../core/typing.ts";
 import { Annotations } from "./base.ts";
 
 /** The version of the Smarter Chat api contract that the SDK reads. */
@@ -525,6 +525,42 @@ export function withPromptText(response: PromptChatApiPromptResponse): PromptRes
   }
   return response as PromptResponse;
 }
+
+// ------------------------------------------------------------------------------
+// the provider request api
+// ------------------------------------------------------------------------------
+
+/**
+ * The chat session's conversation, as the request body that Smarter sends to the LLM provider.
+ *
+ * It is a request to an OpenAI-compatible `v1/chat/completions` api, without any of Smarter's own
+ * content: no `smarter` or `smarter_error` messages, no `smarter_*` fields, no api url or key. It can
+ * be sent with curl, or to the Prompt Passthrough api. Its messages are the whole conversation,
+ * including the latest answer, so that the next user message can be added. Its model, temperature,
+ * token limit and tools are those of the session's latest prompt, or the LLMClient's, before its
+ * first prompt. Fields without a value are left out.
+ */
+export const PromptChatApiProviderRequest = z.looseObject({
+  /** The LLM's model, e.g. gpt-4o-mini. */
+  model: z.string().nullish(),
+  /** The conversation's system, user, assistant and tool messages. */
+  messages: z.array(PromptChatApiMessage).default([]),
+  temperature: z.number().nullish(),
+  max_completion_tokens: z.number().int().nullish(),
+  /** The function definitions that the LLM may call, in the OpenAI format. */
+  tools: z.array(JsonObject).nullish(),
+  /** `auto`, when the request has tools. */
+  tool_choice: z.string().nullish(),
+  /** `none`, for a model that requires it with tools. */
+  reasoning_effort: z.string().nullish(),
+});
+export type PromptChatApiProviderRequest = z.infer<typeof PromptChatApiProviderRequest>;
+
+/** The provider request api's response. */
+export const PromptChatApiProviderRequestResponse = PromptChatApiEnvelope.extend({
+  data: PromptChatApiProviderRequest,
+});
+export type PromptChatApiProviderRequestResponse = z.infer<typeof PromptChatApiProviderRequestResponse>;
 
 // ------------------------------------------------------------------------------
 // the prompt's Server-Sent Events

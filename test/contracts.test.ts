@@ -201,6 +201,7 @@ describe("OpenAPI contract", () => {
       () => client.journal.list({ page: 2, search: "apply" }),
       () => client.journal.retrieve("0".repeat(64)),
       () => client.llmClients.config(12),
+      () => client.llmClients.providerRequest("rMTAwMDAxMgx", { sessionKey: "0".repeat(64) }),
       () => client.llmClients.prompt("rMTAwMDAxMgx", "Hello"),
       () => client.llmClients.stream(12, "Hello").untilDone(),
     ];
@@ -232,6 +233,7 @@ describe("OpenAPI contract", () => {
     llmclient_plugins: ["/llm-clients/{id}/plugins/", "get"],
     llmclient_extensions: ["/llm-clients/{id}/extensions", "get"],
     config: ["/llm-clients/{id}/config/", "post"],
+    provider_request: ["/llm-clients/{id}/provider-request/", "post"],
     prompt: ["/llm-clients/{id}/prompt/", "post"],
     guardrails: ["/guardrails/", "get"],
     guardrail_eval: ["/guardrails/{id}/evaluate/", "post"],
