@@ -43,7 +43,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
       SAMAccountSpec: {
-        description: "Smarter API Account Manifest Account.spec",
+        description: "Smarter API Account Manifest Account.spec.",
         properties: {
           config: {
             $ref: "#/$defs/SAMAccountSpecConfig",
@@ -55,7 +55,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
       SAMAccountSpecConfig: {
-        description: "Smarter API Account Manifest Account.spec.config",
+        description: "Smarter API Account Manifest Account.spec.config.",
         properties: {
           address1: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -247,7 +247,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
       SAMApiConnectionSpec: {
-        description: "Smarter API Api Connection Manifest ApiConnection.spec",
+        description: "Smarter API Api Connection Manifest ApiConnection.spec.",
         properties: {
           connection: {
             $ref: "#/$defs/ApiConnection",
@@ -1867,7 +1867,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             anyOf: [{ items: { type: "string" }, type: "array" }, { type: "null" }],
             default: null,
             description:
-              "LLMClient.spec.searchTerms[list]. Optional. The Plugins to add to the LLMClient. Plugins are a proprietary extensibility model for tool calling and are not the same as OpenAI plugins. See https://docs.smarter.sh/plugins/ for more information.",
+              "LLMClient.spec.searchTerms[list]. Optional. The Plugins to add to the LLMClient. Plugins are a proprietary extensibility model for tool calling and are not the same as OpenAI plugins. See https://docs.smarter.sh/smarter-resources/smarter-llmtool.html for more information.",
           },
         },
         required: ["config"],
@@ -1887,7 +1887,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             anyOf: [{ $ref: "#/$defs/SAMLLMClientSpecConfigStyles" }, { type: "null" }],
             default: null,
             description:
-              "LLMClient.spec.configuration.styles[object]. Optional. The look of the LLMClient's chat, in the Smarter workbench and on every page that embeds it: its logo, background image, fonts and colors. See https://docs.smarter.sh/en/latest/smarter-resources/llmclient/styles.html",
+              "LLMClient.spec.configuration.styles[object]. Optional. The look of the LLMClient's chat, in the Smarter workbench and on every page that embeds it: its logo, background image, fonts and colors. See https://docs.smarter.sh/smarter-resources/llmclient/styles.html",
           },
         },
         required: ["prompt"],
@@ -1963,6 +1963,12 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             description:
               "LLMClient.spec.configuration.prompt.default_model[str]. Optional. The default model to use for the llmclient. This changes routinely and is currently defaults to gpt-6-luna",
           },
+          defaultReasoningEffort: {
+            anyOf: [{ enum: ["none", "minimal", "low", "medium", "high", "xhigh"], type: "string" }, { type: "null" }],
+            default: null,
+            description:
+              "LLMClient.spec.configuration.prompt.default_reasoning_effort[str]. Optional. How much a reasoning model reasons before it answers: none, minimal, low, medium, high or xhigh. When it is not set, the model reasons at its own default effort. Each model supports some of these values, and models that don't reason, e.g. gpt-4o, support none of them: an effort that the model doesn't support is left out, with a warning in the chat's sandbox mode. Some models use function tools only with none, e.g. gpt-6-luna, so the requests that offer the llmclient's tools use none, and the final answer uses this effort. A reasoning model ignores defaultTemperature at any effort but none. Example: high.",
+          },
           defaultSystemRole: {
             anyOf: [{ maxLength: 32768, type: "string" }, { type: "null" }],
             default: null,
@@ -1986,6 +1992,12 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             default: null,
             description:
               "LLMClient.spec.configuration.prompt.provider[str]. Optional. The provider to use for the llmclient.",
+          },
+          staffOnly: {
+            default: false,
+            description:
+              "LLMClient.spec.configuration.prompt.staff_only[bool]. Optional. Whether only the platform's own staff may see and use the llmclient: the staff users of the Smarter account that runs the platform, not the admins of other accounts. Defaults to False. A staff-only llmclient is in no other user's lists, workbench or apis, including at its deployed url, and only the platform's staff may apply one. Use it for an llmclient whose tools read what only staff may see, e.g. one with the smarter_operations MCPClient, of the MCPServer's staff-only tools.",
+            type: "boolean",
           },
           subdomain: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -4528,7 +4540,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
       SAMSecretSpec: {
-        description: "Smarter API Secret Manifest Secret.spec",
+        description: "Smarter API Secret Manifest Secret.spec.",
         properties: {
           config: {
             $ref: "#/$defs/SAMSecretSpecConfig",
@@ -4540,7 +4552,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
       SAMSecretSpecConfig: {
-        description: "Smarter API Secret Manifest Secret.spec.config",
+        description: "Smarter API Secret Manifest Secret.spec.config.",
         properties: {
           expiration_date: {
             anyOf: [{ format: "date-time", type: "string" }, { type: "null" }],
@@ -4906,7 +4918,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
       SAMSmarterAuthTokenSpec: {
-        description: "Smarter API SmarterAuthToken Manifest SmarterAuthToken.spec",
+        description: "Smarter API SmarterAuthToken Manifest SmarterAuthToken.spec.",
         properties: {
           config: {
             $ref: "#/$defs/SAMSmarterAuthTokenSpecConfig",
@@ -4918,7 +4930,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
       SAMSmarterAuthTokenSpecConfig: {
-        description: "Smarter API SmarterAuthToken Manifest SmarterAuthToken.spec.config",
+        description: "Smarter API SmarterAuthToken Manifest SmarterAuthToken.spec.config.",
         properties: {
           isActive: {
             default: false,
@@ -4972,7 +4984,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
     },
-    description: "Smarter API Manifest - SmarterAuthToken",
+    description: "Smarter API Manifest - SmarterAuthToken.",
     properties: {
       apiVersion: {
         description: "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
@@ -5174,7 +5186,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
       SAMSqlConnectionSpec: {
-        description: "Smarter API Sql Connection Manifest Connection.spec",
+        description: "Smarter API Sql Connection Manifest Connection.spec.",
         properties: {
           connection: {
             $ref: "#/$defs/Connection",

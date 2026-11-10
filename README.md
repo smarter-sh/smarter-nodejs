@@ -118,6 +118,11 @@ console.log(stream.response.text);
 // extensions, the session's tool calls and the complete meta_data.
 const config = await client.llmClients.config(llmclient.id, { verbose: true });
 console.log(config.plugins.plugins.map((plugin) => plugin.plugin_meta.name));
+
+// The body that Smarter sends to the LLM provider for this session, without Smarter's own
+// messages, fields, api url or key: send it with curl, or to the Prompt Passthrough api.
+const body = await client.llmClients.providerRequest(llmclient.id, { sessionKey: chat.sessionKey });
+console.log(body.model, body.messages.length);
 ```
 
 ### Errors

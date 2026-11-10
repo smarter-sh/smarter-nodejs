@@ -5,7 +5,7 @@
  */
 
 /**
- * Smarter API Manifest - SmarterAuthToken
+ * Smarter API Manifest - SmarterAuthToken.
  */
 export interface SAMSmarterAuthToken {
   /**

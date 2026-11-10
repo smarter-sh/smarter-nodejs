@@ -74,7 +74,7 @@ export interface SAMLLMClientSpec {
    */
   mcpClients?: string[] | null;
   /**
-   * LLMClient.spec.searchTerms[list]. Optional. The Plugins to add to the LLMClient. Plugins are a proprietary extensibility model for tool calling and are not the same as OpenAI plugins. See https://docs.smarter.sh/plugins/ for more information.
+   * LLMClient.spec.searchTerms[list]. Optional. The Plugins to add to the LLMClient. Plugins are a proprietary extensibility model for tool calling and are not the same as OpenAI plugins. See https://docs.smarter.sh/smarter-resources/smarter-llmtool.html for more information.
    */
   plugins?: string[] | null;
   [k: string]: unknown | undefined;
@@ -85,7 +85,7 @@ export interface SAMLLMClientSpec {
 export interface SAMLLMClientSpecConfig {
   prompt: SAMLLMClientSpecConfigPrompt;
   /**
-   * LLMClient.spec.configuration.styles[object]. Optional. The look of the LLMClient's chat, in the Smarter workbench and on every page that embeds it: its logo, background image, fonts and colors. See https://docs.smarter.sh/en/latest/smarter-resources/llmclient/styles.html
+   * LLMClient.spec.configuration.styles[object]. Optional. The look of the LLMClient's chat, in the Smarter workbench and on every page that embeds it: its logo, background image, fonts and colors. See https://docs.smarter.sh/smarter-resources/llmclient/styles.html
    */
   styles?: SAMLLMClientSpecConfigStyles | null;
   [k: string]: unknown | undefined;
@@ -140,6 +140,10 @@ export interface SAMLLMClientSpecConfigPrompt {
    */
   defaultModel?: string | null;
   /**
+   * LLMClient.spec.configuration.prompt.default_reasoning_effort[str]. Optional. How much a reasoning model reasons before it answers: none, minimal, low, medium, high or xhigh. When it is not set, the model reasons at its own default effort. Each model supports some of these values, and models that don't reason, e.g. gpt-4o, support none of them: an effort that the model doesn't support is left out, with a warning in the chat's sandbox mode. Some models use function tools only with none, e.g. gpt-6-luna, so the requests that offer the llmclient's tools use none, and the final answer uses this effort. A reasoning model ignores defaultTemperature at any effort but none. Example: high.
+   */
+  defaultReasoningEffort?: ("none" | "minimal" | "low" | "medium" | "high" | "xhigh") | null;
+  /**
    * LLMClient.spec.configuration.prompt.default_system_role[str]. Optional. The default system prompt to use for the llmclient. This defaults to the following value:
    * You are a helpful llmclient. When given the opportunity to utilize function calling, you should always do so. This will allow you to provide the best possible responses to the user. If you are unable to provide a response, you should prompt the user for more information. If you are still unable to provide a response, you should inform the user that you are unable to help them at this time..
    * The system prompt is the first message in the conversation and is used to set the context for the llmclient. It is sent with every prompt, so its tokens count towards every turn's cost. The maximum length of the system prompt is 32768 characters.
@@ -158,6 +162,10 @@ export interface SAMLLMClientSpecConfigPrompt {
    * LLMClient.spec.configuration.prompt.provider[str]. Optional. The provider to use for the llmclient.
    */
   provider?: string | null;
+  /**
+   * LLMClient.spec.configuration.prompt.staff_only[bool]. Optional. Whether only the platform's own staff may see and use the llmclient: the staff users of the Smarter account that runs the platform, not the admins of other accounts. Defaults to False. A staff-only llmclient is in no other user's lists, workbench or apis, including at its deployed url, and only the platform's staff may apply one. Use it for an llmclient whose tools read what only staff may see, e.g. one with the smarter_operations MCPClient, of the MCPServer's staff-only tools.
+   */
+  staffOnly?: boolean;
   /**
    * LLMClient.spec.configuration.prompt.subdomain[str]. Optional. The subdomain to use for the llmclient for published public urls. Example: https://<subdomain>.3141-5926-5359.api.example.com
    */
