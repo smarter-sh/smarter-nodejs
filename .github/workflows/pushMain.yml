@@ -117,8 +117,7 @@ jobs:
       url: https://www.npmjs.com/package/@smarter.sh/api/v/${{ needs.semantic-release.outputs.version }}
     permissions:
       contents: read
-      # npm trusted publishing and provenance.
-      id-token: write
+      id-token: write # npm trusted publishing and provenance (OIDC)
     env:
       VERSION: ${{ needs.semantic-release.outputs.version }}
     steps:
