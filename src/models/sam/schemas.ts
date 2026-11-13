@@ -3870,12 +3870,13 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Plugin Manifest Plugin.spec.data.",
         properties: {
           staticData: {
-            anyOf: [{ additionalProperties: true, type: "object" }, { type: "null" }],
-            default: null,
+            additionalProperties: true,
             description:
-              "Plugin.spec.data.staticData[obj]: The static data returned by the Plugin when the class is 'static'. LLM's are adept at understanding the context of json data structures. Try to provide granular and specific data elements.",
+              "Plugin.spec.data.staticData[obj]: Required. The static data returned by the Plugin when the class is 'static'. LLM's are adept at understanding the context of json data structures. Try to provide granular and specific data elements.",
+            type: "object",
           },
         },
+        required: ["staticData"],
         title: "SAMPluginStaticSpecData",
         type: "object",
       },
