@@ -2,7 +2,7 @@
 
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { ResourceNotFoundError, SmarterValueError } from "../src/index.ts";
+import { BadRequestError, PaymentRequiredError, ResourceNotFoundError, SmarterValueError } from "../src/index.ts";
 import { loadJson, mockPlatform, type MockPlatform } from "./helpers.ts";
 
 describe("catalog", () => {
@@ -52,5 +52,29 @@ describe("catalog", () => {
     platform.route("GET", "vectorsearches/", { json: [{ id: 1, name: "v" }] });
     expect(await platform.client.orchestrators.list()).toEqual([]);
     expect((await platform.client.vectorsearches.list())[0]?.name).toBe("v");
+  });
+
+  it("vectorsearches.run() sends the query, and the filter only when it has keys", async () => {
+    platform.route("POST", "vectorsearches/rMTAwMDAxMgx/vectorsearch/", { fixture: "vectorsearch_run" });
+    const found = await platform.client.vectorsearches.run("rMTAwMDAxMgx", "refunds", { filter: { topic: "refunds" } });
+    expect(await platform.requestJson()).toEqual({ query: "refunds", filter: { topic: "refunds" } });
+    expect(found.vectorstore).toBe("example_policies");
+    expect(found.results[0]?.metadata?.["document"]).toBe("refunds.txt");
+    expect(found.results[0]?.score).toBe(0.83);
+    await platform.client.vectorsearches.run("rMTAwMDAxMgx", "refunds", { filter: {} });
+    expect(await platform.requestJson()).toEqual({ query: "refunds" });
+  });
+
+  it("vectorsearches.run() throws the platform's refusals", async () => {
+    platform.route("POST", "vectorsearches/1/vectorsearch/", {
+      status: 400,
+      json: { detail: "Vectorsearch example is disabled." },
+    });
+    platform.route("POST", "vectorsearches/2/vectorsearch/", { status: 402, json: { detail: "Budget exceeded." } });
+    await expect(platform.client.vectorsearches.run(1, "x")).rejects.toBeInstanceOf(BadRequestError);
+    const error = await platform.client.vectorsearches.run(2, "x").catch((err: unknown) => err);
+    expect(error).toBeInstanceOf(PaymentRequiredError);
+    expect((error as PaymentRequiredError).statusCode).toBe(402);
+    expect((error as PaymentRequiredError).message).toBe("Budget exceeded.");
   });
 });

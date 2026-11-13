@@ -23,6 +23,7 @@ import {
   ConflictError,
   InternalServerError,
   NotFoundError,
+  PaymentRequiredError,
   PermissionDeniedError,
   RateLimitError,
   UnprocessableEntityError,
@@ -68,11 +69,17 @@ export interface RequestInput extends RequestOptions {
   json?: unknown;
   /** A raw or multipart body, e.g. a `FormData` of files. */
   body?: string | FormData | undefined;
+  /**
+   * False when a 429 is the platform's refusal rather than a transient limit, e.g. a data export that the
+   * user may not start today, so that it is thrown at once instead of retried. True by default.
+   */
+  retryRateLimited?: boolean | undefined;
 }
 
 const STATUS_ERRORS: Record<number, typeof APIStatusError> = {
   400: BadRequestError,
   401: AuthenticationError,
+  402: PaymentRequiredError,
   403: PermissionDeniedError,
   404: NotFoundError,
   409: ConflictError,
@@ -380,7 +387,9 @@ export class SmarterHttpClient {
       }
       const text = await this.#readText(response, idle, request);
       idle.clear();
-      if (attempt < this.maxRetries && isRetryable(response.status, text)) {
+      const retryable =
+        isRetryable(response.status, text) && (response.status !== 429 || input.retryRateLimited !== false);
+      if (attempt < this.maxRetries && retryable) {
         await this.#wait(attempt, request, String(response.status), response.headers, input.signal);
         continue;
       }

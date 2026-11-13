@@ -118,6 +118,7 @@ describe("OpenAPI contract", () => {
     const manifest = loadJson("sam/Guardrail.example") as Record<string, unknown>;
     const upload = join(mkdtempSync(join(tmpdir(), "smarter-")), "notes.txt");
     writeFileSync(upload, "Some notes.", "utf-8");
+    const archive = new File(["PK"], "weather-0.2.1.zip");
     const calls: (() => Promise<unknown>)[] = [
       () => client.manifests.apply(manifest),
       () => client.manifests.validate(manifest),
@@ -184,6 +185,20 @@ describe("OpenAPI contract", () => {
       () => client.orchestrators.retrieve("rMTAwMDAwMQx"),
       () => client.vectorsearches.list(),
       () => client.vectorsearches.retrieve(1),
+      () => client.vectorsearches.run("rMTAwMDAxMgx", "refunds", { filter: { topic: "refunds" } }),
+      () => client.extensions.list(),
+      () => client.extensions.registry({ refresh: true }),
+      () => client.extensions.retrieve("weather"),
+      () => client.extensions.checkUpdates(),
+      () => client.extensions.install("weather", { version: "0.2.1" }),
+      () => client.extensions.upload(archive),
+      () => client.extensions.enable("weather"),
+      () => client.extensions.disable("weather"),
+      () => client.extensions.update("weather"),
+      () => client.extensions.rollback("weather", 3),
+      () => client.extensions.configure("weather", { values: { weather_api_url: null } }),
+      () => client.extensions.setAvailability("weather", false, { accountIds: [1] }),
+      () => client.extensions.uninstall("weather"),
       () => client.accounts.list(),
       () => client.accounts.retrieve(1),
       () => client.accounts.users.list(),
@@ -192,6 +207,10 @@ describe("OpenAPI contract", () => {
       () => client.accounts.userProfiles.retrieve(1),
       () => client.accounts.contacts.list(),
       () => client.accounts.contacts.retrieve(1),
+      () => client.accounts.usage({ periodicity: "7_days" }),
+      () => client.accounts.dataExports.overview(),
+      () => client.accounts.dataExports.start(),
+      () => client.accounts.dataExports.retrieve(8),
       () => client.history.sessions(),
       () => client.history.session(1),
       () => client.history.toolCalls(),
@@ -257,6 +276,14 @@ describe("OpenAPI contract", () => {
     journal: ["/journal/", "get"],
     plugin_usage: ["/prompts/history/plugin-usage/", "get"],
     user_profiles: ["/accounts/user-profiles/", "get"],
+    token_usage: ["/accounts/usage/", "get"],
+    data_export_overview: ["/accounts/data-exports/", "get"],
+    data_export: ["/accounts/data-exports/{export_id}/", "get"],
+    extensions: ["/extensions/", "get"],
+    extension_registry: ["/extensions/registry/", "get"],
+    extension: ["/extensions/{slug}/", "get"],
+    extension_action: ["/extensions/{slug}/disable/", "post"],
+    vectorsearch_run: ["/vectorsearches/{id}/vectorsearch/", "post"],
   };
 
   it("the recorded responses that the tests replay are valid under the platform's OpenAPI document", () => {

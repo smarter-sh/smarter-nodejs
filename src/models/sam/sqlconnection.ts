@@ -5,7 +5,7 @@
  */
 
 /**
- * Smarter API Manifest - SqlConnection Model
+ * Smarter API Manifest - SqlConnection Model.
  */
 export interface SAMSqlConnection {
   /**

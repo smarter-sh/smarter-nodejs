@@ -5,6 +5,7 @@ import { z } from "zod";
 import { JsonObject, JsonValue } from "../core/typing.ts";
 import { SmarterResource } from "./base.ts";
 import { Plugin } from "./plugin.ts";
+import { VectorstoreSearchResult } from "./vectorstore.ts";
 
 /** A secret's metadata. The api never returns a secret's value. */
 export const Secret = SmarterResource.extend({
@@ -43,6 +44,16 @@ export const Vectorsearch = SmarterResource.extend({
   authSecret: z.number().int().nullish(),
 });
 export type Vectorsearch = z.infer<typeof Vectorsearch>;
+
+/** The chunks that a Vectorsearch's run found in its vectorstore, best first. */
+export const VectorsearchResults = z.looseObject({
+  /** The Vectorsearch's name. */
+  vectorsearch: z.string(),
+  /** The name of the vectorstore that it searched. */
+  vectorstore: z.string(),
+  results: z.array(VectorstoreSearchResult).default([]),
+});
+export type VectorsearchResults = z.infer<typeof VectorsearchResults>;
 
 /** A chat session: one conversation with an LLMClient, by its session key. */
 export const PromptSession = z.looseObject({

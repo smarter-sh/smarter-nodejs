@@ -5198,7 +5198,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
     },
-    description: "Smarter API Manifest - SqlConnection Model",
+    description: "Smarter API Manifest - SqlConnection Model.",
     properties: {
       apiVersion: {
         description: "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
