@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
+## [1.1.0-alpha.2](https://github.com/smarter-sh/smarter-nodejs/compare/v1.1.0-alpha.1...v1.1.0-alpha.2) (2026-11-13)
+
+### Bug Fixes
+
+* **sam:** require staticData in a static plugin manifest ([4a31e37](https://github.com/smarter-sh/smarter-nodejs/commit/4a31e376e480ff254ce6797ffebb3656e51160fc))
+
 ## [1.1.0-alpha.1](https://github.com/smarter-sh/smarter-nodejs/compare/v1.0.3-alpha.1...v1.1.0-alpha.1) (2026-11-13)
 
 ### Features
