@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
+## [1.1.0-alpha.1](https://github.com/smarter-sh/smarter-nodejs/compare/v1.0.3-alpha.1...v1.1.0-alpha.1) (2026-11-13)
+
+### Features
+
+* **resources:** add extensions, usage, data exports, vectorsearch run ([c1b6566](https://github.com/smarter-sh/smarter-nodejs/commit/c1b65665c9f3f8808b08fb65bc0f367794a31165))
+
 ## [1.0.3-alpha.1](https://github.com/smarter-sh/smarter-nodejs/compare/v1.0.2...v1.0.3-alpha.1) (2026-11-10)
 
 ### Bug Fixes
