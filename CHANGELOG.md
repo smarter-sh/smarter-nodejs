@@ -6,27 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
-## [1.1.0-alpha.3](https://github.com/smarter-sh/smarter-nodejs/compare/v1.1.0-alpha.2...v1.1.0-alpha.3) (2026-11-17)
-
-### Features
-
-* **orchestrators:** start, list and poll the runs of an orchestrator ([b608113](https://github.com/smarter-sh/smarter-nodejs/commit/b608113ddd4bd21f02b7efd2eb1c5a387d941650))
+## [1.0.3](https://github.com/smarter-sh/smarter-nodejs/compare/v1.0.2...v1.0.3) (2026-11-10)
 
 ### Bug Fixes
 
-* **contracts:** sync with smarter v0.46.5 ([3f27528](https://github.com/smarter-sh/smarter-nodejs/commit/3f2752891d520ceec956289d7e96588f0594cd60))
-
-## [1.1.0-alpha.2](https://github.com/smarter-sh/smarter-nodejs/compare/v1.1.0-alpha.1...v1.1.0-alpha.2) (2026-11-13)
-
-### Bug Fixes
-
-* **sam:** require staticData in a static plugin manifest ([4a31e37](https://github.com/smarter-sh/smarter-nodejs/commit/4a31e376e480ff254ce6797ffebb3656e51160fc))
-
-## [1.1.0-alpha.1](https://github.com/smarter-sh/smarter-nodejs/compare/v1.0.3-alpha.1...v1.1.0-alpha.1) (2026-11-13)
-
-### Features
-
-* **resources:** add extensions, usage, data exports, vectorsearch run ([c1b6566](https://github.com/smarter-sh/smarter-nodejs/commit/c1b65665c9f3f8808b08fb65bc0f367794a31165))
+* **contracts:** sync with smarter v0.44.6 ([844d815](https://github.com/smarter-sh/smarter-nodejs/commit/844d815754dcc7b6eb7d18cb767ae9495bb12257))
+* **llmclients:** add providerRequest for the provider request api ([9441aee](https://github.com/smarter-sh/smarter-nodejs/commit/9441aee00b82ece3fffe4cd58197c1086b06d259))
 
 ## [1.0.3-alpha.1](https://github.com/smarter-sh/smarter-nodejs/compare/v1.0.2...v1.0.3-alpha.1) (2026-11-10)
 
