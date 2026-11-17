@@ -96,8 +96,9 @@ export interface JournalListOptions extends RequestOptions {
 /**
  * The Smarter Journal: a record of every journaled api request and response. Superusers only.
  *
- * Each entry's request document holds the caller's headers, including their api key, so only
- * superusers may read the journal.
+ * Each entry's documents hold every user's content, e.g. prompts and manifests, so only superusers
+ * may read the journal. The request document holds the request's url, an allowlist of its headers
+ * and its body, with its credentials redacted: never the caller's cookies or api key.
  */
 export class Journal extends SmarterAPIResource {
   /** The journal's endpoint. */

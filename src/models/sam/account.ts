@@ -29,7 +29,7 @@ export interface SAMAccount {
  */
 export interface SAMAccountMetadata {
   /**
-   * Account.metadata.accountNumber[str]. Your preassigned 12-digit account number for your Smarter Account in the format '####-####-####'. Read only.
+   * Account.metadata.accountNumber[str]. The 12-digit number of the Smarter Account, in the format '####-####-####'. Applying a manifest that creates the account gives it this number, so that an organization's accounts have the same numbers on every platform; omitted, a new account gets a random one. It never changes: a manifest whose number differs from its existing account's is refused.
    */
   accountNumber?: string | null;
   /**
@@ -96,6 +96,10 @@ export interface SAMAccountSpecConfig {
    */
   language?: string;
   /**
+   * Account.spec.configuration.parent[str]. Optional. The account number of the Account above this one in its organization, e.g. a department's company. Omitted means directly under the Smarter account, the root of the account tree.
+   */
+  parent?: string | null;
+  /**
    * Account.spec.configuration.phoneNumber[str]. The primary phone number for the Account.
    */
   phoneNumber?: string | null;
@@ -103,6 +107,10 @@ export interface SAMAccountSpecConfig {
    * Account.spec.configuration.postalCode[str]. The postal code for the Account.
    */
   postalCode?: string | null;
+  /**
+   * Account.spec.configuration.shareScope[str]. Optional. The account number of this Account or one of its ancestors, whose whole subtree may read this account's resources, e.g. an IT department that shares its Secrets and Connections with its company. Omitted means that the account shares nothing.
+   */
+  shareScope?: string | null;
   /**
    * Account.spec.configuration.state[str]. The state for the Account.
    */

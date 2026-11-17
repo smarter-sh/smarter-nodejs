@@ -23,6 +23,7 @@ import {
   ConflictError,
   InternalServerError,
   NotFoundError,
+  PaymentRequiredError,
   PermissionDeniedError,
   RateLimitError,
   UnprocessableEntityError,
@@ -68,11 +69,22 @@ export interface RequestInput extends RequestOptions {
   json?: unknown;
   /** A raw or multipart body, e.g. a `FormData` of files. */
   body?: string | FormData | undefined;
+  /**
+   * False when a 429 is the platform's refusal rather than a transient limit, e.g. a data export that the
+   * user may not start today, so that it is thrown at once instead of retried. True by default.
+   */
+  retryRateLimited?: boolean | undefined;
+  /**
+   * How many times to retry this request, instead of the client's `maxRetries`, e.g. 0 for a request
+   * that must not be sent twice, such as one that starts an Orchestrator's run.
+   */
+  maxRetries?: number | undefined;
 }
 
 const STATUS_ERRORS: Record<number, typeof APIStatusError> = {
   400: BadRequestError,
   401: AuthenticationError,
+  402: PaymentRequiredError,
   403: PermissionDeniedError,
   404: NotFoundError,
   409: ConflictError,
@@ -333,6 +345,7 @@ export class SmarterHttpClient {
       headers["Content-Type"] = "application/json";
     }
     const timeout = input.timeout ?? this.config.timeout;
+    const maxRetries = input.maxRetries ?? this.maxRetries;
     if (this.#logger.enabled("debug")) {
       const shown = body instanceof FormData ? "<multipart>" : (body ?? "").slice(0, 2000);
       this.#logger.log(
@@ -358,7 +371,7 @@ export class SmarterHttpClient {
         idle.clear();
         if (input.signal?.aborted) throw input.signal.reason;
         const timedOut = idle.timedOut;
-        if (attempt < this.maxRetries) {
+        if (attempt < maxRetries) {
           await this.#wait(attempt, request, timedOut ? "timeout" : "connection error", undefined, input.signal);
           continue;
         }
@@ -380,7 +393,9 @@ export class SmarterHttpClient {
       }
       const text = await this.#readText(response, idle, request);
       idle.clear();
-      if (attempt < this.maxRetries && isRetryable(response.status, text)) {
+      const retryable =
+        isRetryable(response.status, text) && (response.status !== 429 || input.retryRateLimited !== false);
+      if (attempt < maxRetries && retryable) {
         await this.#wait(attempt, request, String(response.status), response.headers, input.signal);
         continue;
       }

@@ -70,11 +70,11 @@ export interface SAMPluginStaticSpec {
  */
 export interface SAMPluginStaticSpecData {
   /**
-   * Plugin.spec.data.staticData[obj]: The static data returned by the Plugin when the class is 'static'. LLM's are adept at understanding the context of json data structures. Try to provide granular and specific data elements.
+   * Plugin.spec.data.staticData[obj]: Required. The static data returned by the Plugin when the class is 'static'. LLM's are adept at understanding the context of json data structures. Try to provide granular and specific data elements.
    */
-  staticData?: {
+  staticData: {
     [k: string]: unknown | undefined;
-  } | null;
+  };
   [k: string]: unknown | undefined;
 }
 /**

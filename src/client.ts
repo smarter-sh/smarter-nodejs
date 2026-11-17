@@ -25,6 +25,7 @@ import { KindInfo } from "./models/manifest.ts";
 import { PlatformStatus, PlatformVersion, WhoAmI } from "./models/platform.ts";
 import { Accounts } from "./resources/accounts.ts";
 import { Orchestrators, Plugins, Secrets, Vectorsearches } from "./resources/catalog.ts";
+import { Extensions } from "./resources/extensions.ts";
 import { Guardrails } from "./resources/guardrails.ts";
 import { Journal, PromptHistory } from "./resources/history.ts";
 import { LLMClients } from "./resources/llmclients.ts";
@@ -57,7 +58,9 @@ export interface SmarterOptions extends ConfigOptions {
  * - {@link Smarter.guardrails}, {@link Smarter.mcpClients}, {@link Smarter.vectorstores},
  *   {@link Smarter.llmHosts}, {@link Smarter.secrets}, {@link Smarter.plugins},
  *   {@link Smarter.orchestrators}, {@link Smarter.vectorsearches}
- * - {@link Smarter.accounts} (and `accounts.users`, `accounts.contacts` and `accounts.userProfiles`)
+ * - {@link Smarter.extensions}: the platform's extensions, and the extension registry
+ * - {@link Smarter.accounts} (and `accounts.users`, `accounts.contacts`, `accounts.userProfiles`,
+ *   `accounts.dataExports`, and every user's token usage, `accounts.usage()`)
  * - {@link Smarter.history}, {@link Smarter.journal}, {@link Smarter.providers}, {@link Smarter.proxies}
  * - {@link Smarter.whoami}, {@link Smarter.version}, {@link Smarter.status} and {@link Smarter.kinds}
  *
@@ -90,7 +93,9 @@ export class Smarter {
   readonly orchestrators: Orchestrators;
   /** Vectorsearches. */
   readonly vectorsearches: Vectorsearches;
-  /** Accounts, and their users and contacts. */
+  /** The platform's extensions, and the extension registry. */
+  readonly extensions: Extensions;
+  /** Accounts, and their users and contacts, and the user's token usage and data exports. */
   readonly accounts: Accounts;
   /** The history of chat sessions, tool calls and plugin uses. */
   readonly history: PromptHistory;
@@ -125,6 +130,7 @@ export class Smarter {
     this.plugins = new Plugins(this);
     this.orchestrators = new Orchestrators(this);
     this.vectorsearches = new Vectorsearches(this);
+    this.extensions = new Extensions(this);
     this.accounts = new Accounts(this);
     this.history = new PromptHistory(this);
     this.journal = new Journal(this);

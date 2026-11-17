@@ -42,6 +42,7 @@ export {
   ConflictError,
   InternalServerError,
   NotFoundError,
+  PaymentRequiredError,
   PermissionDeniedError,
   RateLimitError,
   ResourceNotFoundError,
@@ -60,6 +61,7 @@ export { JsonObject, JsonValue, type SmarterId } from "./core/typing.ts";
 export * from "./models/account.ts";
 export * from "./models/base.ts";
 export * from "./models/chat.ts";
+export * from "./models/extension.ts";
 export * from "./models/guardrail.ts";
 export * from "./models/journal.ts";
 export * from "./models/llmclient.ts";
@@ -73,9 +75,17 @@ export * from "./models/react.ts";
 export * from "./models/sam/index.ts";
 export * from "./models/vectorstore.ts";
 
-export { AccountContacts, Accounts, UserProfiles, Users } from "./resources/accounts.ts";
-export { SmarterAPIResource, SmarterKindResource, resourceId } from "./resources/base.ts";
+export {
+  AccountContacts,
+  Accounts,
+  DataExports,
+  UserProfiles,
+  Users,
+  type TokenUsagePeriodicity,
+} from "./resources/accounts.ts";
+export { SmarterAPIResource, SmarterKindResource, resourceId, type UploadInput } from "./resources/base.ts";
 export { Orchestrators, PLUGIN_KINDS, Plugins, Secrets, Vectorsearches } from "./resources/catalog.ts";
+export { Extensions, type ExtensionSecretInput, type ExtensionSettings } from "./resources/extensions.ts";
 export { Guardrails, type GuardrailStage } from "./resources/guardrails.ts";
 export { Journal, PromptHistory, type JournalListOptions } from "./resources/history.ts";
 export {
@@ -95,9 +105,4 @@ export { CLI_PATH, Manifests, kindSegment, type ManifestGetOptions } from "./res
 export { MCPClients } from "./resources/mcpclients.ts";
 export { Providers } from "./resources/providers.ts";
 export { Proxies, type ProxyRequestOptions } from "./resources/proxies.ts";
-export {
-  Vectorstores,
-  type UploadInput,
-  type VectorstoreSearchOptions,
-  type VectorstoreSearchType,
-} from "./resources/vectorstores.ts";
+export { Vectorstores, type VectorstoreSearchOptions, type VectorstoreSearchType } from "./resources/vectorstores.ts";

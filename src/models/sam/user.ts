@@ -60,7 +60,25 @@ export interface SAMUserMetadata {
  * User.spec[obj]: Required, the User specification.
  */
 export interface SAMUserSpec {
+  /**
+   * User.spec.accounts[list]. Optional. The accounts that the User belongs to, e.g. the departments of an organization, each with whether the user administers it. Omitted, the user belongs to the account of whoever applies the manifest. Apply adds each membership that is missing and updates the others, but never removes one, which would delete every resource that the user owns in that account. A superuser may list any account; anyone else only accounts that they administer.
+   */
+  accounts?: SAMUserAccountMembership[] | null;
   config: SAMUserSpecConfig;
+  [k: string]: unknown | undefined;
+}
+/**
+ * Smarter API User Manifest User.spec.accounts[]: the user's membership of one account.
+ */
+export interface SAMUserAccountMembership {
+  /**
+   * User.spec.accounts.accountNumber[str]. The number of an account that the User belongs to.
+   */
+  accountNumber: string;
+  /**
+   * User.spec.accounts.isAccountAdmin[bool]. Optional. Whether the User administers this account, and only this one: manages every resource in it. Default: false.
+   */
+  isAccountAdmin?: boolean;
   [k: string]: unknown | undefined;
 }
 /**
@@ -87,6 +105,10 @@ export interface SAMUserSpecConfig {
    * User.spec.configuration.lastName[str]. Optional. The last name of the User.
    */
   lastName?: string | null;
+  /**
+   * User.spec.configuration.passwordSecret[str]. Optional. The name of a Secret whose value becomes the User's password, each time the manifest is applied, e.g. the published password of a demonstration user. A manifest never holds a password itself. Only a superuser may set it.
+   */
+  passwordSecret?: string | null;
   [k: string]: unknown | undefined;
 }
 /**

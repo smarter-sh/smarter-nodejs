@@ -1,11 +1,13 @@
-/** Secrets, plugins, orchestrators and vectorsearches: the kinds whose REST api only lists and reads them. */
+/** Secrets, plugins, orchestrators and vectorsearches: the kinds whose REST api lists and reads them, and runs a Vectorsearch. */
+
+import { z } from "zod";
 
 import { ResourceNotFoundError, SmarterValueError } from "../core/errors.ts";
 import type { RequestOptions } from "../core/http.ts";
-import type { SmarterId } from "../core/typing.ts";
+import type { JsonValue, SmarterId } from "../core/typing.ts";
 import type { SmarterJournalMessage } from "../models/journal.ts";
 import { Manifest, ManifestData, toManifest, type ManifestInput } from "../models/manifest.ts";
-import { Orchestrator, Secret, Vectorsearch } from "../models/misc.ts";
+import { OrchestrationRun, Orchestrator, Secret, Vectorsearch, VectorsearchResults } from "../models/misc.ts";
 import { Plugin } from "../models/plugin.ts";
 import { resourceId, SmarterKindResource } from "./base.ts";
 
@@ -122,16 +124,121 @@ export class Plugins extends SmarterKindResource<typeof Plugin> {
   }
 }
 
-/** Orchestrators: `/api/v1/orchestrators/`, and the manifest api's `Orchestrator` kind. */
+/**
+ * Orchestrators: `/api/v1/orchestrators/`, and the manifest api's `Orchestrator` kind.
+ *
+ * {@link Orchestrators.run} starts a run of an Orchestrator toward an objective, which the platform
+ * executes in the background. Poll it with {@link Orchestrators.runStatus} until {@link isRunDone}.
+ *
+ * @example
+ * ```ts
+ * let run = await client.orchestrators.run(12, "Prepare the board pack for Q4 2025");
+ * while (!isRunDone(run)) {
+ *   await new Promise((resolve) => setTimeout(resolve, 2000));
+ *   run = await client.orchestrators.runStatus(12, run.id);
+ * }
+ * console.log(run.status, run.result);
+ * ```
+ */
 export class Orchestrators extends SmarterKindResource<typeof Orchestrator> {
   readonly kind = "Orchestrator";
   readonly path = "orchestrators/";
   readonly model = Orchestrator;
+
+  /**
+   * Start a run of an Orchestrator toward an objective.
+   *
+   * The platform answers at once with the run, `pending`, then executes it one step at a time. Each step
+   * calls a harness LLMClient as its owner, and is charged to it. The request is never retried, whatever
+   * the client's `maxRetries`: a retry would start a second run.
+   *
+   * @param id - The Orchestrator's id or hashed id.
+   * @param objective - What the run is to achieve, e.g. `Prepare the board pack for Q4 2025`. Every step receives it.
+   * @param options - Per-request options.
+   * @returns The new run.
+   * @throws {@link BadRequestError} If the objective is empty, or the Orchestrator's strategy can't run yet.
+   * @throws {@link PermissionDeniedError} If the user may not use every LLMClient of the Orchestrator.
+   * @throws {@link NotFoundError} If the user may not read the Orchestrator.
+   */
+  async run(id: SmarterId, objective: string, options?: RequestOptions): Promise<OrchestrationRun> {
+    return this.http.request("POST", `${this.path}${resourceId(id)}/runs/`, OrchestrationRun, {
+      ...options,
+      json: { objective },
+      maxRetries: 0,
+    });
+  }
+
+  /**
+   * The newest runs of an Orchestrator that the user started, up to 20, each with its steps.
+   *
+   * A superuser gets every user's.
+   *
+   * @param id - The Orchestrator's id or hashed id.
+   * @param options - Per-request options.
+   * @returns The runs, newest first.
+   * @throws {@link NotFoundError} If the user may not read the Orchestrator.
+   */
+  async runs(id: SmarterId, options?: RequestOptions): Promise<OrchestrationRun[]> {
+    return this.http.request("GET", `${this.path}${resourceId(id)}/runs/`, z.array(OrchestrationRun), options);
+  }
+
+  /**
+   * A run of an Orchestrator, with its steps and, once it succeeded, its result.
+   *
+   * @param id - The Orchestrator's id or hashed id.
+   * @param runId - The run's id.
+   * @param options - Per-request options.
+   * @returns The run.
+   * @throws {@link NotFoundError} If there is no such run, or the user neither started it nor is a superuser.
+   */
+  async runStatus(id: SmarterId, runId: number, options?: RequestOptions): Promise<OrchestrationRun> {
+    return this.http.request(
+      "GET",
+      `${this.path}${resourceId(id)}/runs/${resourceId(runId)}/`,
+      OrchestrationRun,
+      options,
+    );
+  }
 }
 
-/** Vectorsearches: `/api/v1/vectorsearches/`, and the manifest api's `Vectorsearch` kind. */
+/**
+ * Vectorsearches: `/api/v1/vectorsearches/`, and the manifest api's `Vectorsearch` kind.
+ *
+ * @example
+ * ```ts
+ * const found = await client.vectorsearches.run(12, "How long is the refund window?");
+ * for (const result of found.results) console.log(result.score, result.text);
+ * ```
+ */
 export class Vectorsearches extends SmarterKindResource<typeof Vectorsearch> {
   readonly kind = "Vectorsearch";
   readonly path = "vectorsearches/";
   readonly model = Vectorsearch;
+
+  /**
+   * Run a Vectorsearch: search its vectorstore with a query, and the Vectorsearch's own configuration,
+   * its search type, `k`, score threshold, mmr settings and metadata filter.
+   *
+   * The query is embedded by the vectorstore's embeddings provider, which may be billable.
+   *
+   * @param id - The Vectorsearch's id or hashed id.
+   * @param query - The text to find similar chunks of.
+   * @param options - `filter`: more metadata that every result must match, besides the Vectorsearch's own
+   *   `metadataFilter`, which wins where both name the same key.
+   * @returns The matching chunks, best first, and the names of the Vectorsearch and its vectorstore.
+   * @throws {@link BadRequestError} If the Vectorsearch is disabled, the query is invalid, or the search failed.
+   * @throws {@link PaymentRequiredError} If a budget forbids the search.
+   */
+  async run(
+    id: SmarterId,
+    query: string,
+    options?: RequestOptions & { filter?: Record<string, JsonValue> | null },
+  ): Promise<VectorsearchResults> {
+    const body: Record<string, JsonValue> = { query };
+    if (options?.filter && Object.keys(options.filter).length > 0) body["filter"] = options.filter;
+    return this.http.request("POST", `${this.path}${resourceId(id)}/vectorsearch/`, VectorsearchResults, {
+      ...options,
+      json: body,
+    });
+  }
 }

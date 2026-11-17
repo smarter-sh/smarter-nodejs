@@ -8,6 +8,10 @@
  * such as evaluating a Guardrail or calling an MCP tool (ADR-003).
  */
 
+import { openAsBlob } from "node:fs";
+import { basename } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { z } from "zod";
 
 import { ResourceNotFoundError, SmarterValueError } from "../core/errors.ts";
@@ -36,6 +40,26 @@ export function resourceId(value: SmarterId): string {
   const text = String(value).trim();
   if (!text || text.includes("/")) throw new SmarterValueError(`Invalid resource id: ${JSON.stringify(value)}`);
   return encodeURIComponent(text);
+}
+
+/** A file to upload: its path, its `file:` url, or a `File`. */
+export type UploadInput = string | URL | File;
+
+/**
+ * Add a file to a multipart form, under its own name.
+ *
+ * @param form - The form.
+ * @param field - The form's field, e.g. `files`.
+ * @param file - The file: a path, a `file:` url, or a `File`. A path is read lazily, when the form is sent.
+ * @returns Nothing: the file is appended to the form.
+ */
+export async function appendUpload(form: FormData, field: string, file: UploadInput): Promise<void> {
+  if (file instanceof File) {
+    form.append(field, file, file.name);
+    return;
+  }
+  const path = file instanceof URL ? fileURLToPath(file) : file;
+  form.append(field, await openAsBlob(path), basename(path));
 }
 
 /** A group of api operations. */

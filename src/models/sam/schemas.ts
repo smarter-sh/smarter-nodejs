@@ -15,7 +15,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             anyOf: [{ type: "string" }, { type: "null" }],
             default: null,
             description:
-              "Account.metadata.accountNumber[str]. Your preassigned 12-digit account number for your Smarter Account in the format '####-####-####'. Read only.",
+              "Account.metadata.accountNumber[str]. The 12-digit number of the Smarter Account, in the format '####-####-####'. Applying a manifest that creates the account gives it this number, so that an organization's accounts have the same numbers on every platform; omitted, a new account gets a random one. It never changes: a manifest whose number differs from its existing account's is refused.",
           },
           annotations: {
             anyOf: [{ additionalProperties: { type: "string" }, type: "object" }, { type: "null" }],
@@ -95,6 +95,12 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
               "Account.spec.configuration.language[str]. The primary BCP 47 language tag for the Account. Default: en-US.",
             type: "string",
           },
+          parent: {
+            anyOf: [{ type: "string" }, { type: "null" }],
+            default: null,
+            description:
+              "Account.spec.configuration.parent[str]. Optional. The account number of the Account above this one in its organization, e.g. a department's company. Omitted means directly under the Smarter account, the root of the account tree.",
+          },
           phoneNumber: {
             anyOf: [{ type: "string" }, { type: "null" }],
             default: null,
@@ -104,6 +110,12 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             anyOf: [{ type: "string" }, { type: "null" }],
             default: null,
             description: "Account.spec.configuration.postalCode[str]. The postal code for the Account.",
+          },
+          shareScope: {
+            anyOf: [{ type: "string" }, { type: "null" }],
+            default: null,
+            description:
+              "Account.spec.configuration.shareScope[str]. Optional. The account number of this Account or one of its ancestors, whose whole subtree may read this account's resources, e.g. an IT department that shares its Secrets and Connections with its company. Omitted means that the account shares nothing.",
           },
           state: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -3534,8 +3546,14 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
       },
       SAMOrchestratorHarnessConfig: {
         description:
-          "A single LLMClient (Harness) membership within the Orchestrator.\n\nMirrors smarter.apps.orchestrator.models.OrchestratorHarness. The\nllmClientName is a reference by name, not by primary key — resolved\nagainst the account's existing LLMClients at apply time.",
+          "A single LLMClient (Harness) membership within the Orchestrator.\n\nMirrors smarter.apps.orchestrator.models.OrchestratorHarness. The\nllmClientName is a reference by name, not by primary key, resolved at\napply time: in accountNumber's account if given, which may be another\naccount, e.g. a department's, otherwise the nearest of the owner's account\ntree (ADR-036, ADR-037).",
         properties: {
+          accountNumber: {
+            anyOf: [{ type: "string" }, { type: "null" }],
+            default: null,
+            description:
+              "The account that the LLMClient belongs to, e.g. a department's, which the Orchestrator's owner must be able to read. Defaults to the nearest LLMClient of that name in the owner's account tree (ADR-036).",
+          },
           config: {
             additionalProperties: true,
             description: "Per-membership overrides (e.g. temperature, system prompt fragment, tool allowlist).",
@@ -3870,12 +3888,13 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         description: "Smarter API Plugin Manifest Plugin.spec.data.",
         properties: {
           staticData: {
-            anyOf: [{ additionalProperties: true, type: "object" }, { type: "null" }],
-            default: null,
+            additionalProperties: true,
             description:
-              "Plugin.spec.data.staticData[obj]: The static data returned by the Plugin when the class is 'static'. LLM's are adept at understanding the context of json data structures. Try to provide granular and specific data elements.",
+              "Plugin.spec.data.staticData[obj]: Required. The static data returned by the Plugin when the class is 'static'. LLM's are adept at understanding the context of json data structures. Try to provide granular and specific data elements.",
+            type: "object",
           },
         },
+        required: ["staticData"],
         title: "SAMPluginStaticSpecData",
         type: "object",
       },
@@ -5198,7 +5217,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         type: "object",
       },
     },
-    description: "Smarter API Manifest - SqlConnection Model",
+    description: "Smarter API Manifest - SqlConnection Model.",
     properties: {
       apiVersion: {
         description: "apiVersion[String]: Required. The API version of the AbstractSAMBase.",
@@ -5513,6 +5532,24 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         title: "SAMDependency",
         type: "object",
       },
+      SAMUserAccountMembership: {
+        description: "Smarter API User Manifest User.spec.accounts[]: the user's membership of one account.",
+        properties: {
+          accountNumber: {
+            description: "User.spec.accounts.accountNumber[str]. The number of an account that the User belongs to.",
+            type: "string",
+          },
+          isAccountAdmin: {
+            default: false,
+            description:
+              "User.spec.accounts.isAccountAdmin[bool]. Optional. Whether the User administers this account, and only this one: manages every resource in it. Default: false.",
+            type: "boolean",
+          },
+        },
+        required: ["accountNumber"],
+        title: "SAMUserAccountMembership",
+        type: "object",
+      },
       SAMUserMetadata: {
         description: "Smarter API User Manifest - Metadata class.",
         properties: {
@@ -5548,6 +5585,12 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
       SAMUserSpec: {
         description: "Smarter API User Manifest User.spec.",
         properties: {
+          accounts: {
+            anyOf: [{ items: { $ref: "#/$defs/SAMUserAccountMembership" }, type: "array" }, { type: "null" }],
+            default: null,
+            description:
+              "User.spec.accounts[list]. Optional. The accounts that the User belongs to, e.g. the departments of an organization, each with whether the user administers it. Omitted, the user belongs to the account of whoever applies the manifest. Apply adds each membership that is missing and updates the others, but never removes one, which would delete every resource that the user owns in that account. A superuser may list any account; anyone else only accounts that they administer.",
+          },
           config: {
             $ref: "#/$defs/SAMUserSpecConfig",
             description: "User.spec.config[object]. The configuration for the User.",
@@ -5581,6 +5624,12 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             anyOf: [{ type: "string" }, { type: "null" }],
             default: null,
             description: "User.spec.configuration.lastName[str]. Optional. The last name of the User.",
+          },
+          passwordSecret: {
+            anyOf: [{ type: "string" }, { type: "null" }],
+            default: null,
+            description:
+              "User.spec.configuration.passwordSecret[str]. Optional. The name of a Secret whose value becomes the User's password, each time the manifest is applied, e.g. the published password of a demonstration user. A manifest never holds a password itself. Only a superuser may set it.",
           },
         },
         required: ["email", "isActive"],

@@ -1,0 +1,19 @@
+{
+  "email": "user@example.com",
+  "linkHours": 24,
+  "exportsPerDay": 5,
+  "exportsLeftToday": 4,
+  "latest": {
+    "id": 7,
+    "status": "succeeded",
+    "step": "done",
+    "createdAt": "2026-11-12T14:03:11.402187+00:00",
+    "email": "user@example.com",
+    "expiresAt": "2026-11-13T14:03:52.118374+00:00",
+    "error": "",
+    "resourceCount": 42,
+    "manifestCount": 42,
+    "failedCount": 0,
+    "sizeBytes": 18311
+  }
+}

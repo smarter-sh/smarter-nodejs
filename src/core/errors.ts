@@ -193,6 +193,18 @@ export class AuthenticationError extends APIStatusError {
   override readonly name: string = "AuthenticationError";
 }
 
+/**
+ * 402: a budget forbids the charge that the request would make.
+ *
+ * The platform refuses a budgeted request, e.g. a Vectorsearch run or a Proxy's request, when a
+ * budget has locked the account, the user profile or the resource that it would charge. Retrying
+ * won't help until the budget allows it again, e.g. in its next period or after its limit is raised,
+ * so the SDK never retries it.
+ */
+export class PaymentRequiredError extends APIStatusError {
+  override readonly name: string = "PaymentRequiredError";
+}
+
 /** 403: the api key's user may not perform the operation. */
 export class PermissionDeniedError extends APIStatusError {
   override readonly name: string = "PermissionDeniedError";

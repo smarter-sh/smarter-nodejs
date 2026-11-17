@@ -23,6 +23,7 @@ import {
   ConflictError,
   InternalServerError,
   NotFoundError,
+  PaymentRequiredError,
   PermissionDeniedError,
   RateLimitError,
   UnprocessableEntityError,
@@ -70,6 +71,7 @@ describe("http helpers", () => {
     const cases: [number, typeof APIStatusError][] = [
       [400, BadRequestError],
       [401, AuthenticationError],
+      [402, PaymentRequiredError],
       [403, PermissionDeniedError],
       [404, NotFoundError],
       [409, ConflictError],
@@ -100,6 +102,7 @@ describe("http helpers", () => {
     expect(isRetryable(503, loadText("describe_missing.json"))).toBe(false);
     expect(isRetryable(500, "")).toBe(false);
     expect(isRetryable(404, "")).toBe(false);
+    expect(isRetryable(402, "")).toBe(false);
   });
 
   it("honors Retry-After up to a limit, and otherwise backs off exponentially", () => {
@@ -154,6 +157,21 @@ describe("SmarterHttpClient", () => {
     });
     await expect(platform.makeClient({ maxRetries: 2 }).whoami()).rejects.toBeInstanceOf(RateLimitError);
     expect(platform.requests).toHaveLength(3);
+  });
+
+  it("throws a 402 at once: a budget's refusal is not retried", async () => {
+    platform.route("POST", "cli/whoami/", {
+      status: 402,
+      json: { detail: "The budget monthly_cap forbids this charge." },
+      headers: { "retry-after": "0" },
+    });
+    const error = await platform
+      .makeClient({ maxRetries: 3 })
+      .whoami()
+      .catch((err: unknown) => err);
+    expect(error).toBeInstanceOf(PaymentRequiredError);
+    expect(error).toBeInstanceOf(APIStatusError);
+    expect(platform.requests).toHaveLength(1);
   });
 
   it("throws a 4xx other than 408 and 429 at once", async () => {

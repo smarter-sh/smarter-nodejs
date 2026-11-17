@@ -11,10 +11,6 @@
  * ```
  */
 
-import { openAsBlob } from "node:fs";
-import { basename } from "node:path";
-import { fileURLToPath } from "node:url";
-
 import type { RequestOptions } from "../core/http.ts";
 import type { JsonValue, SmarterId } from "../core/typing.ts";
 import {
@@ -28,7 +24,7 @@ import {
   VectorstoreSnapshots,
   VectorstoreStatus,
 } from "../models/vectorstore.ts";
-import { resourceId, SmarterKindResource } from "./base.ts";
+import { appendUpload, resourceId, SmarterKindResource, type UploadInput } from "./base.ts";
 
 /** How a vectorstore search ranks chunks. */
 export type VectorstoreSearchType = "similarity" | "mmr" | "similarity_score_threshold";
@@ -48,9 +44,6 @@ export interface VectorstoreSearchOptions extends RequestOptions {
   /** Only chunks whose metadata match. */
   filter?: Record<string, JsonValue> | null;
 }
-
-/** A file to upload: its path, its `file:` url, or a `File`. */
-export type UploadInput = string | URL | File;
 
 /**
  * Vectorstores: `/api/v1/vectorstores/`, and the manifest api's `Vectorstore` kind.
@@ -165,14 +158,7 @@ export class Vectorstores extends SmarterKindResource<typeof Vectorstore> {
     options?: RequestOptions,
   ): Promise<VectorstoreDocumentsAdded> {
     const form = new FormData();
-    for (const file of files) {
-      if (file instanceof File) {
-        form.append("files", file, file.name);
-      } else {
-        const path = file instanceof URL ? fileURLToPath(file) : file;
-        form.append("files", await openAsBlob(path), basename(path));
-      }
-    }
+    for (const file of files) await appendUpload(form, "files", file);
     return this.http.request("POST", `${this.path}${resourceId(id)}/documents/`, VectorstoreDocumentsAdded, {
       ...options,
       body: form,

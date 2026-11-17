@@ -8,7 +8,8 @@
  *
  * They validate the SDK's schemas against the platform's real responses. They prompt an LLMClient,
  * which makes billable LLM requests, and they apply and delete a throwaway Guardrail. They never
- * deploy anything: deploy creates real, billable infrastructure.
+ * deploy anything: deploy creates real, billable infrastructure. They never start a data export (a real
+ * stored file and a real email), and never install, configure, enable or uninstall an extension.
  *
  * `SMARTER_TEST_LLMCLIENT` names the LLMClient to prompt (default `calculator`, which the platform
  * creates as an example), and its built-in calculator function makes the prompt call a tool. These
@@ -247,5 +248,43 @@ describe.skipIf(!LIVE)("live", { timeout: 180_000 }, () => {
       await client.llmHosts.status(llmhost.id);
       await client.llmHosts.plan(llmhost.id);
     }
+  });
+
+  it("the extensions, the registry and an installed extension parse", async () => {
+    const installed = await client.extensions.list();
+    await client.extensions.registry();
+    const first = installed.objects[0];
+    if (first !== undefined) expect((await client.extensions.retrieve(first.slug)).slug).toBe(first.slug);
+  });
+
+  // Reads only: starting a data export stores a real file and sends a real email.
+  it("the user's token usage and data export overview parse", async () => {
+    const usage = await client.accounts.usage({ periodicity: "7_days" });
+    expect(usage.points.length).toBeGreaterThan(0);
+    expect((await client.accounts.usage()).periodicity).toBe("24_hours");
+    const overview = await client.accounts.dataExports.overview();
+    if (overview.latest) {
+      expect((await client.accounts.dataExports.retrieve(overview.latest.id)).id).toBe(overview.latest.id);
+    }
+  });
+
+  // Only over a vectorstore that is already deployed: the live tests never deploy one.
+  it("a Vectorsearch runs, when one is enabled over a deployed vectorstore", async (context) => {
+    const ready = new Set(
+      ((await platformCall(context.skip, "vectorstores list", () => client.vectorstores.list())) ?? [])
+        .filter((store) => store.status === "ready")
+        .map((store) => store.id),
+    );
+    const vectorsearch = (await client.vectorsearches.list()).find(
+      (item) => item.isEnabled !== false && item.vectorstore != null && ready.has(item.vectorstore),
+    );
+    if (vectorsearch === undefined) {
+      context.skip("the platform has no enabled Vectorsearch over a deployed vectorstore");
+      return;
+    }
+    const found = await platformCall(context.skip, "Vectorsearch run", () =>
+      client.vectorsearches.run(vectorsearch.id, "refunds"),
+    );
+    if (found) expect(found.vectorsearch).toBe(vectorsearch.name);
   });
 });

@@ -1,0 +1,23 @@
+{
+  "vectorsearch": "example_policies_search",
+  "vectorstore": "example_policies",
+  "results": [
+    {
+      "id": "5c1e0a47-3b2f-4f7e-9d52-0c6a1f3e8b21",
+      "text": "Refunds are issued within 30 days of purchase.",
+      "metadata": {
+        "document": "refunds.txt",
+        "topic": "refunds"
+      },
+      "score": 0.83
+    },
+    {
+      "id": "9a7d2b10-61c4-4e0f-b8a3-2d5e7c9f1a04",
+      "text": "Exchanges are free for unworn items.",
+      "metadata": {
+        "document": "exchanges.txt"
+      },
+      "score": 0.61
+    }
+  ]
+}
