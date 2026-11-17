@@ -183,6 +183,9 @@ describe("OpenAPI contract", () => {
       () => client.proxies.list(),
       () => client.orchestrators.list(),
       () => client.orchestrators.retrieve("rMTAwMDAwMQx"),
+      () => client.orchestrators.run("rMTAwMDAwMQx", "Summarize the refund policy."),
+      () => client.orchestrators.runs(1),
+      () => client.orchestrators.runStatus(1, 3),
       () => client.vectorsearches.list(),
       () => client.vectorsearches.retrieve(1),
       () => client.vectorsearches.run("rMTAwMDAxMgx", "refunds", { filter: { topic: "refunds" } }),
@@ -284,6 +287,7 @@ describe("OpenAPI contract", () => {
     extension: ["/extensions/{slug}/", "get"],
     extension_action: ["/extensions/{slug}/disable/", "post"],
     vectorsearch_run: ["/vectorsearches/{id}/vectorsearch/", "post"],
+    orchestration_run: ["/orchestrators/{id}/runs/{run_id}/", "get"],
   };
 
   it("the recorded responses that the tests replay are valid under the platform's OpenAPI document", () => {

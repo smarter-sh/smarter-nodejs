@@ -1,9 +1,9 @@
-/** Models of secrets, prompt history, proxies, providers, orchestrators and vectorsearches. */
+/** Models of secrets, prompt history, proxies, providers, orchestrators and their runs, and vectorsearches. */
 
 import { z } from "zod";
 
 import { JsonObject, JsonValue } from "../core/typing.ts";
-import { SmarterResource } from "./base.ts";
+import { SmarterOwner, SmarterResource } from "./base.ts";
 import { Plugin } from "./plugin.ts";
 import { VectorstoreSearchResult } from "./vectorstore.ts";
 
@@ -24,6 +24,81 @@ export const Orchestrator = SmarterResource.extend({
   llmclients: z.array(z.number().int()).default([]),
 });
 export type Orchestrator = z.infer<typeof Orchestrator>;
+
+/**
+ * One step of a run of an Orchestrator: one call of a harness LLMClient, as its owner.
+ *
+ * Its messages, tokens and charges are those of its prompt session, which the LLMClient's owner may read.
+ */
+export const OrchestrationStep = z.looseObject({
+  /** The step's position in the run, from 1. */
+  sequence: z.number().int(),
+  /** The harness LLMClient's name. */
+  llmclient: z.string(),
+  /** The account that the LLMClient belongs to. */
+  accountNumber: z.string(),
+  /** The harness's role: planner, executor, critic, router, summarizer or tool_caller. */
+  role: z.string(),
+  /** succeeded, failed or skipped. */
+  status: z.string(),
+  /** Why the step failed, if it did. */
+  errorMessage: z.string().nullish(),
+  /** When the step ended, in ISO 8601. */
+  createdAt: z.string().nullish(),
+});
+export type OrchestrationStep = z.infer<typeof OrchestrationStep>;
+
+/**
+ * A run of an Orchestrator: an attempt at an objective, its status, its steps and its result.
+ *
+ * A run starts `pending`, and the platform executes it in the background, one step at a time. Poll it
+ * until {@link isRunDone} is true: its status is `succeeded`, `failed`, `cancelled` or
+ * `max_iterations_exceeded`.
+ */
+export const OrchestrationRun = z.looseObject({
+  id: z.number().int(),
+  /** The Orchestrator's id. */
+  orchestrator: z.number().int(),
+  /** What the run is to achieve. */
+  objective: z.string(),
+  /** pending, running, succeeded, failed, cancelled or max_iterations_exceeded. */
+  status: z.string(),
+  /** How many steps the run has taken. */
+  iterationCount: z.number().int(),
+  /** The run's result: its last step's text, once it succeeded. */
+  result: z.string().nullish(),
+  /** Why the run failed, or stopped, if it did. */
+  errorMessage: z.string().nullish(),
+  /** Who started the run. */
+  startedBy: SmarterOwner.nullish(),
+  /** Its steps, in order. */
+  steps: z.array(OrchestrationStep).default([]),
+  /** When the run was requested, in ISO 8601. */
+  createdAt: z.string().nullish(),
+  /** When its execution began, in ISO 8601. */
+  startedAt: z.string().nullish(),
+  /** When it ended, in ISO 8601. */
+  completedAt: z.string().nullish(),
+});
+export type OrchestrationRun = z.infer<typeof OrchestrationRun>;
+
+/** The statuses of a run that has ended. */
+export const ORCHESTRATION_RUN_FINAL_STATUSES: readonly string[] = [
+  "succeeded",
+  "failed",
+  "cancelled",
+  "max_iterations_exceeded",
+];
+
+/**
+ * Whether a run has ended, and its status will not change again.
+ *
+ * @param run - The run.
+ * @returns True once its status is `succeeded`, `failed`, `cancelled` or `max_iterations_exceeded`.
+ */
+export function isRunDone(run: Pick<OrchestrationRun, "status">): boolean {
+  return ORCHESTRATION_RUN_FINAL_STATUSES.includes(run.status);
+}
 
 /** A vectorsearch: a retrieval pipeline over a vectorstore. */
 export const Vectorsearch = SmarterResource.extend({

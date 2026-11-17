@@ -1,11 +1,13 @@
 /** Secrets, plugins, orchestrators and vectorsearches: the kinds whose REST api lists and reads them, and runs a Vectorsearch. */
 
+import { z } from "zod";
+
 import { ResourceNotFoundError, SmarterValueError } from "../core/errors.ts";
 import type { RequestOptions } from "../core/http.ts";
 import type { JsonValue, SmarterId } from "../core/typing.ts";
 import type { SmarterJournalMessage } from "../models/journal.ts";
 import { Manifest, ManifestData, toManifest, type ManifestInput } from "../models/manifest.ts";
-import { Orchestrator, Secret, Vectorsearch, VectorsearchResults } from "../models/misc.ts";
+import { OrchestrationRun, Orchestrator, Secret, Vectorsearch, VectorsearchResults } from "../models/misc.ts";
 import { Plugin } from "../models/plugin.ts";
 import { resourceId, SmarterKindResource } from "./base.ts";
 
@@ -122,11 +124,81 @@ export class Plugins extends SmarterKindResource<typeof Plugin> {
   }
 }
 
-/** Orchestrators: `/api/v1/orchestrators/`, and the manifest api's `Orchestrator` kind. */
+/**
+ * Orchestrators: `/api/v1/orchestrators/`, and the manifest api's `Orchestrator` kind.
+ *
+ * {@link Orchestrators.run} starts a run of an Orchestrator toward an objective, which the platform
+ * executes in the background. Poll it with {@link Orchestrators.runStatus} until {@link isRunDone}.
+ *
+ * @example
+ * ```ts
+ * let run = await client.orchestrators.run(12, "Prepare the board pack for Q4 2025");
+ * while (!isRunDone(run)) {
+ *   await new Promise((resolve) => setTimeout(resolve, 2000));
+ *   run = await client.orchestrators.runStatus(12, run.id);
+ * }
+ * console.log(run.status, run.result);
+ * ```
+ */
 export class Orchestrators extends SmarterKindResource<typeof Orchestrator> {
   readonly kind = "Orchestrator";
   readonly path = "orchestrators/";
   readonly model = Orchestrator;
+
+  /**
+   * Start a run of an Orchestrator toward an objective.
+   *
+   * The platform answers at once with the run, `pending`, then executes it one step at a time. Each step
+   * calls a harness LLMClient as its owner, and is charged to it. The request is never retried, whatever
+   * the client's `maxRetries`: a retry would start a second run.
+   *
+   * @param id - The Orchestrator's id or hashed id.
+   * @param objective - What the run is to achieve, e.g. `Prepare the board pack for Q4 2025`. Every step receives it.
+   * @param options - Per-request options.
+   * @returns The new run.
+   * @throws {@link BadRequestError} If the objective is empty, or the Orchestrator's strategy can't run yet.
+   * @throws {@link PermissionDeniedError} If the user may not use every LLMClient of the Orchestrator.
+   * @throws {@link NotFoundError} If the user may not read the Orchestrator.
+   */
+  async run(id: SmarterId, objective: string, options?: RequestOptions): Promise<OrchestrationRun> {
+    return this.http.request("POST", `${this.path}${resourceId(id)}/runs/`, OrchestrationRun, {
+      ...options,
+      json: { objective },
+      maxRetries: 0,
+    });
+  }
+
+  /**
+   * The newest runs of an Orchestrator that the user started, up to 20, each with its steps.
+   *
+   * A superuser gets every user's.
+   *
+   * @param id - The Orchestrator's id or hashed id.
+   * @param options - Per-request options.
+   * @returns The runs, newest first.
+   * @throws {@link NotFoundError} If the user may not read the Orchestrator.
+   */
+  async runs(id: SmarterId, options?: RequestOptions): Promise<OrchestrationRun[]> {
+    return this.http.request("GET", `${this.path}${resourceId(id)}/runs/`, z.array(OrchestrationRun), options);
+  }
+
+  /**
+   * A run of an Orchestrator, with its steps and, once it succeeded, its result.
+   *
+   * @param id - The Orchestrator's id or hashed id.
+   * @param runId - The run's id.
+   * @param options - Per-request options.
+   * @returns The run.
+   * @throws {@link NotFoundError} If there is no such run, or the user neither started it nor is a superuser.
+   */
+  async runStatus(id: SmarterId, runId: number, options?: RequestOptions): Promise<OrchestrationRun> {
+    return this.http.request(
+      "GET",
+      `${this.path}${resourceId(id)}/runs/${resourceId(runId)}/`,
+      OrchestrationRun,
+      options,
+    );
+  }
 }
 
 /**

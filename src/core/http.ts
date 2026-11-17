@@ -74,6 +74,11 @@ export interface RequestInput extends RequestOptions {
    * user may not start today, so that it is thrown at once instead of retried. True by default.
    */
   retryRateLimited?: boolean | undefined;
+  /**
+   * How many times to retry this request, instead of the client's `maxRetries`, e.g. 0 for a request
+   * that must not be sent twice, such as one that starts an Orchestrator's run.
+   */
+  maxRetries?: number | undefined;
 }
 
 const STATUS_ERRORS: Record<number, typeof APIStatusError> = {
@@ -340,6 +345,7 @@ export class SmarterHttpClient {
       headers["Content-Type"] = "application/json";
     }
     const timeout = input.timeout ?? this.config.timeout;
+    const maxRetries = input.maxRetries ?? this.maxRetries;
     if (this.#logger.enabled("debug")) {
       const shown = body instanceof FormData ? "<multipart>" : (body ?? "").slice(0, 2000);
       this.#logger.log(
@@ -365,7 +371,7 @@ export class SmarterHttpClient {
         idle.clear();
         if (input.signal?.aborted) throw input.signal.reason;
         const timedOut = idle.timedOut;
-        if (attempt < this.maxRetries) {
+        if (attempt < maxRetries) {
           await this.#wait(attempt, request, timedOut ? "timeout" : "connection error", undefined, input.signal);
           continue;
         }
@@ -389,7 +395,7 @@ export class SmarterHttpClient {
       idle.clear();
       const retryable =
         isRetryable(response.status, text) && (response.status !== 429 || input.retryRateLimited !== false);
-      if (attempt < this.maxRetries && retryable) {
+      if (attempt < maxRetries && retryable) {
         await this.#wait(attempt, request, String(response.status), response.headers, input.signal);
         continue;
       }
