@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
+## [1.1.0-alpha.3](https://github.com/smarter-sh/smarter-nodejs/compare/v1.1.0-alpha.2...v1.1.0-alpha.3) (2026-11-17)
+
+### Features
+
+* **orchestrators:** start, list and poll the runs of an orchestrator ([b608113](https://github.com/smarter-sh/smarter-nodejs/commit/b608113ddd4bd21f02b7efd2eb1c5a387d941650))
+
+### Bug Fixes
+
+* **contracts:** sync with smarter v0.46.5 ([3f27528](https://github.com/smarter-sh/smarter-nodejs/commit/3f2752891d520ceec956289d7e96588f0594cd60))
+
 ## [1.1.0-alpha.2](https://github.com/smarter-sh/smarter-nodejs/compare/v1.1.0-alpha.1...v1.1.0-alpha.2) (2026-11-13)
 
 ### Bug Fixes
