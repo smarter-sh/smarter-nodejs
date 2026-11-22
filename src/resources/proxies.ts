@@ -32,7 +32,7 @@ export interface ProxyRequestOptions extends RequestOptions {
 /**
  * Proxies: `/api/v1/proxy/`.
  *
- * The platform serves these endpoints only when `SMARTER_ENABLE_PROXY` is true.
+ * The platform serves these endpoints only when `SMARTER_APP_PROXY_ENABLE` is true.
  */
 export class Proxies extends SmarterAPIResource {
   /** The proxies' endpoint. */
