@@ -210,6 +210,14 @@ export interface SAMVectorstoreStatus {
    */
   apiKeySecret?: string | null;
   /**
+   * Vectorstore.status.attempt: the number of checks that its last deploy has made.
+   */
+  attempt?: number | null;
+  /**
+   * Vectorstore.status.conditions: what its database needs to be ready, as of its last deploy or check.
+   */
+  conditions?: SAMVectorstoreCondition[];
+  /**
    * The date in which this resource was created. Read only.
    */
   created: string;
@@ -238,6 +246,10 @@ export interface SAMVectorstoreStatus {
    */
   lastCheckedAt?: string | null;
   /**
+   * Vectorstore.status.lastError: the last error of its last deploy, which may have been retried since.
+   */
+  lastError?: string | null;
+  /**
    * Vectorstore.status.lastMaintenanceAt: when its maintenance last ran. Read only.
    */
   lastMaintenanceAt?: string | null;
@@ -246,13 +258,21 @@ export interface SAMVectorstoreStatus {
    */
   lastSnapshotAt?: string | null;
   /**
-   * Vectorstore.status.message: why, if it failed.
+   * Vectorstore.status.maxAttempts: the checks that a deploy makes before it fails.
+   */
+  maxAttempts?: number | null;
+  /**
+   * Vectorstore.status.message: what is happening, e.g. what a deploy waits for, or why it failed.
    */
   message?: string | null;
   /**
    * The date in which this resource was most recently changed. Read only.
    */
   modified: string;
+  /**
+   * Vectorstore.status.nextRetryAt: when a deploy in progress checks again.
+   */
+  nextRetryAt?: string | null;
   /**
    * recordLocator[String]: An optional identifier used to locate the resource record associated with this manifest. Read only.
    */
@@ -273,6 +293,40 @@ export interface SAMVectorstoreStatus {
    * Vectorstore.status.vectorstoreStatus: pending, provisioning, ready, stopped, failed or deleting.
    */
   vectorstoreStatus: string;
+  [k: string]: unknown | undefined;
+}
+/**
+ * One of the things that a Vectorstore's database needs before it is ready, and whether it has it.
+ *
+ * A deploy has several independent points of failure, e.g. a refused api key, a volume that isn't
+ * bound, or a server whose image can't be pulled. Each is a condition, as in Kubernetes: its
+ * ``status`` is ``True`` when it is met, ``False`` when it isn't, and ``Unknown`` before it is
+ * checked. A Pinecone or Qdrant Cloud Vectorstore has the conditions ``Credentials`` and ``Index``,
+ * and a self-hosted one also ``Volume`` and ``Server``.
+ *
+ * Read only.
+ */
+export interface SAMVectorstoreCondition {
+  /**
+   * Vectorstore.status.condition.lastTransitionTime: when its status last changed.
+   */
+  lastTransitionTime?: string | null;
+  /**
+   * Vectorstore.status.condition.message: what was found, for a person.
+   */
+  message?: string;
+  /**
+   * Vectorstore.status.condition.reason: one word, e.g. Bound or ImagePullBackOff.
+   */
+  reason?: string;
+  /**
+   * Vectorstore.status.condition.status: True if it is met, False if it isn't, Unknown before it is checked.
+   */
+  status: "True" | "False" | "Unknown";
+  /**
+   * Vectorstore.status.condition.type: Credentials, Volume, Server or Index.
+   */
+  type: "Credentials" | "Volume" | "Server" | "Index";
   [k: string]: unknown | undefined;
 }
 /**
