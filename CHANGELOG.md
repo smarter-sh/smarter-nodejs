@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 
 
+## [1.1.0-alpha.4](https://github.com/smarter-sh/smarter-nodejs/compare/v1.1.0-alpha.3...v1.1.0-alpha.4) (2026-11-24)
+
+### Bug Fixes
+
+* **contracts:** add vectorsearches to fixtures, ignore documents op ([cc63589](https://github.com/smarter-sh/smarter-nodejs/commit/cc63589904447152644d0c690db726d7ed2cbbc8))
+* **contracts:** sync with smarter v0.48.0 ([af57527](https://github.com/smarter-sh/smarter-nodejs/commit/af575271fa76f482cd29ace97590ddd56be318c0))
+
 ## [1.0.3](https://github.com/smarter-sh/smarter-nodejs/compare/v1.0.2...v1.0.3) (2026-11-10)
 
 ### Bug Fixes
