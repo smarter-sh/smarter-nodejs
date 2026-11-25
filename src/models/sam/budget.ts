@@ -70,7 +70,7 @@ export interface SAMBudgetSpec {
  */
 export interface SAMBudgetSpecConfig {
   /**
-   * Budget.spec.config.absoluteLimit: the most that may be spent in total, from when the budget is attached. 0 means no limit.
+   * Budget.spec.config.absoluteLimit: the most that may be spent in total, from when the budget is attached, in USD to the cent, or in tokens. 0 means no limit.
    */
   absoluteLimit?: number | string;
   /**
@@ -90,7 +90,7 @@ export interface SAMBudgetSpecConfig {
    */
   period?: "hour" | "day" | "week" | "month";
   /**
-   * Budget.spec.config.periodicLimit: the most that may be spent in a billing period. 0 means no limit.
+   * Budget.spec.config.periodicLimit: the most that may be spent in a billing period, in USD to the cent, or in tokens. 0 means no limit.
    */
   periodicLimit?: number | string;
   /**

@@ -754,7 +754,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             anyOf: [{ minimum: 0, type: "number" }, { type: "string" }],
             default: "0",
             description:
-              "Budget.spec.config.absoluteLimit: the most that may be spent in total, from when the budget is attached. 0 means no limit.",
+              "Budget.spec.config.absoluteLimit: the most that may be spent in total, from when the budget is attached, in USD to the cent, or in tokens. 0 means no limit.",
           },
           action: {
             default: "block",
@@ -785,7 +785,7 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             anyOf: [{ minimum: 0, type: "number" }, { type: "string" }],
             default: "0",
             description:
-              "Budget.spec.config.periodicLimit: the most that may be spent in a billing period. 0 means no limit.",
+              "Budget.spec.config.periodicLimit: the most that may be spent in a billing period, in USD to the cent, or in tokens. 0 means no limit.",
           },
           unit: {
             default: "cost",
@@ -1881,6 +1881,12 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             description:
               "LLMClient.spec.searchTerms[list]. Optional. The Plugins to add to the LLMClient. Plugins are a proprietary extensibility model for tool calling and are not the same as OpenAI plugins. See https://docs.smarter.sh/smarter-resources/smarter-llmtool.html for more information.",
           },
+          vectorsearches: {
+            anyOf: [{ items: { type: "string" }, type: "array" }, { type: "null" }],
+            default: null,
+            description:
+              "LLMClient.spec.vectorsearches[list]. Optional. The names of the Vectorsearches that the LLMClient offers the LLM, each as a tool that searches the documents of its Vectorstore. Example: ['stackademy_handbook']. Each must be a Vectorsearch that you own, or that is shared with you. The LLM calls one with a search query of its own, and answers from the passages that it returns.",
+          },
         },
         required: ["config"],
         title: "SAMLLMClientSpec",
@@ -1994,10 +2000,10 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
               "LLMClient.spec.configuration.prompt.default_temperature[float]. Optional. The default temperature to use for the llmclient. This defaults to 1.0.\nThe temperature is a floating point value between 0 and 1 that controls the randomness of the llmclient's responses. A value of 0 means that the llmclient will always choose the most likely response, while a value of 1 means that the llmclient will choose a random response. Low values work better for information retrieval tasks, while high values work better for creative tasks.",
           },
           deployed: {
-            default: false,
+            anyOf: [{ type: "boolean" }, { type: "null" }],
+            default: null,
             description:
-              "LLMClient.spec.configuration.prompt.deployed[bool]. Required. Whether the llmclient is deployed. Deployed means that the llmclient is available for use outside the Smarter Prompt Engineer Workbench. Published llmclients have their own subdomain, Kubernetes ingress, and TLS/SSL certificate.",
-            type: "boolean",
+              "LLMClient.spec.configuration.prompt.deployed[bool]. Optional. Whether the llmclient is deployed. Deployed means that the llmclient is available for use outside the Smarter Prompt Engineer Workbench, at its own url. true deploys it and false undeploys it, as smarter deploy and smarter undeploy do. Leave it out to keep the llmclient's deployed state as it is, e.g. when a deployed llmclient's manifest is applied again.",
           },
           provider: {
             anyOf: [{ type: "string" }, { type: "null" }],
@@ -5897,6 +5903,41 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
         title: "SAMDependency",
         type: "object",
       },
+      SAMVectorstoreCondition: {
+        description:
+          "One of the things that a Vectorstore's database needs before it is ready, and whether it has it.\n\nA deploy has several independent points of failure, e.g. a refused api key, a volume that isn't\nbound, or a server whose image can't be pulled. Each is a condition, as in Kubernetes: its\n``status`` is ``True`` when it is met, ``False`` when it isn't, and ``Unknown`` before it is\nchecked. A Pinecone or Qdrant Cloud Vectorstore has the conditions ``Credentials`` and ``Index``,\nand a self-hosted one also ``Volume`` and ``Server``.\n\nRead only.",
+        properties: {
+          lastTransitionTime: {
+            anyOf: [{ format: "date-time", type: "string" }, { type: "null" }],
+            default: null,
+            description: "Vectorstore.status.condition.lastTransitionTime: when its status last changed.",
+          },
+          message: {
+            default: "",
+            description: "Vectorstore.status.condition.message: what was found, for a person.",
+            type: "string",
+          },
+          reason: {
+            default: "",
+            description: "Vectorstore.status.condition.reason: one word, e.g. Bound or ImagePullBackOff.",
+            type: "string",
+          },
+          status: {
+            description:
+              "Vectorstore.status.condition.status: True if it is met, False if it isn't, Unknown before it is checked.",
+            enum: ["True", "False", "Unknown"],
+            type: "string",
+          },
+          type: {
+            description: "Vectorstore.status.condition.type: Credentials, Volume, Server or Index.",
+            enum: ["Credentials", "Volume", "Server", "Index"],
+            type: "string",
+          },
+        },
+        required: ["type", "status"],
+        title: "SAMVectorstoreCondition",
+        type: "object",
+      },
       SAMVectorstoreEmbeddings: {
         description: "Vectorstore.spec.embeddings: how documents and queries are turned into vectors.",
         properties: {
@@ -6136,6 +6177,17 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             default: null,
             description: "Vectorstore.status.apiKeySecret: the Secret with a self-hosted database's API key.",
           },
+          attempt: {
+            anyOf: [{ type: "integer" }, { type: "null" }],
+            default: null,
+            description: "Vectorstore.status.attempt: the number of checks that its last deploy has made.",
+          },
+          conditions: {
+            description:
+              "Vectorstore.status.conditions: what its database needs to be ready, as of its last deploy or check.",
+            items: { $ref: "#/$defs/SAMVectorstoreCondition" },
+            type: "array",
+          },
           created: {
             description: "The date in which this resource was created. Read only.",
             format: "date-time",
@@ -6172,6 +6224,12 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             default: null,
             description: "Vectorstore.status.lastCheckedAt: when its status was last checked. Read only.",
           },
+          lastError: {
+            anyOf: [{ type: "string" }, { type: "null" }],
+            default: null,
+            description:
+              "Vectorstore.status.lastError: the last error of its last deploy, which may have been retried since.",
+          },
           lastMaintenanceAt: {
             anyOf: [{ format: "date-time", type: "string" }, { type: "null" }],
             default: null,
@@ -6182,15 +6240,26 @@ export const SAM_SCHEMAS: Readonly<Record<string, object>> = {
             default: null,
             description: "Vectorstore.status.lastSnapshotAt: when its last snapshot was taken. Read only.",
           },
+          maxAttempts: {
+            anyOf: [{ type: "integer" }, { type: "null" }],
+            default: null,
+            description: "Vectorstore.status.maxAttempts: the checks that a deploy makes before it fails.",
+          },
           message: {
             anyOf: [{ type: "string" }, { type: "null" }],
             default: null,
-            description: "Vectorstore.status.message: why, if it failed.",
+            description:
+              "Vectorstore.status.message: what is happening, e.g. what a deploy waits for, or why it failed.",
           },
           modified: {
             description: "The date in which this resource was most recently changed. Read only.",
             format: "date-time",
             type: "string",
+          },
+          nextRetryAt: {
+            anyOf: [{ format: "date-time", type: "string" }, { type: "null" }],
+            default: null,
+            description: "Vectorstore.status.nextRetryAt: when a deploy in progress checks again.",
           },
           recordLocator: {
             description:
