@@ -11,7 +11,9 @@
 #                      latest dist-tag from main, and alpha or beta from those
 #                      branches, so that `npm install @smarter.sh/api` never
 #                      gets a prerelease
-#   merge-main         after a release on main, merge main into alpha
+#   merge-main         after a release on main, merge main into alpha and beta,
+#                      so that the next pull request from alpha starts from
+#                      the release commit instead of conflicting with it
 #
 # A push whose commits since the last tag are all docs, test, style or refactor
 # releases nothing, and publishes nothing. semantic-release's own commit ends
@@ -199,3 +201,10 @@ jobs:
           github-token: ${{ secrets.PAT }}
           source-branch: main
           target-branch: alpha
+
+      - name: Merge main into beta
+        uses: ./.github/actions/merge-branch
+        with:
+          github-token: ${{ secrets.PAT }}
+          source-branch: main
+          target-branch: beta
